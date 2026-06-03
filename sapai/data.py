@@ -837,8 +837,8 @@ data = {
                 "unicodeCodePoint": "🦆",
             },
             "tier": 1,
-            "baseAttack": 2,
-            "baseHealth": 3,
+            "baseAttack": 3,
+            "baseHealth": 2,
             "packs": ["StandardPack"],
             "level1Ability": {
                 "description": "Sell: Give shop animals +1 Health",
@@ -2045,9 +2045,9 @@ data = {
                 "commit": "e022fd6573782431ac9a65b520376b57511c31cd",
                 "unicodeCodePoint": "🦤",
             },
-            "tier": 2,
-            "baseAttack": 2,
-            "baseHealth": 3,
+            "tier": 3,
+            "baseAttack": 4,
+            "baseHealth": 2,
             "packs": ["StandardPack"],
             "level1Ability": {
                 "description": "Start of battle: Give 50% Attack to friend ahead.",
@@ -2160,29 +2160,7 @@ data = {
             "baseHealth": 3,
             "packs": ["StandardPack", "ExpansionPack1"],
             "level1Ability": {
-                "description": "Friend summoned: Gain +1 Attack or +1 Health.",
-                "trigger": "Summoned",
-                "triggeredBy": {"kind": "EachFriend"},
-                "effect": {
-                    "kind": "OneOf",
-                    "effects": [
-                        {
-                            "kind": "ModifyStats",
-                            "untilEndOfBattle": False,
-                            "target": {"kind": "Self"},
-                            "attackAmount": 1,
-                        },
-                        {
-                            "kind": "ModifyStats",
-                            "untilEndOfBattle": False,
-                            "target": {"kind": "Self"},
-                            "healthAmount": 1,
-                        },
-                    ],
-                },
-            },
-            "level2Ability": {
-                "description": "Friend summoned: Gain +2 Attack or +2 Health.",
+                "description": "Friend summoned: Gain +2 Attack or +1 Health.",
                 "trigger": "Summoned",
                 "triggeredBy": {"kind": "EachFriend"},
                 "effect": {
@@ -2198,13 +2176,13 @@ data = {
                             "kind": "ModifyStats",
                             "untilEndOfBattle": False,
                             "target": {"kind": "Self"},
-                            "healthAmount": 2,
+                            "healthAmount": 1,
                         },
                     ],
                 },
             },
-            "level3Ability": {
-                "description": "Friend summoned: Gain +3 Attack or +3 Health.",
+            "level2Ability": {
+                "description": "Friend summoned: Gain +4 Attack or +2 Health.",
                 "trigger": "Summoned",
                 "triggeredBy": {"kind": "EachFriend"},
                 "effect": {
@@ -2214,7 +2192,29 @@ data = {
                             "kind": "ModifyStats",
                             "untilEndOfBattle": False,
                             "target": {"kind": "Self"},
-                            "attackAmount": 3,
+                            "attackAmount": 4,
+                        },
+                        {
+                            "kind": "ModifyStats",
+                            "untilEndOfBattle": False,
+                            "target": {"kind": "Self"},
+                            "healthAmount": 2,
+                        },
+                    ],
+                },
+            },
+            "level3Ability": {
+                "description": "Friend summoned: Gain +6 Attack or +3 Health.",
+                "trigger": "Summoned",
+                "triggeredBy": {"kind": "EachFriend"},
+                "effect": {
+                    "kind": "OneOf",
+                    "effects": [
+                        {
+                            "kind": "ModifyStats",
+                            "untilEndOfBattle": False,
+                            "target": {"kind": "Self"},
+                            "attackAmount": 6,
                         },
                         {
                             "kind": "ModifyStats",

@@ -1,4 +1,3 @@
-import os
 import time
 import itertools
 from sapai import Team
@@ -9,51 +8,6 @@ from sapai.foods import Food  # 🌟 記得引入 Food 類別！
 # ==========================================
 # 🛠️ 輔助工具：動物製造機與格式化工具
 # ==========================================
-def parse_pet_str(ps):
-    """將文字格式例如 'dolphin-[garlic](14/16/L1)' 轉換為藍圖 Tuple"""
-    ps = ps.strip()
-    name, atk, hp, lvl, eq = ps, None, None, None, None
-    
-    # 解析數值 (例如: 14/16/L1)
-    if '(' in ps and ps.endswith(')'):
-        name_eq_part, stats_part = ps.split('(')
-        stats_part = stats_part[:-1] # 移除右括號
-        name = name_eq_part
-        
-        parts = stats_part.split('/')
-        if len(parts) == 3:
-            atk = int(parts[0]) if parts[0] != '?' else None
-            hp = int(parts[1]) if parts[1] != '?' else None
-            lvl = int(parts[2].replace('L', '')) if parts[2] != '?' else None
-            
-    # 解析裝備 (例如: dolphin-[garlic])
-    if '-[' in name:
-        name_part, eq_part = name.split('-[')
-        name = name_part
-        eq = eq_part.replace(']', '')
-        
-    if eq:
-        return (name, atk, hp, lvl, eq)
-    else:
-        return (name, atk, hp, lvl)
-
-def parse_team_file(filepath):
-    """讀取 txt 檔案，並轉換為敵人陣容池"""
-    teams = []
-    with open(filepath, 'r', encoding='utf-8') as f:
-        for line in f:
-            line = line.strip()
-            if not line or line.startswith('#'): continue
-            
-            # 移除最外層的陣列括號 []
-            if line.startswith('[') and line.endswith(']'):
-                line = line[1:-1]
-                
-            pet_strings = line.split(', ')
-            team_setup = [parse_pet_str(ps) for ps in pet_strings]
-            teams.append(team_setup)
-    return teams
-
 def make_pet(pet_blueprint):
     # 動態解析藍圖：支援 4 個參數 (無裝備) 或 5 個參數 (有裝備)
     if len(pet_blueprint) == 5:
@@ -70,11 +24,11 @@ def make_pet(pet_blueprint):
         elif lvl == 3:
             for _ in range(5): p.gain_experience()
                 
-    # 吃下裝備 (必須在修改基礎數值前執行)
+    # 2. 🍖 吃下裝備 (必須在修改基礎數值前執行)
     if eq is not None:
         p.eat(Food(eq))
                 
-    # 暴力覆寫數值
+    # 3. 🚨 暴力覆寫數值
     if atk is not None:
         p._attack = atk
     if hp is not None:
@@ -103,37 +57,45 @@ def format_team_name(blueprint_list):
     return "[" + ", ".join(names) + "]"
 
 # ==========================================
-# 🌟 商店階段 (EndOfTurn) 鸚鵡變身器 (靜音版)
+# 🌟 新增：商店階段 (EndOfTurn) 鸚鵡變身器 (靜音版)
 # ==========================================
 def simulate_end_of_turn(team):
+    """手動觸發商店結算，直接將鸚鵡替換成前方的動物！(為追求效能已移除 print)"""
     for i, slot in enumerate(team):
         if slot.empty:
             continue
             
         p = slot.pet
         if p.name == "pet-parrot":
+            # 往前方 (靠近排頭 0 的方向) 尋找隊友
             for j in range(i - 1, -1, -1):
                 front_slot = team[j]
                 if not front_slot.empty:
                     front_pet = front_slot.pet
                     if front_pet.name != "pet-none" and "EMPTY" not in front_pet.name:
+                        
+                        # 1. 記錄鸚鵡原本的狀態
                         parrot_atk = p.attack
                         parrot_hp = p.health
                         parrot_lvl = p.level
                         parrot_status = p.status
                         
+                        # 2. 製造一隻全新的「前方隊友」
                         cloned_pet = Pet(front_pet.name)
                         
+                        # 3. 讓複製出來的動物達到鸚鵡的星級
                         if parrot_lvl == 2:
                             for _ in range(2): cloned_pet.gain_experience()
                         elif parrot_lvl == 3:
                             for _ in range(5): cloned_pet.gain_experience()
                             
+                        # 4. 把裝備、攻擊力與血量，強制設定成鸚鵡原本的數值
                         if parrot_status != "none":
                             cloned_pet._status = parrot_status
                         cloned_pet._attack = parrot_atk
                         cloned_pet._health = parrot_hp
                         
+                        # 5. 接上神經網絡並偷天換日
                         cloned_pet.team = team
                         team[i] = cloned_pet
                         break
@@ -142,26 +104,27 @@ def simulate_end_of_turn(team):
 # ⚙️ 參數區域 (定義你的神仙陣容)
 # ==========================================
 a = 5   # 己方隊伍總人數
-n = 50  # 每一組己方陣容，將對戰【每一個敵人】各 n 次
-
-# 📝 敵人檔案設定
-enemy_file = "turn3_setup.txt" # 請將真實對戰記錄存於此檔案，留空 "" 則使用下方預設單一陣容
+n = 50  # 每種組合的模擬對戰次數
 
 # 1. 固定班底 (核心陣容)
 fixed_members = [
-    ("ant", 5, 5, 2),
-    ("dodo", 5, 2, None),
-    ("mosquito", 4, 4, 2),
-    ("dog", 7, 4, None),
-    ("spider", 3, 3, None)
+    ("turtle", 7, 10, 2, "melon"),
+    ("gorilla", 10, 13, None),
+    ("peacock", 10, 13, 2, "chili"),
+    ("ant", 8, 10, 3),
+    ("hippo", 8, 10, 2)
 ]
-# 2. 動物候選池
-candidate_pool = []
 
-# 3. 🍖 食物分配池
-food_pool = []
+# 2. 動物候選池 (要爭奪剩下的空位，此處留空啟用食物模式)
+candidate_pool = [
 
-# 預設敵方陣容 (檔案讀取失敗或未提供時使用)
+]
+
+# 3. 🍖 食物分配池 (測試裝備該給誰)
+food_pool = [
+]
+
+# 敵方固定陣容
 enemy_setup = [
     ("turtle", 7, 10, 2, "melon"),
     ("ant", 8, 10, 3),
@@ -169,18 +132,6 @@ enemy_setup = [
     ("peacock", 20, 20, 2, "chili"),
     ("gorilla", 8, 11, None)
 ]
-
-# ==========================================
-# 📂 讀取敵方天梯挑戰池 (Gauntlet)
-# ==========================================
-enemy_pool = []
-if enemy_file and os.path.exists(enemy_file):
-    print(f"📥 正在讀取敵方陣容檔案: {enemy_file}")
-    enemy_pool = parse_team_file(enemy_file)
-    print(f"✅ 成功載入 {len(enemy_pool)} 組敵方挑戰陣容！")
-else:
-    print(f"⚠️ 未找到檔案 '{enemy_file}'，使用腳本內建單一敵方陣容。")
-    enemy_pool = [enemy_setup]
 
 # ==========================================
 # 🔍 產生並過濾所有排列組合 (互斥雙引擎)
@@ -230,16 +181,18 @@ else:
 
 print("=" * 60)
 print("🧠 系統初始化中...")
-print(f"己方陣容總數: {len(all_permutations)} 種不重複的排兵布陣方式")
-print(f"天梯敵人數: {len(enemy_pool)} 組不同隊伍")
+print(f"己方固定成員: {format_team_name(fixed_members)}")
+print(f"動物候選池: {format_team_name(candidate_pool) if candidate_pool else '未啟用'}")
+print(f"食物分配池: {food_pool if food_pool else '未啟用'}")
+print(f"敵方陣容: {format_team_name(enemy_setup)}")
+print(f"過濾重複後，共有 {len(all_permutations)} 種不重複的排兵布陣方式！")
 print("=" * 60)
 
 # ==========================================
 # ⚔️ 執行大規模模擬
 # ==========================================
 results = []
-# 總戰鬥次數 = 己方陣容數 * 敵方隊伍數 * 模擬次數 n
-total_battles = len(all_permutations) * len(enemy_pool) * n
+total_battles = len(all_permutations) * n
 
 print(f"🚀 開始暴力破解，預計執行 {total_battles} 場對戰...\n")
 
@@ -250,33 +203,29 @@ for combo_tuple in all_permutations:
     enemy_wins = 0
     draws = 0
     
-    # 🌟 對陣天梯裡面的【每一支敵方隊伍】
-    for enemy_bp in enemy_pool:
-        for _ in range(n):
-            my_team_pets = [make_pet(blueprint) for blueprint in combo_tuple]
-            enemy_team_pets = [make_pet(blueprint) for blueprint in enemy_bp]
+    for _ in range(n):
+        my_team_pets = [make_pet(blueprint) for blueprint in combo_tuple]
+        enemy_team_pets = [make_pet(blueprint) for blueprint in enemy_setup]
+        
+        my_team = Team(my_team_pets)
+        enemy_team = Team(enemy_team_pets)
+        
+        # 🚨 關鍵攔截點：先建立 Battle 物件，再對複製人軍團施加魔法！
+        battle = Battle(my_team, enemy_team)
+        
+        simulate_end_of_turn(battle.t0)
+        simulate_end_of_turn(battle.t1)
+        
+        winner = battle.battle()
+        
+        if winner == 0:
+            my_wins += 1
+        elif winner == 1:
+            enemy_wins += 1
+        else:
+            draws += 1
             
-            my_team = Team(my_team_pets)
-            enemy_team = Team(enemy_team_pets)
-            
-            # 建立 Battle 物件並施加變身魔法
-            battle = Battle(my_team, enemy_team)
-            simulate_end_of_turn(battle.t0)
-            simulate_end_of_turn(battle.t1)
-            
-            winner = battle.battle()
-            
-            if winner == 0:
-                my_wins += 1
-            elif winner == 1:
-                enemy_wins += 1
-            else:
-                draws += 1
-                
-    # 計算這個排陣對抗「所有敵人」的綜合勝率
-    total_matches_for_this_combo = len(enemy_pool) * n
-    win_rate = (my_wins / total_matches_for_this_combo) * 100
-    
+    win_rate = (my_wins / n) * 100
     results.append({
         "combo_str": format_team_name(combo_tuple),
         "win_rate": win_rate,
@@ -290,19 +239,22 @@ end_time = time.time()
 # ==========================================
 # 📊 結算與找出最佳解
 # ==========================================
-# 🌟 完全依照純勝率排序！(若勝率一模一樣，才用平手數當作同分的比較標準)
 results.sort(key=lambda x: (x["win_rate"], x["draws"]), reverse=True)
 
 total_time = end_time - start_time
 avg_time_per_combo = total_time / len(all_permutations)
 avg_time_per_battle = total_time / total_battles
 
+# 🌟 在這裡設定你想看前幾名！(例如改為 20, 50, 或 100)
 top_k = 20
+
+# 如果總組合數比你想看的還少，就以實際數量為準
 actual_display_count = min(top_k, len(results))
 
 print(f"🏆 【Top {actual_display_count} 最佳組合揭曉】")
 print("=" * 60)
 
+# 使用切片 (slice) 語法取出前 top_k 名
 top_results = results[:top_k]
 
 for i, best_combo in enumerate(top_results):
@@ -315,7 +267,7 @@ for i, best_combo in enumerate(top_results):
 print("-" * 60)
 print("📊 【效能與耗時統計】")
 print(f"⏱️ 總耗時: {total_time:.4f} 秒")
-print(f"⏱️ 己方陣容總數: {len(all_permutations)} 種")
-print(f"⏱️ 平均耗時 (每種陣容對抗全天梯): {avg_time_per_combo:.4f} 秒")
+print(f"⏱️ 陣容總數: {len(all_permutations)} 種")
+print(f"⏱️ 平均耗時 (每種陣容): {avg_time_per_combo:.4f} 秒")
 print(f"⏱️ 平均耗時 (每場對戰): {avg_time_per_battle:.6f} 秒")
 print("=" * 60)

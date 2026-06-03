@@ -1,2 +1,2 @@
-['ant', 'beaver', 'beaver']
-[ant(2/3/L1), ant, otter]
+[ant, beaver, beaver]
+[ant, ant, otter]
