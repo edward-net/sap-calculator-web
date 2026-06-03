@@ -1,0 +1,1 @@
+[mammoth(4/12/L1), dolphin-[garlic](14/16/L1), ant-[garlic](10/10/L3), crocodile(9/14/L1), deer(8/11/L2)]

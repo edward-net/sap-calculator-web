@@ -1,0 +1,9 @@
+# 忽略虛擬環境
+sap_env/
+
+# 忽略 Python 暫存檔
+__pycache__/
+*.pyc
+
+# 忽略 VS Code 設定檔 (如果有用的話)
+.vscode/

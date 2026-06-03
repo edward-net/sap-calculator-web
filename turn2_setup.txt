@@ -1,0 +1,2 @@
+[ant, ant(3/3/L1), beaver, ant, beaver]
+[fish, otter(1/4/L1), fish, ant(3/4/L1), otter(1/5/L1)]

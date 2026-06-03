@@ -1,0 +1,2 @@
+[rabbit, spider, deer(4/5/L1), ant-[garlic](9/8/L3), dolphin-[garlic](12/13/L1)]
+[hippo(5/7/L1), turtle, peacock(8/11/L2), ant(8/10/L3), elephant(4/9/L1)]
