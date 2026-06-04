@@ -29,16 +29,16 @@ def make_pet(pet_blueprint):
         elif lvl == 3:
             for _ in range(5): p.gain_experience()
             
-    # 2. 🍖 穿上裝備 (使用官方 API：吃食物！)
-    if equipment is not None:
-        p.eat(Food(equipment))
-        
-    # 3. 🚨 修改基礎數值 (暴力覆寫)
+    # 2. 🚨 修改基礎數值 (暴力覆寫)
     if atk is not None:
         p._attack = atk
     if hp is not None:
         p._health = hp
             
+    # 3. 🍖 穿上裝備 (使用官方 API：吃食物！)
+    if equipment is not None:
+        p.eat(Food(equipment))
+
     return p
 
 # ==========================================
@@ -93,11 +93,11 @@ def simulate_end_of_turn(team):
 # 1. 建立雙方隊伍 
 # ==========================================
 my_team_setup = [
-    ("ant", 7, 7, 2),
-    ("dodo", 6, 3, None),
-    ("giraffe", None, None, None),
-    ("dog", 10, 6, None),
-    ("spider", 4, 4, None)
+    ("dodo", 9, 6, None, "garlic"),
+    ("giraffe", 3, 4, None, "pear"),
+    ("blowfish", 4, 7, None),
+    ("ant", 8, 8, 3),
+    ("crocodile", 11, 7, None)
 ]
 
 enemy_team_setup = [

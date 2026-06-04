@@ -70,15 +70,15 @@ def make_pet(pet_blueprint):
         elif lvl == 3:
             for _ in range(5): p.gain_experience()
                 
-    # 吃下裝備 (必須在修改基礎數值前執行)
-    if eq is not None:
-        p.eat(Food(eq))
-                
-    # 暴力覆寫數值
+    # 1️⃣ 【修改點】先暴力覆寫基礎數值 (將你設定的數值作為基底)
     if atk is not None:
         p._attack = atk
     if hp is not None:
         p._health = hp
+                
+    # 2️⃣ 【修改點】再吃下裝備/食物 (讓 Pear 等食物的加成疊加在剛剛設定好的數值上)
+    if eq is not None:
+        p.eat(Food(eq))
         
     return p
 
@@ -145,21 +145,23 @@ a = 5   # 己方隊伍總人數
 n = 50  # 每一組己方陣容，將對戰【每一個敵人】各 n 次
 
 # 📝 敵人檔案設定
-enemy_file = "turn7_setup.txt" # 請將真實對戰記錄存於此檔案，留空 "" 則使用下方預設單一陣容
+enemy_file = "turn8_setup.txt" # 請將真實對戰記錄存於此檔案，留空 "" 則使用下方預設單一陣容
 
 # 1. 固定班底 (核心陣容)
 fixed_members = [
+    ("dodo", 9, 6, None, "garlic"),
+    ("giraffe", 3, 4, None),
+    ("blowfish", 4, 7, None),
     ("ant", 8, 8, 3),
-    ("dodo", 8, 5, None, "garlic"),
-    ("giraffe", None, None, None),
-    ("dog", 4, 3, None),
-    ("spider", 4, 4, None)
+    ("crocodile", 11, 7, None)
 ]
 # 2. 動物候選池
-candidate_pool = []
+candidate_pool = [
+]
 
 # 3. 🍖 食物分配池
 food_pool = [
+    ("pear")
 ]
 
 # 預設敵方陣容 (檔案讀取失敗或未提供時使用)
