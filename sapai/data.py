@@ -4357,8 +4357,8 @@ data = {
                 "unicodeCodePoint": "🦒",
             },
             "tier": 3,
-            "baseAttack": 2,
-            "baseHealth": 4,
+            "baseAttack": 1,
+            "baseHealth": 2,
             "packs": ["StandardPack"],
             "level1Ability": {
                 "description": "End turn: Give friend ahead +1/+1",

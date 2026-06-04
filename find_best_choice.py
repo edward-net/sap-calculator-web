@@ -142,10 +142,10 @@ def simulate_end_of_turn(team):
 # ⚙️ 參數區域 (定義你的神仙陣容)
 # ==========================================
 a = 5   # 己方隊伍總人數
-n = 50  # 每一組己方陣容，將對戰【每一個敵人】各 n 次
+n = 100  # 每一組己方陣容，將對戰【每一個敵人】各 n 次
 
 # 📝 敵人檔案設定
-enemy_file = "turn3_setup.txt" # 請將真實對戰記錄存於此檔案，留空 "" 則使用下方預設單一陣容
+enemy_file = "turn5_setup.txt" # 請將真實對戰記錄存於此檔案，留空 "" 則使用下方預設單一陣容
 
 # 1. 固定班底 (核心陣容)
 fixed_members = [
@@ -163,11 +163,11 @@ food_pool = []
 
 # 預設敵方陣容 (檔案讀取失敗或未提供時使用)
 enemy_setup = [
-    ("turtle", 7, 10, 2, "melon"),
-    ("ant", 8, 10, 3),
-    ("hippo", 8, 10, 2),
-    ("peacock", 20, 20, 2, "chili"),
-    ("gorilla", 8, 11, None)
+    ("ant", None, None, None),
+    ("spider", None, None, None),
+    ("ant", 5, 4, 2),
+    ("peacock", None, None, None),
+    ("dolphin", 7, 4, 1)
 ]
 
 # ==========================================
