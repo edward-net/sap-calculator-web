@@ -145,15 +145,15 @@ a = 5   # 己方隊伍總人數
 n = 50  # 每一組己方陣容，將對戰【每一個敵人】各 n 次
 
 # 📝 敵人檔案設定
-enemy_file = "turn8_setup.txt" # 請將真實對戰記錄存於此檔案，留空 "" 則使用下方預設單一陣容
+enemy_file = "turn9_setup.txt" # 請將真實對戰記錄存於此檔案，留空 "" 則使用下方預設單一陣容
 
 # 1. 固定班底 (核心陣容)
 fixed_members = [
-    ("dodo", 9, 6, None, "garlic"),
+    ("dodo", 12, 9, 2, "garlic"),
     ("giraffe", 3, 4, None),
-    ("blowfish", 4, 7, None),
+    ("blowfish", 5, 8, None),
     ("ant", 8, 8, 3),
-    ("crocodile", 11, 7, None)
+    ("crocodile", 12, 8, None)
 ]
 # 2. 動物候選池
 candidate_pool = [
@@ -161,7 +161,6 @@ candidate_pool = [
 
 # 3. 🍖 食物分配池
 food_pool = [
-    ("pear")
 ]
 
 # 預設敵方陣容 (檔案讀取失敗或未提供時使用)
