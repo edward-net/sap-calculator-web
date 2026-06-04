@@ -1,2 +1,3 @@
 [dolphin-[garlic](14/16/L1), deer(6/8/L1), rabbit, ant-[garlic](9/8/L3), crocodile(8/12/L1)]
 [turtle(5/8/L2), ant(8/10/L3), hippo(6/8/L2), peacock(8/11/L2), gorilla(8/11/L1)]
+[crocodile(12/8/L1), giraffe(3/4/L1), dodo-[garlic](12/9/L2), ant(8/8/L3), blowfish(5/8/L1)]

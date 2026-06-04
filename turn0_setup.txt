@@ -1,1 +1,1 @@
-[ant, spider, ant(5/4/L2), peacock, dolphin(7/4/L1)]
+[peacock-[chili](15/18/L2), turtle-[melon](20/20/L2),  ant(8/10/L3), hippo(15/15/L2), gorilla(15/15/L1)]
