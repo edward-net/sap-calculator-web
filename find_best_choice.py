@@ -4,20 +4,19 @@ import itertools
 from sapai import Team
 from sapai.pets import Pet
 from sapai.battle import Battle
-from sapai.foods import Food  # 🌟 記得引入 Food 類別！
+from sapai.foods import Food
 
 # ==========================================
 # 🛠️ 輔助工具：動物製造機與格式化工具
 # ==========================================
 def parse_pet_str(ps):
-    """將文字格式例如 'dolphin-[garlic](14/16/L1)' 轉換為藍圖 Tuple"""
+    """將文字格式轉換為藍圖 Tuple"""
     ps = ps.strip()
     name, atk, hp, lvl, eq = ps, None, None, None, None
     
-    # 解析數值 (例如: 14/16/L1)
     if '(' in ps and ps.endswith(')'):
         name_eq_part, stats_part = ps.split('(')
-        stats_part = stats_part[:-1] # 移除右括號
+        stats_part = stats_part[:-1] 
         name = name_eq_part
         
         parts = stats_part.split('/')
@@ -26,7 +25,6 @@ def parse_pet_str(ps):
             hp = int(parts[1]) if parts[1] != '?' else None
             lvl = int(parts[2].replace('L', '')) if parts[2] != '?' else None
             
-    # 解析裝備 (例如: dolphin-[garlic])
     if '-[' in name:
         name_part, eq_part = name.split('-[')
         name = name_part
@@ -45,7 +43,6 @@ def parse_team_file(filepath):
             line = line.strip()
             if not line or line.startswith('#'): continue
             
-            # 移除最外層的陣列括號 []
             if line.startswith('[') and line.endswith(']'):
                 line = line[1:-1]
                 
@@ -55,8 +52,11 @@ def parse_team_file(filepath):
     return teams
 
 def make_pet(pet_blueprint):
-    # 動態解析藍圖：支援 4 個參數 (無裝備) 或 5 個參數 (有裝備)
-    if len(pet_blueprint) == 5:
+    # 🌟 動態解析藍圖：支援 4(無), 5(有裝備), 或 6(有裝備+額外食物) 個參數
+    additional_food = None
+    if len(pet_blueprint) == 6:
+        name, atk, hp, lvl, eq, additional_food = pet_blueprint
+    elif len(pet_blueprint) == 5:
         name, atk, hp, lvl, eq = pet_blueprint
     else:
         name, atk, hp, lvl = pet_blueprint
@@ -70,35 +70,46 @@ def make_pet(pet_blueprint):
         elif lvl == 3:
             for _ in range(5): p.gain_experience()
                 
-    # 1️⃣ 【修改點】先暴力覆寫基礎數值 (將你設定的數值作為基底)
+    # 1️⃣ 先暴力覆寫基礎數值 
     if atk is not None:
         p._attack = atk
     if hp is not None:
         p._health = hp
                 
-    # 2️⃣ 【修改點】再吃下裝備/食物 (讓 Pear 等食物的加成疊加在剛剛設定好的數值上)
+    # 2️⃣ 吃下固定的裝備 (例如: food-meat-bone)
     if eq is not None:
         p.eat(Food(eq))
+        
+    # 3️⃣ 吃下分配到的額外食物 (例如: food-pear)，數值會自動疊加上去！
+    if additional_food is not None:
+        p.eat(Food(additional_food))
         
     return p
 
 def format_team_name(blueprint_list):
     names = []
     for bp in blueprint_list:
-        if len(bp) == 5:
+        additional_food = None
+        if len(bp) == 6:
+            name, atk, hp, lvl, eq, additional_food = bp
+        elif len(bp) == 5:
             name, atk, hp, lvl, eq = bp
         else:
             name, atk, hp, lvl = bp
             eq = None
             
-        if atk is None and hp is None and lvl is None and eq is None:
+        if atk is None and hp is None and lvl is None and eq is None and additional_food is None:
             names.append(name)
         else:
             atk_str = "?" if atk is None else atk
             hp_str = "?" if hp is None else hp
             lvl_str = "1" if lvl is None else lvl
+            
             eq_str = f"-[{eq}]" if eq else ""
-            names.append(f"{name}{eq_str}({atk_str}/{hp_str}/L{lvl_str})")
+            # 🌟 顯示額外吃的食物標籤
+            food_str = f"(+{additional_food.replace('food-', '')})" if additional_food else ""
+            
+            names.append(f"{name}{eq_str}{food_str}({atk_str}/{hp_str}/L{lvl_str})")
             
     return "[" + ", ".join(names) + "]"
 
@@ -142,30 +153,27 @@ def simulate_end_of_turn(team):
 # ⚙️ 參數區域 (定義你的神仙陣容)
 # ==========================================
 a = 5   # 己方隊伍總人數
-n = 25  # 每一組己方陣容，將對戰【每一個敵人】各 n 次
+n = 33  # 每一組己方陣容，將對戰【每一個敵人】各 n 次
 
-# 📝 敵人檔案設定
-enemy_file = "turn6_setup.txt" # 請將真實對戰記錄存於此檔案，留空 "" 則使用下方預設單一陣容
+enemy_file = "turn8_setup.txt" 
 
 # 1. 固定班底 (核心陣容)
 fixed_members = [
-    ("beaver", 5, 6, None),
-    ("otter", 4, 7, None, "meat-bone"),
-    ("pig", 9, 7, None),
-    ("blowfish", 3, 7, None),
-    ("ox", 3, 7, None)
+    ("armadillo", 4, 8, None),
+    ("otter", 4, 7, None, "food-meat-bone"), # 🌟 記得加上 food- 前綴
+    ("pig", 10, 8, 3),
+    ("blowfish", 7, 9, None, "food-meat-bone"),
+    ("ox", 7, 9, None)
 ]
 # 2. 動物候選池
-candidate_pool = [
+candidate_pool = []
 
-]
-
-# 3. 🍖 食物分配池
+# 3. 🍖 食物分配池   (記得加 food- 前綴)
 food_pool = [
-    ("meat-bone")
+    "food-pear" 
 ]
 
-# 預設敵方陣容 (檔案讀取失敗或未提供時使用)
+# 預設敵方陣容
 enemy_setup = [
     ('elephant', 4, 8, 1, None),
     ('peacock', 4, 7, 2, None),
@@ -187,7 +195,7 @@ else:
     enemy_pool = [enemy_setup]
 
 # ==========================================
-# 🔍 產生並過濾所有排列組合 (互斥雙引擎)
+# 🔍 產生並過濾所有排列組合
 # ==========================================
 all_permutations = set()
 
@@ -221,9 +229,10 @@ elif food_pool:
         equipped_team = []
         for pet_bp, new_food in zip(fixed_members, food_perm):
             base_stats = pet_bp[:4]
-            original_food = pet_bp[4] if len(pet_bp) == 5 else None
-            final_food = new_food if new_food is not None else original_food
-            equipped_team.append((*base_stats, final_food))
+            original_eq = pet_bp[4] if len(pet_bp) == 5 else None
+            
+            # 🌟 核心修改：不再取代裝備，而是將兩者同時存進藍圖中 (變成長度 6 的 Tuple)
+            equipped_team.append((*base_stats, original_eq, new_food))
             
         for perm in itertools.permutations(equipped_team, a):
             all_permutations.add(perm)
@@ -242,7 +251,6 @@ print("=" * 60)
 # ⚔️ 執行大規模模擬
 # ==========================================
 results = []
-# 總戰鬥次數 = 己方陣容數 * 敵方隊伍數 * 模擬次數 n
 total_battles = len(all_permutations) * len(enemy_pool) * n
 
 print(f"🚀 開始暴力破解，預計執行 {total_battles} 場對戰...\n")
@@ -254,7 +262,6 @@ for combo_tuple in all_permutations:
     enemy_wins = 0
     draws = 0
     
-    # 🌟 對陣天梯裡面的【每一支敵方隊伍】
     for enemy_bp in enemy_pool:
         for _ in range(n):
             my_team_pets = [make_pet(blueprint) for blueprint in combo_tuple]
@@ -263,7 +270,6 @@ for combo_tuple in all_permutations:
             my_team = Team(my_team_pets)
             enemy_team = Team(enemy_team_pets)
             
-            # 建立 Battle 物件並施加變身魔法
             battle = Battle(my_team, enemy_team)
             simulate_end_of_turn(battle.t0)
             simulate_end_of_turn(battle.t1)
@@ -277,7 +283,6 @@ for combo_tuple in all_permutations:
             else:
                 draws += 1
                 
-    # 計算這個排陣對抗「所有敵人」的綜合勝率
     total_matches_for_this_combo = len(enemy_pool) * n
     win_rate = (my_wins / total_matches_for_this_combo) * 100
     
@@ -294,7 +299,6 @@ end_time = time.time()
 # ==========================================
 # 📊 結算與找出最佳解
 # ==========================================
-# 🌟 完全依照純勝率排序！(若勝率一模一樣，才用平手數當作同分的比較標準)
 results.sort(key=lambda x: (x["win_rate"], x["draws"]), reverse=True)
 
 total_time = end_time - start_time
