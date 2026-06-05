@@ -7838,7 +7838,7 @@ data = {
             },
             "tier": 5,
             "baseAttack": 1,
-            "baseHealth": 1,
+            "baseHealth": 3,
             "packs": ["StandardPack", "ExpansionPack1"],
             "status": "status-poison-attack",
             "probabilities": [

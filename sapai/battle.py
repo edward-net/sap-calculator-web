@@ -768,11 +768,27 @@ def battle_phase_knockout(battle_obj, phase, teams, pet_priority, phase_dict):
 
 def get_attack(p0, p1):
     """Ugly but works"""
+    # 1. 取得原本的實際傷害 (已扣除護甲)
+    # attack_list[0] 是 p0 對 p1 造成的傷害
+    # attack_list[1] 是 p1 對 p0 造成的傷害
     attack_list = [p1.get_damage(p0.attack), p0.get_damage(p1.attack)]
+    
+    # 🌟 2. 實裝 p0 的真・劇毒邏輯
+    if p0.status == "status-poison-attack":
+        if attack_list[0] > 0:       # 如果有破防
+            attack_list[0] += 1000   # 賜死！
+            
+    # 🌟 3. 實裝 p1 的真・劇毒邏輯
+    if p1.status == "status-poison-attack":
+        if attack_list[1] > 0:       # 如果有破防
+            attack_list[1] += 1000   # 賜死！
+
+    # 4. 消耗性裝備結算 (打完後裝備碎裂)
     if p0.status in status.apply_once:
         p0.status = "none"
     if p1.status in status.apply_once:
         p1.status = "none"
+        
     return attack_list
 
 
