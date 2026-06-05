@@ -1,2 +1,3 @@
 [ant, beaver, beaver]
 [ant, ant, otter]
+[beaver(3/3/L1), pig, otter(1/4/L1)]

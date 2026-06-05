@@ -1,3 +1,4 @@
 [ant-[garlic](9/8/L3), spider, deer(3/3/L1), dolphin(7/4/L1), peacock]
 [elephant(4/8/L1), peacock(4/7/L2), hippo(4/6/L1), ant(6/7/L2), otter(3/7/L1)]
 [spider(3/3/L1), dodo(6/3/L1), ant(7/7/L2), giraffe, dog(10/6/L1)]
+[blowfish, beaver(5/6/L1), pig(8/5/L1), otter-[meat-bone](3/6/L1), ox(2/6/L1)]

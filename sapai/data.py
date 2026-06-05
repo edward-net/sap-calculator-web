@@ -6522,8 +6522,8 @@ data = {
                 "unicodeCodePoint": "🐧",
             },
             "tier": 4,
-            "baseAttack": 1,
-            "baseHealth": 2,
+            "baseAttack": 2,
+            "baseHealth": 3,
             "packs": ["StandardPack"],
             "level1Ability": {
                 "description": "End turn: Give other Lvl. 2 and 3 friends +1/+1",
@@ -6603,6 +6603,50 @@ data = {
                     "perSlot": {"StandardPack": 0.09090909090909091},
                 },
             ],
+        },
+        "pet-armadillo": {
+            "name": "Armadillo",
+            "id": "pet-armadillo",
+            "tier": 5,
+            "baseAttack": 4,
+            "baseHealth": 8,
+            "packs": ["TurtlePack"],
+            "level1Ability": {
+                "description": "Start of battle: Give ALL pets +8 health.",
+                "trigger": "StartOfBattle",
+                "triggeredBy": {"kind": "Self"},
+                "effect": {
+                    "kind": "ModifyStats",
+                    "attackAmount": 0,
+                    "healthAmount": 8,
+                    "target": {"kind": "All"}, # 這裡設定為影響所有寵物
+                    "untilEndOfBattle": False,
+                },
+            },
+            "level2Ability": {
+                "description": "Start of battle: Give ALL pets +16 health.",
+                "trigger": "StartOfBattle",
+                "triggeredBy": {"kind": "Self"},
+                "effect": {
+                    "kind": "ModifyStats",
+                    "attackAmount": 0,
+                    "healthAmount": 16,
+                    "target": {"kind": "All"}, # 這裡設定為影響所有寵物
+                    "untilEndOfBattle": False,
+                },
+            },
+            "level3Ability": {
+                "description": "Start of battle: Give ALL pets +24 health.",
+                "trigger": "StartOfBattle",
+                "triggeredBy": {"kind": "Self"},
+                "effect": {
+                    "kind": "ModifyStats",
+                    "attackAmount": 0,
+                    "healthAmount": 24,
+                    "target": {"kind": "All"}, # 這裡設定為影響所有寵物
+                    "untilEndOfBattle": False,
+                },
+            },
         },
         "pet-poodle": {
             "name": "Poodle",
@@ -7030,9 +7074,9 @@ data = {
                 "commit": "e022fd6573782431ac9a65b520376b57511c31cd",
                 "unicodeCodePoint": "🪱",
             },
-            "tier": 4,
-            "baseAttack": 3,
-            "baseHealth": 3,
+            "tier": 2,
+            "baseAttack": 1,
+            "baseHealth": 4,
             "packs": ["StandardPack", "ExpansionPack1"],
             "level1Ability": {
                 "description": "Eats shop food: Gain +1/+1",
