@@ -159,15 +159,14 @@ enemy_file = "turn0_setup.txt"
 
 # 1. 固定班底 (核心陣容)
 fixed_members = [
-    ("armadillo", 7, 11, None, "melon"),
+    ("armadillo", 8, 12, None, "melon"),
     ("blowfish", 11, 13, 2, "food-meat-bone"),
-    ("ox", 16, 18, 1),
-    ("gorilla", 7, 10, 1),
-    ("mammoth", 7, 15, None, "chili")
+    ("ox", 17, 19, 1),
+    ("gorilla", 7, 10, 1, "melon"),
+    ("mammoth", 7, 15, 2, "mushroom")
 ]
 # 2. 動物候選池
 candidate_pool = [
-
 ]
 
 # 3. 🍖 食物分配池   (記得加 food- 前綴)

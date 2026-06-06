@@ -4670,9 +4670,10 @@ data = {
             "baseHealth": 3,
             "packs": ["StandardPack"],
             "level1Ability": {
-                "description": "Friend ahead attacks: Gain Melon Armor and +1 attack",
+                "description": "Friend ahead faints: Gain Melon Armor and +1 attack", # 順手把描述的 attacks 改成 faints
                 "trigger": "Faint",
                 "triggeredBy": {"kind": "FriendAhead", "n": 1},
+                "maxTriggers": 1,  # 🌟 新增：每回合限制發動 1 次
                 "effect": {
                     "kind": "AllOf",
                     "effects": [
@@ -4691,9 +4692,10 @@ data = {
                 },
             },
             "level2Ability": {
-                "description": "Friend ahead attacks: Gain Melon Armor and +2 attack",
+                "description": "Friend ahead faints: Gain Melon Armor and +1 attack", 
                 "trigger": "Faint",
                 "triggeredBy": {"kind": "FriendAhead", "n": 1},
+                "maxTriggers": 2,  # 🌟 新增：每回合限制發動 2 次
                 "effect": {
                     "kind": "AllOf",
                     "effects": [
@@ -4705,16 +4707,17 @@ data = {
                         {
                             "kind": "ModifyStats",
                             "target": {"kind": "Self"},
-                            "attackAmount": 2,
+                            "attackAmount": 1, # 🌟 修改：從 2 降回 1
                             "untilEndOfBattle": False,
                         },
                     ],
                 },
             },
             "level3Ability": {
-                "description": "Friend ahead attacks: Gain Melon Armor and +3 attack",
+                "description": "Friend ahead faints: Gain Melon Armor and +1 attack", 
                 "trigger": "Faint",
                 "triggeredBy": {"kind": "FriendAhead", "n": 1},
+                "maxTriggers": 3,  # 🌟 新增：每回合限制發動 3 次
                 "effect": {
                     "kind": "AllOf",
                     "effects": [
@@ -4726,7 +4729,7 @@ data = {
                         {
                             "kind": "ModifyStats",
                             "target": {"kind": "Self"},
-                            "attackAmount": 3,
+                            "attackAmount": 1, # 🌟 修改：從 3 降回 1
                             "untilEndOfBattle": False,
                         },
                     ],
