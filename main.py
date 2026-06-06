@@ -94,14 +94,14 @@ def simulate_end_of_turn(team):
 # ==========================================
 my_team_setup = [
     ("cricket", 2, 2, None),
-    ("ox", 1, 15, None),
+    ("dodo", 5, 20, 1, "steak"),
 ]
 
 enemy_team_setup = [
     ('beaver', 2, 5, 1, None),
-    ('beaver', 2, 8, 1, None),
-    ('beaver', 2, 8, 1, None),
-    ('beaver', 2, 8, 1, None)
+    ('beaver', 2, 2, 1, None),
+    ('beaver', 2, 2, 1, None),
+    ('scorpion', 2, 8, 1, None),
 ]
 
 # 透過製造機實體化動物

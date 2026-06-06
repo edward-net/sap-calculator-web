@@ -83,17 +83,8 @@ class Pet:
         if self._attack == "none":
             return self._attack
             
-        # 🌟 攔截點：如果是劇毒狀態，不要呼叫 apply_attack_dict，直接回傳真實攻擊力！
-        if self.status == "status-poison-attack":
-            return min(self._attack + self._until_end_of_battle_attack_buff, 50)
-
-        # 其他裝備 (例如肉骨頭 +5 攻、牛排 +20 攻) 照常運作
-        return min(
-            status.apply_attack_dict[self.status](
-                self._attack + self._until_end_of_battle_attack_buff
-            ),
-            50,
-        )
+        # 🌟 淨化：永遠只回傳「基礎攻擊力 + 暫時性Buff」，不包含任何裝備加成！
+        return min(self._attack + self._until_end_of_battle_attack_buff, 50)
 
     @property
     def health(self):

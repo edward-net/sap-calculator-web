@@ -153,20 +153,21 @@ def simulate_end_of_turn(team):
 # ⚙️ 參數區域 (定義你的神仙陣容)
 # ==========================================
 a = 5   # 己方隊伍總人數
-n = 50  # 每一組己方陣容，將對戰【每一個敵人】各 n 次
+n = 25  # 每一組己方陣容，將對戰【每一個敵人】各 n 次
 
-enemy_file = "turn0_setup.txt" 
+enemy_file = "turn7_setup.txt" 
 
 # 1. 固定班底 (核心陣容)
 fixed_members = [
-    ("armadillo", 8, 12, None, "melon"),
-    ("blowfish", 11, 13, 2, "food-meat-bone"),
-    ("ox", 17, 19, 1),
-    ("gorilla", 7, 10, 1, "melon"),
-    ("mammoth", 7, 15, 2, "mushroom")
+    ("dodo", 6, 6, 1, "meat-bone"),
+    ("blowfish", 4, 9, 1),
+    ("swan", 2, 5, 1),
+    ("dolphin", 5, 6, 1),
+    ("mosquito", 5, 7, 2)
 ]
 # 2. 動物候選池
 candidate_pool = [
+
 ]
 
 # 3. 🍖 食物分配池   (記得加 food- 前綴)

@@ -767,23 +767,30 @@ def battle_phase_knockout(battle_obj, phase, teams, pet_priority, phase_dict):
 
 
 def get_attack(p0, p1):
-    """Ugly but works"""
-    # 1. 取得原本的實際傷害 (已扣除護甲)
-    # attack_list[0] 是 p0 對 p1 造成的傷害
-    # attack_list[1] 是 p1 對 p0 造成的傷害
-    attack_list = [p1.get_damage(p0.attack), p0.get_damage(p1.attack)]
+    """Ugly but works (Now beautiful and accurate!)"""
     
-    # 🌟 2. 實裝 p0 的真・劇毒邏輯
+    # 🌟 1. 取得真實衝撞傷害：面板攻擊力 + 裝備攻擊力 (排除劇毒，因為劇毒有特殊邏輯)
+    p0_combat_atk = p0.attack
+    p1_combat_atk = p1.attack
+    
+    if p0.status in ["status-bone-attack", "status-steak-attack"]:
+        p0_combat_atk = status.apply_attack_dict[p0.status](p0.attack)
+    if p1.status in ["status-bone-attack", "status-steak-attack"]:
+        p1_combat_atk = status.apply_attack_dict[p1.status](p1.attack)
+
+    # 🌟 2. 計算扣除護甲 (西瓜、大蒜) 後的實際傷害
+    attack_list = [p1.get_damage(p0_combat_atk), p0.get_damage(p1_combat_atk)]
+    
+    # 🌟 3. 實裝真・劇毒邏輯
     if p0.status == "status-poison-attack":
         if attack_list[0] > 0:       # 如果有破防
             attack_list[0] += 1000   # 賜死！
             
-    # 🌟 3. 實裝 p1 的真・劇毒邏輯
     if p1.status == "status-poison-attack":
         if attack_list[1] > 0:       # 如果有破防
             attack_list[1] += 1000   # 賜死！
 
-    # 4. 消耗性裝備結算 (打完後裝備碎裂)
+    # 🌟 4. 消耗性裝備結算 (打完後牛排等裝備碎裂)
     if p0.status in status.apply_once:
         p0.status = "none"
     if p1.status in status.apply_once:
