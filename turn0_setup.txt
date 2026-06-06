@@ -1,1 +1,1 @@
-[mammoth-[mushroom](7/15/L2), blowfish-[food-meat-bone](11/13/L2), ox(16/18/L1), gorilla(7/10/L1), armadillo-[melon](7/11/L1)]
+[hippo(5/7/L1), turtle, peacock(8/11/L2), ant(8/10/L3), elephant(4/9/L1)]

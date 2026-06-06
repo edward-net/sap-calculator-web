@@ -2157,7 +2157,7 @@ data = {
             },
             "tier": 3,
             "baseAttack": 3,
-            "baseHealth": 3,
+            "baseHealth": 2,
             "packs": ["StandardPack", "ExpansionPack1"],
             "level1Ability": {
                 "description": "Friend summoned: Gain +2 Attack or +1 Health.",
@@ -5598,7 +5598,7 @@ data = {
             },
             "tier": 4,
             "baseAttack": 3,
-            "baseHealth": 8,
+            "baseHealth": 7,
             "packs": ["StandardPack"],
             "level1Ability": {
                 "description": "Start of battle: Swallow friend ahead and release it as a level 1 after fainting.",

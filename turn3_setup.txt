@@ -3,3 +3,4 @@
 [mosquito(4/4/L2), dodo, duck(3/2/L1), ant(4/4/L2), dog]
 [ant, cricket(1/4/1), dolphin(7/4/L1), mosquito(3/3/1), otter]
 [duck(4/4/L1), dodo(4/4/L1), mosquito(2/4/L1), cricket(1/3/L1), swan(1/4/L1)]
+[crab(6/2/L1), spider(4/2/L1), horse(4/2/L1), ant(2/2/L1), otter(3/6/L1)]

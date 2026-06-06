@@ -495,6 +495,12 @@ def battle_phase_start(battle_obj, phase, teams, pet_priority, phase_dict):
     pp = pet_priority
     for team_idx, pet_idx in pp:
         p = teams[team_idx][pet_idx].pet
+        
+        # 🌟 攔截點：如果這隻動物在輪到牠發動開場技能前，就已經被隊友吃掉 (或被敵方豹/蚊子狙擊致死)
+        # 牠就失去了發動技能的資格！
+        if p.health <= 0 or p.name == "pet-none":
+            continue
+            
         fteam, oteam = get_teams([team_idx, pet_idx], teams)
         activated, targets, possible = p.sob_trigger(oteam)
         append_phase_list(
