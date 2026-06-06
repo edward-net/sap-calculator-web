@@ -93,7 +93,7 @@ def simulate_end_of_turn(team):
 # 1. 建立雙方隊伍 
 # ==========================================
 my_team_setup = [
-    ("cricket", 2, 2, None),
+    ("crab", None, None, None),
     ("dodo", 5, 20, 1, "steak"),
 ]
 

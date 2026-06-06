@@ -1936,7 +1936,7 @@ data = {
                 "unicodeCodePoint": "🦀",
             },
             "tier": 2,
-            "baseAttack": 3,
+            "baseAttack": 4,
             "baseHealth": 1,
             "packs": ["StandardPack"],
             "level1Ability": {
@@ -1949,7 +1949,7 @@ data = {
                     "copyHealth": True,
                     "from": {"kind": "HighestHealthFriend"},
                     "to": {"kind": "Self"},
-                    "percentage": 50,
+                    "percentage": 25,
                 },
             },
             "level2Ability": {
@@ -1962,7 +1962,7 @@ data = {
                     "copyHealth": True,
                     "from": {"kind": "HighestHealthFriend"},
                     "to": {"kind": "Self"},
-                    "percentage": 100,
+                    "percentage": 50,
                 },
             },
             "level3Ability": {
@@ -1975,7 +1975,7 @@ data = {
                     "copyHealth": True,
                     "from": {"kind": "HighestHealthFriend"},
                     "to": {"kind": "Self"},
-                    "percentage": 150,
+                    "percentage": 75,
                 },
             },
             "probabilities": [
