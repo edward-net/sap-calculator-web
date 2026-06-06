@@ -1,3 +1,4 @@
 [mammoth(4/12/L1), dolphin-[garlic](14/16/L1), ant-[garlic](10/10/L3), crocodile(9/14/L1), deer(8/11/L2)]
 [peacock-[chili](10/13/L2), turtle(7/10/L2), hippo(8/10/L2), ant(8/10/L3), gorilla(8/11/L1)]
 [ant(8/8/L3), dodo-[garlic](12/9/L2), boar(12/8/L1), crocodile(13/9/L1), blowfish(6/9/L2)]
+[mammoth-[chili](5/13/L1), blowfish-[food-meat-bone](9/11/L2), pig(10/8/L3), ox(12/14/L1), armadillo(5/9/L1)]

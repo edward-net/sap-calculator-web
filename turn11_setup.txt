@@ -1,1 +1,2 @@
 [peacock-[chili](10/13/L2), turtle-[melon](7/10/L2),  ant(8/10/L3), hippo(8/10/L2), gorilla(10/13/L1)]
+[cricket(11/16/L2), kangaroo-[garlic](8/10/L2),  crocodile-[garlic](14/12/L2), fly(4/4/L1), penguin(4/5/L2)]

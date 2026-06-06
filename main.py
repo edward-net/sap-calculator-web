@@ -93,13 +93,14 @@ def simulate_end_of_turn(team):
 # 1. 建立雙方隊伍 
 # ==========================================
 my_team_setup = [
-    ("ant", 5, 49, None, "chili"),
+    ("ant", 2, 2, None, "mushroom"),
+    ("ant", 5, 15, None),
 ]
 
 enemy_team_setup = [
-    ('beaver', 10, 5, 1, None),
-    ('beaver', 12, 8, 1, None),
-    ('beaver', 12, 8, 1, None)
+    ('beaver', 2, 5, 1, None),
+    ('beaver', 2, 8, 1, None),
+    ('beaver', 2, 8, 1, None)
 ]
 
 # 透過製造機實體化動物
@@ -135,15 +136,21 @@ print("🎙️ 自走棋文字播報台 (含隊伍狀態)")
 print("="*50)
 
 # ==========================================
-# 3. 戰況解析器
+# 3. 戰況解析器 (升級版)
 # ==========================================
+def clean_name(obj):
+    """統一清理物件字串中的系統雜訊"""
+    s = str(obj)
+    for noise in ['< Slot ', '< ', ' >', '>']:
+        s = s.replace(noise, '')
+    return s
+
 def print_team_state(state_list):
-    team0_clean = [p.replace('< Slot ', '').replace(' >', '') for p in state_list[0] if "EMPTY" not in p]
-    team1_clean = [p.replace('< Slot ', '').replace(' >', '') for p in state_list[1] if "EMPTY" not in p]
+    team0_clean = [clean_name(p) for p in state_list[0] if "EMPTY" not in str(p)]
+    team1_clean = [clean_name(p) for p in state_list[1] if "EMPTY" not in str(p)]
     print(f"   🔵 我方存活: {', '.join(team0_clean) if team0_clean else '全滅 🪦'}")
     print(f"   🔴 敵方存活: {', '.join(team1_clean) if team1_clean else '全滅 🪦'}")
     print("-" * 50)
-
 
 for step_name, step_data in battle.battle_history.items():
     
@@ -166,25 +173,32 @@ for step_name, step_data in battle.battle_history.items():
         for event in events:
             if isinstance(event, (list, tuple)) and len(event) >= 3:
                 action = event[0]
-                actor = event[2].replace('< ', '').replace(' >', '')
+                actor = clean_name(event[2])
                 
-                targets = []
-                if len(event) >= 4 and isinstance(event[3], list):
-                    targets = [t.replace('< ', '').replace(' >', '') for t in event[3] if t]
+                # 🌟 強化目標解析：無論是單一物件還是 List，統統轉成乾淨的 List
+                raw_targets = event[3] if len(event) >= 4 else []
+                if not isinstance(raw_targets, list):
+                    raw_targets = [raw_targets]
+                targets = [clean_name(t) for t in raw_targets if t]
                 target_str = ", ".join(targets) if targets else "無"
 
+                # 🌟 擴充攔截清單，讓播報更詳細
                 if action == "DealDamage":
-                    print(f"   ✨ {actor} 造成傷害 ➡️ {target_str}")
+                    print(f"   🩸 {actor} 造成傷害 ➡️ {target_str}")
                 elif action == "AllOf":
                     print(f"   🌊 {actor} 發動連續技能 ➡️ 目標: {target_str}")
                 elif action == "Fainted":
                     print(f"   💀 {actor} 陣亡了！")
                 elif action == "ModifyStats":
-                    print(f"   📈 {actor} 觸發增益 ➡️ {target_str}")
+                    print(f"   📈 {actor} 獲得數值增益 ➡️ {target_str}")
                 elif action == "SummonPet":
                     print(f"   🐣 {actor} 召喚了 ➡️ {target_str}")
                 elif action == "Attack":
-                    print(f"   💥 {actor} 衝撞攻擊 ➡️ {target_str}")
+                    print(f"   💥 {actor} 發起實體衝撞 ➡️ {target_str}")
+                elif action == "ApplyStatus":
+                    print(f"   🛡️ {actor} 獲得特殊裝備/狀態 ➡️ {target_str}")
+                elif action == "Ability":
+                    print(f"   ✨ {actor} 發動了專屬技能！")
 
     if 'phase_move_end' in step_data and len(step_data['phase_move_end']) > 0:
         final_state = step_data['phase_move_end'][-1]
