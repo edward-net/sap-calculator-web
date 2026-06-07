@@ -1,1 +1,1 @@
-[hippo(5/7/L1), turtle, peacock(8/11/L2), ant(8/10/L3), elephant(4/9/L1)]
+[cow(4/6/L1), swan(4/7/L1), dodo-[meat-bone](8/10/L1), dolphin(5/6/L1), blowfish-[garlic](5/10/L1)]

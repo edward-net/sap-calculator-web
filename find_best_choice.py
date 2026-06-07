@@ -155,23 +155,23 @@ def simulate_end_of_turn(team):
 a = 5   # 己方隊伍總人數
 n = 20  # 每一組己方陣容，將對戰【每一個敵人】各 n 次
 
-enemy_file = "turn7_setup.txt" 
+enemy_file = "turn3_setup.txt" 
 
 # 1. 固定班底 (核心陣容)
 fixed_members = [
-    ("spider", 4, 5, 1),
-    ("whale", 6, 10, 1),
-    ("dog", 7, 4, 1),
-    ("whale", 3, 7, 1),
-    ("deer", 2, 2, 1)
+    ("ant", 4, 4, 1),
+    ("dog", 5, 3, 1),
+    ("rabbit", 1, 2, 1),
+    ("beaver", 3, 2, 1),
+    ("pig", 6, 3, 1)
 ]
 # 2. 動物候選池
 candidate_pool = [
-
 ]
 
 # 3. 🍖 食物分配池   (記得加 food- 前綴)
 food_pool = [
+
 ]
 # 預設敵方陣容
 enemy_setup = [
