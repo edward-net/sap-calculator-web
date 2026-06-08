@@ -9416,6 +9416,29 @@ data = {
                 },
             ],
         },
+        "food-bread-crumbs": {
+            "name": "Bread Crumbs",
+            "id": "food-bread-crumbs",
+            "image": {
+                "source": "noto-emoji",
+                "commit": "e022fd6573782431ac9a65b520376b57511c31cd",
+                "unicodeCodePoint": "🍞",
+            },
+            "tier": 1,
+            "cost": 0,  # 根據遊戲設定，這是免費的
+            "isTargeted": True,
+            "packs": ["StandardPack"],
+            "ability": {
+                "description": "Give one pet +1 attack.",
+                "effect": {
+                    "kind": "ModifyStats",
+                    "attackAmount": 1,
+                    "healthAmount": 0,  # 只加攻擊，不加血量
+                    "target": {"kind": "None"},
+                    "untilEndOfBattle": False, # 永久加成
+                },
+            },
+        },
         "food-cupcake": {
             "name": "Cupcake",
             "id": "food-cupcake",
