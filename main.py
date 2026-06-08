@@ -93,19 +93,18 @@ def simulate_end_of_turn(team):
 # 1. 建立雙方隊伍 
 # ==========================================
 my_team_setup = [
-    ('spider', 4, 5, 1),
-    ('deer', 2, 2, 1),
-    ('whale', 3, 7, 1),
-    ('whale', 6, 10, 1),
-    ('dog', 7, 4, 1)
+    ('horse', 5, 8, 2, 'garlic'),
+    ('parrot', 8, 4, 1, None),
+    ('shark', 2, 2, 1, None),
+    ('duck', 3, 3, 1, None),
 ]
 
 enemy_team_setup = [
-    ('cow', 4, 6, 1),
-    ('swan', 4, 7, 1),
-    ('dodo', 8, 10, 1, "meat-bone"),
-    ('dolphin', 5, 6, 1),
-    ('blowfish', 5, 10, 1, "garlic")
+    ('ant', 8, 8, 3, None),
+    ('crocodile', 11, 7, 1, None),
+    ('dog', 6, 4, 1, None),
+    ('dodo', 8, 5, 1, 'garlic'),
+    ('giraffe', None, None, None, None)
 ]
 
 # 透過製造機實體化動物

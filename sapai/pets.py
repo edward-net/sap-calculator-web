@@ -527,6 +527,10 @@ class Pet:
             if trigger == self:
                 ### Only time this doesn't activate is if it self triggered
                 return activated, targets, possible
+            # 🌟 攔截點：確保死掉的動物，跟我是在同一個隊伍！
+            # 這樣就能完美擋下敵方死亡時的廣播事件了。
+            if trigger.team != self.team:
+                return activated, targets, possible
         else:
             pass
 

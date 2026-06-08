@@ -155,19 +155,19 @@ def simulate_end_of_turn(team):
 a = 5   # 己方隊伍總人數
 n = 10  # 每一組己方陣容，將對戰【每一個敵人】各 n 次
 
-enemy_file = "turn7_setup.txt" 
+enemy_file = "turn9_setup.txt" 
 
 # 1. 固定班底 (核心陣容)
 fixed_members = [
-    ("parrot", 8, 4, 1),
+    ("parrot", 9, 5, 1),
+    ("horse", 6, 9, 2, "garlic"),
+    ("parrot", 7, 3, 1),
+    ("otter", 4, 7, 1, "meat-bone"),
+    ("shark", 4, 2, 1)
 ]
 # 2. 動物候選池
 candidate_pool = [
-    ("horse", 5, 8, 2, "garlic"),
-    ("otter", 4, 7, 1, "meat-bone"),
-    ("dodo", 4, 2, 1, "meat-bone"),
-    ("spider", 3, 3, 1),
-    ("shark", 2, 2, 1)
+
 ]
 
 # 3. 🍖 食物分配池   (記得加 food- 前綴)
@@ -269,6 +269,11 @@ for combo_tuple in all_permutations:
         sub_my_wins = 0
         sub_enemy_wins = 0
         sub_draws = 0
+        
+        # 🌟 除錯雷達：在開打前先印出正在測試的雙方陣容！
+        # my_team_str = format_team_name(combo_tuple)
+        # enemy_team_str = format_team_name(enemy_bp)
+        # print(f"🔍 測試中: 我方 {my_team_str} ⚔️ 敵方 {enemy_team_str}")
         
         for _ in range(n):
             my_team_pets = [make_pet(blueprint) for blueprint in combo_tuple]

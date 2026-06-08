@@ -743,6 +743,10 @@ def battle_phase_knockout(battle_obj, phase, teams, pet_priority, phase_dict):
             fteam, oteam = get_teams([team_idx, 0], teams)
             current_length = 0
             while True:
+                # 🌟 攔截點：確保這隻動物不但活著，而且還真的站在隊伍陣列裡！
+                # 如果牠不在隊伍裡，直接中斷這個動物的 Knockout 結算。
+                if not fteam.check_friend(apet):
+                    break
                 pet_idx = fteam.index(apet)
                 activated, targets, possible = apet.knockout_trigger(oteam)
                 append_phase_list(
