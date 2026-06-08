@@ -1,0 +1,362 @@
+🏆 【Top 20 最佳組合 - 各組敵人對戰詳細結果】
+============================================================
+第 1 名 (排頭在左): [horse(4/7/L1), dodo(4/2/L1), parrot(7/3/L1), otter-[meat-bone](4/7/L1), spider(2/2/L1)]
+總勝率: 60.0% (42勝 6平 22敗)
+  ⚔️ 對戰各組敵人詳細結果:
+      [1] 敵方: [ant-[garlic](9/8/L3), spider, deer(3/3/L1), dolphin(7/4/L1), peacock]
+          ↳ 勝率:   0.0% ( 0勝  0平 10敗)
+      [2] 敵方: [elephant(4/8/L1), peacock(4/7/L2), hippo(4/6/L1), ant(6/7/L2), otter(3/7/L1)]
+          ↳ 勝率: 100.0% (10勝  0平  0敗)
+      [3] 敵方: [spider(3/3/L1), dodo(6/3/L1), ant(7/7/L2), giraffe, dog(10/6/L1)]
+          ↳ 勝率: 100.0% (10勝  0平  0敗)
+      [4] 敵方: [blowfish, beaver(5/6/L1), pig(8/5/L1), otter-[meat-bone](3/6/L1), ox(2/6/L1)]
+          ↳ 勝率: 100.0% (10勝  0平  0敗)
+      [5] 敵方: [blowfish(3/8/L1), mosquito(4/6/L2), dolphin(4/5/L1), dodo-[meat-bone](5/5/L1), swan(1/4/L1)]
+          ↳ 勝率:  40.0% ( 4勝  4平  2敗)
+      [6] 敵方: [crab(6/4/L2), spider(3/4/L1), whale(5/7/L1), horse(4/3/L2), elephant(3/7/L1)]
+          ↳ 勝率:   0.0% ( 0勝  0平 10敗)
+      [7] 敵方: [dog-[garlic](7/5/L1), ant(5/5/L2), sheep(3/3/L1), dog(5/3/L1), rabbit(2/2/L1)]
+          ↳ 勝率:  80.0% ( 8勝  2平  0敗)
+--------------------------------------------------
+第 2 名 (排頭在左): [otter-[meat-bone](4/7/L1), dodo(4/2/L1), parrot(7/3/L1), spider(2/2/L1), horse(4/7/L1)]
+總勝率: 54.3% (38勝 7平 25敗)
+  ⚔️ 對戰各組敵人詳細結果:
+      [1] 敵方: [ant-[garlic](9/8/L3), spider, deer(3/3/L1), dolphin(7/4/L1), peacock]
+          ↳ 勝率:   0.0% ( 0勝  0平 10敗)
+      [2] 敵方: [elephant(4/8/L1), peacock(4/7/L2), hippo(4/6/L1), ant(6/7/L2), otter(3/7/L1)]
+          ↳ 勝率: 100.0% (10勝  0平  0敗)
+      [3] 敵方: [spider(3/3/L1), dodo(6/3/L1), ant(7/7/L2), giraffe, dog(10/6/L1)]
+          ↳ 勝率:   0.0% ( 0勝  6平  4敗)
+      [4] 敵方: [blowfish, beaver(5/6/L1), pig(8/5/L1), otter-[meat-bone](3/6/L1), ox(2/6/L1)]
+          ↳ 勝率: 100.0% (10勝  0平  0敗)
+      [5] 敵方: [blowfish(3/8/L1), mosquito(4/6/L2), dolphin(4/5/L1), dodo-[meat-bone](5/5/L1), swan(1/4/L1)]
+          ↳ 勝率: 100.0% (10勝  0平  0敗)
+      [6] 敵方: [crab(6/4/L2), spider(3/4/L1), whale(5/7/L1), horse(4/3/L2), elephant(3/7/L1)]
+          ↳ 勝率:  80.0% ( 8勝  1平  1敗)
+      [7] 敵方: [dog-[garlic](7/5/L1), ant(5/5/L2), sheep(3/3/L1), dog(5/3/L1), rabbit(2/2/L1)]
+          ↳ 勝率:   0.0% ( 0勝  0平 10敗)
+--------------------------------------------------
+第 3 名 (排頭在左): [otter-[meat-bone](4/7/L1), horse(4/7/L1), dodo(4/2/L1), spider(2/2/L1), parrot(7/3/L1)]
+總勝率: 41.4% (29勝 8平 33敗)
+  ⚔️ 對戰各組敵人詳細結果:
+      [1] 敵方: [ant-[garlic](9/8/L3), spider, deer(3/3/L1), dolphin(7/4/L1), peacock]
+          ↳ 勝率:   0.0% ( 0勝  0平 10敗)
+      [2] 敵方: [elephant(4/8/L1), peacock(4/7/L2), hippo(4/6/L1), ant(6/7/L2), otter(3/7/L1)]
+          ↳ 勝率:   0.0% ( 0勝  0平 10敗)
+      [3] 敵方: [spider(3/3/L1), dodo(6/3/L1), ant(7/7/L2), giraffe, dog(10/6/L1)]
+          ↳ 勝率:  90.0% ( 9勝  0平  1敗)
+      [4] 敵方: [blowfish, beaver(5/6/L1), pig(8/5/L1), otter-[meat-bone](3/6/L1), ox(2/6/L1)]
+          ↳ 勝率: 100.0% (10勝  0平  0敗)
+      [5] 敵方: [blowfish(3/8/L1), mosquito(4/6/L2), dolphin(4/5/L1), dodo-[meat-bone](5/5/L1), swan(1/4/L1)]
+          ↳ 勝率:  50.0% ( 5勝  3平  2敗)
+      [6] 敵方: [crab(6/4/L2), spider(3/4/L1), whale(5/7/L1), horse(4/3/L2), elephant(3/7/L1)]
+          ↳ 勝率:  30.0% ( 3勝  0平  7敗)
+      [7] 敵方: [dog-[garlic](7/5/L1), ant(5/5/L2), sheep(3/3/L1), dog(5/3/L1), rabbit(2/2/L1)]
+          ↳ 勝率:  20.0% ( 2勝  5平  3敗)
+--------------------------------------------------
+第 4 名 (排頭在左): [otter-[meat-bone](4/7/L1), dodo(4/2/L1), parrot(7/3/L1), horse(4/7/L1), spider(2/2/L1)]
+總勝率: 40.0% (28勝 14平 28敗)
+  ⚔️ 對戰各組敵人詳細結果:
+      [1] 敵方: [ant-[garlic](9/8/L3), spider, deer(3/3/L1), dolphin(7/4/L1), peacock]
+          ↳ 勝率:   0.0% ( 0勝  0平 10敗)
+      [2] 敵方: [elephant(4/8/L1), peacock(4/7/L2), hippo(4/6/L1), ant(6/7/L2), otter(3/7/L1)]
+          ↳ 勝率: 100.0% (10勝  0平  0敗)
+      [3] 敵方: [spider(3/3/L1), dodo(6/3/L1), ant(7/7/L2), giraffe, dog(10/6/L1)]
+          ↳ 勝率:  10.0% ( 1勝  5平  4敗)
+      [4] 敵方: [blowfish, beaver(5/6/L1), pig(8/5/L1), otter-[meat-bone](3/6/L1), ox(2/6/L1)]
+          ↳ 勝率: 100.0% (10勝  0平  0敗)
+      [5] 敵方: [blowfish(3/8/L1), mosquito(4/6/L2), dolphin(4/5/L1), dodo-[meat-bone](5/5/L1), swan(1/4/L1)]
+          ↳ 勝率:  60.0% ( 6勝  4平  0敗)
+      [6] 敵方: [crab(6/4/L2), spider(3/4/L1), whale(5/7/L1), horse(4/3/L2), elephant(3/7/L1)]
+          ↳ 勝率:   0.0% ( 0勝  1平  9敗)
+      [7] 敵方: [dog-[garlic](7/5/L1), ant(5/5/L2), sheep(3/3/L1), dog(5/3/L1), rabbit(2/2/L1)]
+          ↳ 勝率:  10.0% ( 1勝  4平  5敗)
+--------------------------------------------------
+第 5 名 (排頭在左): [spider(2/2/L1), dodo(4/2/L1), parrot(7/3/L1), otter-[meat-bone](4/7/L1), horse(4/7/L1)]
+總勝率: 38.6% (27勝 8平 35敗)
+  ⚔️ 對戰各組敵人詳細結果:
+      [1] 敵方: [ant-[garlic](9/8/L3), spider, deer(3/3/L1), dolphin(7/4/L1), peacock]
+          ↳ 勝率:   0.0% ( 0勝  0平 10敗)
+      [2] 敵方: [elephant(4/8/L1), peacock(4/7/L2), hippo(4/6/L1), ant(6/7/L2), otter(3/7/L1)]
+          ↳ 勝率: 100.0% (10勝  0平  0敗)
+      [3] 敵方: [spider(3/3/L1), dodo(6/3/L1), ant(7/7/L2), giraffe, dog(10/6/L1)]
+          ↳ 勝率:  30.0% ( 3勝  5平  2敗)
+      [4] 敵方: [blowfish, beaver(5/6/L1), pig(8/5/L1), otter-[meat-bone](3/6/L1), ox(2/6/L1)]
+          ↳ 勝率:  30.0% ( 3勝  3平  4敗)
+      [5] 敵方: [blowfish(3/8/L1), mosquito(4/6/L2), dolphin(4/5/L1), dodo-[meat-bone](5/5/L1), swan(1/4/L1)]
+          ↳ 勝率:  10.0% ( 1勝  0平  9敗)
+      [6] 敵方: [crab(6/4/L2), spider(3/4/L1), whale(5/7/L1), horse(4/3/L2), elephant(3/7/L1)]
+          ↳ 勝率:   0.0% ( 0勝  0平 10敗)
+      [7] 敵方: [dog-[garlic](7/5/L1), ant(5/5/L2), sheep(3/3/L1), dog(5/3/L1), rabbit(2/2/L1)]
+          ↳ 勝率: 100.0% (10勝  0平  0敗)
+--------------------------------------------------
+第 6 名 (排頭在左): [otter-[meat-bone](4/7/L1), spider(2/2/L1), parrot(7/3/L1), horse(4/7/L1), dodo(4/2/L1)]
+總勝率: 35.7% (25勝 16平 29敗)
+  ⚔️ 對戰各組敵人詳細結果:
+      [1] 敵方: [ant-[garlic](9/8/L3), spider, deer(3/3/L1), dolphin(7/4/L1), peacock]
+          ↳ 勝率:   0.0% ( 0勝  0平 10敗)
+      [2] 敵方: [elephant(4/8/L1), peacock(4/7/L2), hippo(4/6/L1), ant(6/7/L2), otter(3/7/L1)]
+          ↳ 勝率:  20.0% ( 2勝  8平  0敗)
+      [3] 敵方: [spider(3/3/L1), dodo(6/3/L1), ant(7/7/L2), giraffe, dog(10/6/L1)]
+          ↳ 勝率:  50.0% ( 5勝  5平  0敗)
+      [4] 敵方: [blowfish, beaver(5/6/L1), pig(8/5/L1), otter-[meat-bone](3/6/L1), ox(2/6/L1)]
+          ↳ 勝率: 100.0% (10勝  0平  0敗)
+      [5] 敵方: [blowfish(3/8/L1), mosquito(4/6/L2), dolphin(4/5/L1), dodo-[meat-bone](5/5/L1), swan(1/4/L1)]
+          ↳ 勝率:  30.0% ( 3勝  0平  7敗)
+      [6] 敵方: [crab(6/4/L2), spider(3/4/L1), whale(5/7/L1), horse(4/3/L2), elephant(3/7/L1)]
+          ↳ 勝率:  30.0% ( 3勝  0平  7敗)
+      [7] 敵方: [dog-[garlic](7/5/L1), ant(5/5/L2), sheep(3/3/L1), dog(5/3/L1), rabbit(2/2/L1)]
+          ↳ 勝率:  20.0% ( 2勝  3平  5敗)
+--------------------------------------------------
+第 7 名 (排頭在左): [otter-[meat-bone](4/7/L1), spider(2/2/L1), dodo(4/2/L1), parrot(7/3/L1), horse(4/7/L1)]
+總勝率: 32.9% (23勝 6平 41敗)
+  ⚔️ 對戰各組敵人詳細結果:
+      [1] 敵方: [ant-[garlic](9/8/L3), spider, deer(3/3/L1), dolphin(7/4/L1), peacock]
+          ↳ 勝率:   0.0% ( 0勝  0平 10敗)
+      [2] 敵方: [elephant(4/8/L1), peacock(4/7/L2), hippo(4/6/L1), ant(6/7/L2), otter(3/7/L1)]
+          ↳ 勝率:   0.0% ( 0勝  0平 10敗)
+      [3] 敵方: [spider(3/3/L1), dodo(6/3/L1), ant(7/7/L2), giraffe, dog(10/6/L1)]
+          ↳ 勝率:   0.0% ( 0勝  6平  4敗)
+      [4] 敵方: [blowfish, beaver(5/6/L1), pig(8/5/L1), otter-[meat-bone](3/6/L1), ox(2/6/L1)]
+          ↳ 勝率: 100.0% (10勝  0平  0敗)
+      [5] 敵方: [blowfish(3/8/L1), mosquito(4/6/L2), dolphin(4/5/L1), dodo-[meat-bone](5/5/L1), swan(1/4/L1)]
+          ↳ 勝率:  20.0% ( 2勝  0平  8敗)
+      [6] 敵方: [crab(6/4/L2), spider(3/4/L1), whale(5/7/L1), horse(4/3/L2), elephant(3/7/L1)]
+          ↳ 勝率:  30.0% ( 3勝  0平  7敗)
+      [7] 敵方: [dog-[garlic](7/5/L1), ant(5/5/L2), sheep(3/3/L1), dog(5/3/L1), rabbit(2/2/L1)]
+          ↳ 勝率:  80.0% ( 8勝  0平  2敗)
+--------------------------------------------------
+第 8 名 (排頭在左): [otter-[meat-bone](4/7/L1), dodo(4/2/L1), spider(2/2/L1), parrot(7/3/L1), horse(4/7/L1)]
+總勝率: 32.9% (23勝 4平 43敗)
+  ⚔️ 對戰各組敵人詳細結果:
+      [1] 敵方: [ant-[garlic](9/8/L3), spider, deer(3/3/L1), dolphin(7/4/L1), peacock]
+          ↳ 勝率:   0.0% ( 0勝  0平 10敗)
+      [2] 敵方: [elephant(4/8/L1), peacock(4/7/L2), hippo(4/6/L1), ant(6/7/L2), otter(3/7/L1)]
+          ↳ 勝率:   0.0% ( 0勝  0平 10敗)
+      [3] 敵方: [spider(3/3/L1), dodo(6/3/L1), ant(7/7/L2), giraffe, dog(10/6/L1)]
+          ↳ 勝率:  10.0% ( 1勝  2平  7敗)
+      [4] 敵方: [blowfish, beaver(5/6/L1), pig(8/5/L1), otter-[meat-bone](3/6/L1), ox(2/6/L1)]
+          ↳ 勝率:  80.0% ( 8勝  2平  0敗)
+      [5] 敵方: [blowfish(3/8/L1), mosquito(4/6/L2), dolphin(4/5/L1), dodo-[meat-bone](5/5/L1), swan(1/4/L1)]
+          ↳ 勝率: 100.0% (10勝  0平  0敗)
+      [6] 敵方: [crab(6/4/L2), spider(3/4/L1), whale(5/7/L1), horse(4/3/L2), elephant(3/7/L1)]
+          ↳ 勝率:  20.0% ( 2勝  0平  8敗)
+      [7] 敵方: [dog-[garlic](7/5/L1), ant(5/5/L2), sheep(3/3/L1), dog(5/3/L1), rabbit(2/2/L1)]
+          ↳ 勝率:  20.0% ( 2勝  0平  8敗)
+--------------------------------------------------
+第 9 名 (排頭在左): [otter-[meat-bone](4/7/L1), horse(4/7/L1), dodo(4/2/L1), parrot(7/3/L1), spider(2/2/L1)]
+總勝率: 31.4% (22勝 8平 40敗)
+  ⚔️ 對戰各組敵人詳細結果:
+      [1] 敵方: [ant-[garlic](9/8/L3), spider, deer(3/3/L1), dolphin(7/4/L1), peacock]
+          ↳ 勝率:   0.0% ( 0勝  0平 10敗)
+      [2] 敵方: [elephant(4/8/L1), peacock(4/7/L2), hippo(4/6/L1), ant(6/7/L2), otter(3/7/L1)]
+          ↳ 勝率:   0.0% ( 0勝  0平 10敗)
+      [3] 敵方: [spider(3/3/L1), dodo(6/3/L1), ant(7/7/L2), giraffe, dog(10/6/L1)]
+          ↳ 勝率: 100.0% (10勝  0平  0敗)
+      [4] 敵方: [blowfish, beaver(5/6/L1), pig(8/5/L1), otter-[meat-bone](3/6/L1), ox(2/6/L1)]
+          ↳ 勝率:  10.0% ( 1勝  0平  9敗)
+      [5] 敵方: [blowfish(3/8/L1), mosquito(4/6/L2), dolphin(4/5/L1), dodo-[meat-bone](5/5/L1), swan(1/4/L1)]
+          ↳ 勝率:  50.0% ( 5勝  2平  3敗)
+      [6] 敵方: [crab(6/4/L2), spider(3/4/L1), whale(5/7/L1), horse(4/3/L2), elephant(3/7/L1)]
+          ↳ 勝率:   0.0% ( 0勝  2平  8敗)
+      [7] 敵方: [dog-[garlic](7/5/L1), ant(5/5/L2), sheep(3/3/L1), dog(5/3/L1), rabbit(2/2/L1)]
+          ↳ 勝率:  60.0% ( 6勝  4平  0敗)
+--------------------------------------------------
+第 10 名 (排頭在左): [parrot(7/3/L1), otter-[meat-bone](4/7/L1), horse(4/7/L1), dodo(4/2/L1), spider(2/2/L1)]
+總勝率: 30.0% (21勝 4平 45敗)
+  ⚔️ 對戰各組敵人詳細結果:
+      [1] 敵方: [ant-[garlic](9/8/L3), spider, deer(3/3/L1), dolphin(7/4/L1), peacock]
+          ↳ 勝率:   0.0% ( 0勝  0平 10敗)
+      [2] 敵方: [elephant(4/8/L1), peacock(4/7/L2), hippo(4/6/L1), ant(6/7/L2), otter(3/7/L1)]
+          ↳ 勝率:   0.0% ( 0勝  0平 10敗)
+      [3] 敵方: [spider(3/3/L1), dodo(6/3/L1), ant(7/7/L2), giraffe, dog(10/6/L1)]
+          ↳ 勝率:   0.0% ( 0勝  0平 10敗)
+      [4] 敵方: [blowfish, beaver(5/6/L1), pig(8/5/L1), otter-[meat-bone](3/6/L1), ox(2/6/L1)]
+          ↳ 勝率: 100.0% (10勝  0平  0敗)
+      [5] 敵方: [blowfish(3/8/L1), mosquito(4/6/L2), dolphin(4/5/L1), dodo-[meat-bone](5/5/L1), swan(1/4/L1)]
+          ↳ 勝率:  10.0% ( 1勝  3平  6敗)
+      [6] 敵方: [crab(6/4/L2), spider(3/4/L1), whale(5/7/L1), horse(4/3/L2), elephant(3/7/L1)]
+          ↳ 勝率:   0.0% ( 0勝  1平  9敗)
+      [7] 敵方: [dog-[garlic](7/5/L1), ant(5/5/L2), sheep(3/3/L1), dog(5/3/L1), rabbit(2/2/L1)]
+          ↳ 勝率: 100.0% (10勝  0平  0敗)
+--------------------------------------------------
+第 11 名 (排頭在左): [spider(2/2/L1), horse(4/7/L1), parrot(7/3/L1), otter-[meat-bone](4/7/L1), dodo(4/2/L1)]
+總勝率: 30.0% (21勝 4平 45敗)
+  ⚔️ 對戰各組敵人詳細結果:
+      [1] 敵方: [ant-[garlic](9/8/L3), spider, deer(3/3/L1), dolphin(7/4/L1), peacock]
+          ↳ 勝率:   0.0% ( 0勝  0平 10敗)
+      [2] 敵方: [elephant(4/8/L1), peacock(4/7/L2), hippo(4/6/L1), ant(6/7/L2), otter(3/7/L1)]
+          ↳ 勝率: 100.0% (10勝  0平  0敗)
+      [3] 敵方: [spider(3/3/L1), dodo(6/3/L1), ant(7/7/L2), giraffe, dog(10/6/L1)]
+          ↳ 勝率:  90.0% ( 9勝  1平  0敗)
+      [4] 敵方: [blowfish, beaver(5/6/L1), pig(8/5/L1), otter-[meat-bone](3/6/L1), ox(2/6/L1)]
+          ↳ 勝率:   0.0% ( 0勝  0平 10敗)
+      [5] 敵方: [blowfish(3/8/L1), mosquito(4/6/L2), dolphin(4/5/L1), dodo-[meat-bone](5/5/L1), swan(1/4/L1)]
+          ↳ 勝率:  20.0% ( 2勝  0平  8敗)
+      [6] 敵方: [crab(6/4/L2), spider(3/4/L1), whale(5/7/L1), horse(4/3/L2), elephant(3/7/L1)]
+          ↳ 勝率:   0.0% ( 0勝  0平 10敗)
+      [7] 敵方: [dog-[garlic](7/5/L1), ant(5/5/L2), sheep(3/3/L1), dog(5/3/L1), rabbit(2/2/L1)]
+          ↳ 勝率:   0.0% ( 0勝  3平  7敗)
+--------------------------------------------------
+第 12 名 (排頭在左): [otter-[meat-bone](4/7/L1), parrot(7/3/L1), spider(2/2/L1), dodo(4/2/L1), horse(4/7/L1)]
+總勝率: 30.0% (21勝 1平 48敗)
+  ⚔️ 對戰各組敵人詳細結果:
+      [1] 敵方: [ant-[garlic](9/8/L3), spider, deer(3/3/L1), dolphin(7/4/L1), peacock]
+          ↳ 勝率:   0.0% ( 0勝  0平 10敗)
+      [2] 敵方: [elephant(4/8/L1), peacock(4/7/L2), hippo(4/6/L1), ant(6/7/L2), otter(3/7/L1)]
+          ↳ 勝率:   0.0% ( 0勝  0平 10敗)
+      [3] 敵方: [spider(3/3/L1), dodo(6/3/L1), ant(7/7/L2), giraffe, dog(10/6/L1)]
+          ↳ 勝率:   0.0% ( 0勝  1平  9敗)
+      [4] 敵方: [blowfish, beaver(5/6/L1), pig(8/5/L1), otter-[meat-bone](3/6/L1), ox(2/6/L1)]
+          ↳ 勝率: 100.0% (10勝  0平  0敗)
+      [5] 敵方: [blowfish(3/8/L1), mosquito(4/6/L2), dolphin(4/5/L1), dodo-[meat-bone](5/5/L1), swan(1/4/L1)]
+          ↳ 勝率:  10.0% ( 1勝  0平  9敗)
+      [6] 敵方: [crab(6/4/L2), spider(3/4/L1), whale(5/7/L1), horse(4/3/L2), elephant(3/7/L1)]
+          ↳ 勝率:  90.0% ( 9勝  0平  1敗)
+      [7] 敵方: [dog-[garlic](7/5/L1), ant(5/5/L2), sheep(3/3/L1), dog(5/3/L1), rabbit(2/2/L1)]
+          ↳ 勝率:  10.0% ( 1勝  0平  9敗)
+--------------------------------------------------
+第 13 名 (排頭在左): [dodo(4/2/L1), spider(2/2/L1), parrot(7/3/L1), otter-[meat-bone](4/7/L1), horse(4/7/L1)]
+總勝率: 30.0% (21勝 1平 48敗)
+  ⚔️ 對戰各組敵人詳細結果:
+      [1] 敵方: [ant-[garlic](9/8/L3), spider, deer(3/3/L1), dolphin(7/4/L1), peacock]
+          ↳ 勝率:   0.0% ( 0勝  0平 10敗)
+      [2] 敵方: [elephant(4/8/L1), peacock(4/7/L2), hippo(4/6/L1), ant(6/7/L2), otter(3/7/L1)]
+          ↳ 勝率:  10.0% ( 1勝  0平  9敗)
+      [3] 敵方: [spider(3/3/L1), dodo(6/3/L1), ant(7/7/L2), giraffe, dog(10/6/L1)]
+          ↳ 勝率:  90.0% ( 9勝  0平  1敗)
+      [4] 敵方: [blowfish, beaver(5/6/L1), pig(8/5/L1), otter-[meat-bone](3/6/L1), ox(2/6/L1)]
+          ↳ 勝率:   0.0% ( 0勝  1平  9敗)
+      [5] 敵方: [blowfish(3/8/L1), mosquito(4/6/L2), dolphin(4/5/L1), dodo-[meat-bone](5/5/L1), swan(1/4/L1)]
+          ↳ 勝率:  30.0% ( 3勝  0平  7敗)
+      [6] 敵方: [crab(6/4/L2), spider(3/4/L1), whale(5/7/L1), horse(4/3/L2), elephant(3/7/L1)]
+          ↳ 勝率:  20.0% ( 2勝  0平  8敗)
+      [7] 敵方: [dog-[garlic](7/5/L1), ant(5/5/L2), sheep(3/3/L1), dog(5/3/L1), rabbit(2/2/L1)]
+          ↳ 勝率:  60.0% ( 6勝  0平  4敗)
+--------------------------------------------------
+第 14 名 (排頭在左): [parrot(7/3/L1), otter-[meat-bone](4/7/L1), spider(2/2/L1), dodo(4/2/L1), horse(4/7/L1)]
+總勝率: 30.0% (21勝 1平 48敗)
+  ⚔️ 對戰各組敵人詳細結果:
+      [1] 敵方: [ant-[garlic](9/8/L3), spider, deer(3/3/L1), dolphin(7/4/L1), peacock]
+          ↳ 勝率:   0.0% ( 0勝  0平 10敗)
+      [2] 敵方: [elephant(4/8/L1), peacock(4/7/L2), hippo(4/6/L1), ant(6/7/L2), otter(3/7/L1)]
+          ↳ 勝率:   0.0% ( 0勝  0平 10敗)
+      [3] 敵方: [spider(3/3/L1), dodo(6/3/L1), ant(7/7/L2), giraffe, dog(10/6/L1)]
+          ↳ 勝率:  10.0% ( 1勝  1平  8敗)
+      [4] 敵方: [blowfish, beaver(5/6/L1), pig(8/5/L1), otter-[meat-bone](3/6/L1), ox(2/6/L1)]
+          ↳ 勝率: 100.0% (10勝  0平  0敗)
+      [5] 敵方: [blowfish(3/8/L1), mosquito(4/6/L2), dolphin(4/5/L1), dodo-[meat-bone](5/5/L1), swan(1/4/L1)]
+          ↳ 勝率:  10.0% ( 1勝  0平  9敗)
+      [6] 敵方: [crab(6/4/L2), spider(3/4/L1), whale(5/7/L1), horse(4/3/L2), elephant(3/7/L1)]
+          ↳ 勝率:  90.0% ( 9勝  0平  1敗)
+      [7] 敵方: [dog-[garlic](7/5/L1), ant(5/5/L2), sheep(3/3/L1), dog(5/3/L1), rabbit(2/2/L1)]
+          ↳ 勝率:   0.0% ( 0勝  0平 10敗)
+--------------------------------------------------
+第 15 名 (排頭在左): [dodo(4/2/L1), parrot(7/3/L1), spider(2/2/L1), otter-[meat-bone](4/7/L1), horse(4/7/L1)]
+總勝率: 28.6% (20勝 2平 48敗)
+  ⚔️ 對戰各組敵人詳細結果:
+      [1] 敵方: [ant-[garlic](9/8/L3), spider, deer(3/3/L1), dolphin(7/4/L1), peacock]
+          ↳ 勝率:   0.0% ( 0勝  0平 10敗)
+      [2] 敵方: [elephant(4/8/L1), peacock(4/7/L2), hippo(4/6/L1), ant(6/7/L2), otter(3/7/L1)]
+          ↳ 勝率:   0.0% ( 0勝  0平 10敗)
+      [3] 敵方: [spider(3/3/L1), dodo(6/3/L1), ant(7/7/L2), giraffe, dog(10/6/L1)]
+          ↳ 勝率:   0.0% ( 0勝  0平 10敗)
+      [4] 敵方: [blowfish, beaver(5/6/L1), pig(8/5/L1), otter-[meat-bone](3/6/L1), ox(2/6/L1)]
+          ↳ 勝率:  80.0% ( 8勝  2平  0敗)
+      [5] 敵方: [blowfish(3/8/L1), mosquito(4/6/L2), dolphin(4/5/L1), dodo-[meat-bone](5/5/L1), swan(1/4/L1)]
+          ↳ 勝率:  10.0% ( 1勝  0平  9敗)
+      [6] 敵方: [crab(6/4/L2), spider(3/4/L1), whale(5/7/L1), horse(4/3/L2), elephant(3/7/L1)]
+          ↳ 勝率:  10.0% ( 1勝  0平  9敗)
+      [7] 敵方: [dog-[garlic](7/5/L1), ant(5/5/L2), sheep(3/3/L1), dog(5/3/L1), rabbit(2/2/L1)]
+          ↳ 勝率: 100.0% (10勝  0平  0敗)
+--------------------------------------------------
+第 16 名 (排頭在左): [otter-[meat-bone](4/7/L1), spider(2/2/L1), parrot(7/3/L1), dodo(4/2/L1), horse(4/7/L1)]
+總勝率: 27.1% (19勝 2平 49敗)
+  ⚔️ 對戰各組敵人詳細結果:
+      [1] 敵方: [ant-[garlic](9/8/L3), spider, deer(3/3/L1), dolphin(7/4/L1), peacock]
+          ↳ 勝率:   0.0% ( 0勝  0平 10敗)
+      [2] 敵方: [elephant(4/8/L1), peacock(4/7/L2), hippo(4/6/L1), ant(6/7/L2), otter(3/7/L1)]
+          ↳ 勝率:   0.0% ( 0勝  0平 10敗)
+      [3] 敵方: [spider(3/3/L1), dodo(6/3/L1), ant(7/7/L2), giraffe, dog(10/6/L1)]
+          ↳ 勝率:  10.0% ( 1勝  2平  7敗)
+      [4] 敵方: [blowfish, beaver(5/6/L1), pig(8/5/L1), otter-[meat-bone](3/6/L1), ox(2/6/L1)]
+          ↳ 勝率: 100.0% (10勝  0平  0敗)
+      [5] 敵方: [blowfish(3/8/L1), mosquito(4/6/L2), dolphin(4/5/L1), dodo-[meat-bone](5/5/L1), swan(1/4/L1)]
+          ↳ 勝率:  60.0% ( 6勝  0平  4敗)
+      [6] 敵方: [crab(6/4/L2), spider(3/4/L1), whale(5/7/L1), horse(4/3/L2), elephant(3/7/L1)]
+          ↳ 勝率:   0.0% ( 0勝  0平 10敗)
+      [7] 敵方: [dog-[garlic](7/5/L1), ant(5/5/L2), sheep(3/3/L1), dog(5/3/L1), rabbit(2/2/L1)]
+          ↳ 勝率:  20.0% ( 2勝  0平  8敗)
+--------------------------------------------------
+第 17 名 (排頭在左): [otter-[meat-bone](4/7/L1), parrot(7/3/L1), dodo(4/2/L1), spider(2/2/L1), horse(4/7/L1)]
+總勝率: 25.7% (18勝 3平 49敗)
+  ⚔️ 對戰各組敵人詳細結果:
+      [1] 敵方: [ant-[garlic](9/8/L3), spider, deer(3/3/L1), dolphin(7/4/L1), peacock]
+          ↳ 勝率:   0.0% ( 0勝  0平 10敗)
+      [2] 敵方: [elephant(4/8/L1), peacock(4/7/L2), hippo(4/6/L1), ant(6/7/L2), otter(3/7/L1)]
+          ↳ 勝率:   0.0% ( 0勝  0平 10敗)
+      [3] 敵方: [spider(3/3/L1), dodo(6/3/L1), ant(7/7/L2), giraffe, dog(10/6/L1)]
+          ↳ 勝率:   0.0% ( 0勝  0平 10敗)
+      [4] 敵方: [blowfish, beaver(5/6/L1), pig(8/5/L1), otter-[meat-bone](3/6/L1), ox(2/6/L1)]
+          ↳ 勝率:  80.0% ( 8勝  2平  0敗)
+      [5] 敵方: [blowfish(3/8/L1), mosquito(4/6/L2), dolphin(4/5/L1), dodo-[meat-bone](5/5/L1), swan(1/4/L1)]
+          ↳ 勝率:  30.0% ( 3勝  0平  7敗)
+      [6] 敵方: [crab(6/4/L2), spider(3/4/L1), whale(5/7/L1), horse(4/3/L2), elephant(3/7/L1)]
+          ↳ 勝率:  70.0% ( 7勝  1平  2敗)
+      [7] 敵方: [dog-[garlic](7/5/L1), ant(5/5/L2), sheep(3/3/L1), dog(5/3/L1), rabbit(2/2/L1)]
+          ↳ 勝率:   0.0% ( 0勝  0平 10敗)
+--------------------------------------------------
+第 18 名 (排頭在左): [horse(4/7/L1), dodo(4/2/L1), otter-[meat-bone](4/7/L1), spider(2/2/L1), parrot(7/3/L1)]
+總勝率: 24.3% (17勝 11平 42敗)
+  ⚔️ 對戰各組敵人詳細結果:
+      [1] 敵方: [ant-[garlic](9/8/L3), spider, deer(3/3/L1), dolphin(7/4/L1), peacock]
+          ↳ 勝率:   0.0% ( 0勝  0平 10敗)
+      [2] 敵方: [elephant(4/8/L1), peacock(4/7/L2), hippo(4/6/L1), ant(6/7/L2), otter(3/7/L1)]
+          ↳ 勝率:   0.0% ( 0勝  0平 10敗)
+      [3] 敵方: [spider(3/3/L1), dodo(6/3/L1), ant(7/7/L2), giraffe, dog(10/6/L1)]
+          ↳ 勝率: 100.0% (10勝  0平  0敗)
+      [4] 敵方: [blowfish, beaver(5/6/L1), pig(8/5/L1), otter-[meat-bone](3/6/L1), ox(2/6/L1)]
+          ↳ 勝率:  10.0% ( 1勝  0平  9敗)
+      [5] 敵方: [blowfish(3/8/L1), mosquito(4/6/L2), dolphin(4/5/L1), dodo-[meat-bone](5/5/L1), swan(1/4/L1)]
+          ↳ 勝率:  30.0% ( 3勝  4平  3敗)
+      [6] 敵方: [crab(6/4/L2), spider(3/4/L1), whale(5/7/L1), horse(4/3/L2), elephant(3/7/L1)]
+          ↳ 勝率:  10.0% ( 1勝  0平  9敗)
+      [7] 敵方: [dog-[garlic](7/5/L1), ant(5/5/L2), sheep(3/3/L1), dog(5/3/L1), rabbit(2/2/L1)]
+          ↳ 勝率:  20.0% ( 2勝  7平  1敗)
+--------------------------------------------------
+第 19 名 (排頭在左): [horse(4/7/L1), otter-[meat-bone](4/7/L1), dodo(4/2/L1), spider(2/2/L1), parrot(7/3/L1)]
+總勝率: 24.3% (17勝 6平 47敗)
+  ⚔️ 對戰各組敵人詳細結果:
+      [1] 敵方: [ant-[garlic](9/8/L3), spider, deer(3/3/L1), dolphin(7/4/L1), peacock]
+          ↳ 勝率:   0.0% ( 0勝  0平 10敗)
+      [2] 敵方: [elephant(4/8/L1), peacock(4/7/L2), hippo(4/6/L1), ant(6/7/L2), otter(3/7/L1)]
+          ↳ 勝率:   0.0% ( 0勝  0平 10敗)
+      [3] 敵方: [spider(3/3/L1), dodo(6/3/L1), ant(7/7/L2), giraffe, dog(10/6/L1)]
+          ↳ 勝率:  90.0% ( 9勝  0平  1敗)
+      [4] 敵方: [blowfish, beaver(5/6/L1), pig(8/5/L1), otter-[meat-bone](3/6/L1), ox(2/6/L1)]
+          ↳ 勝率:  30.0% ( 3勝  0平  7敗)
+      [5] 敵方: [blowfish(3/8/L1), mosquito(4/6/L2), dolphin(4/5/L1), dodo-[meat-bone](5/5/L1), swan(1/4/L1)]
+          ↳ 勝率:  20.0% ( 2勝  6平  2敗)
+      [6] 敵方: [crab(6/4/L2), spider(3/4/L1), whale(5/7/L1), horse(4/3/L2), elephant(3/7/L1)]
+          ↳ 勝率:  20.0% ( 2勝  0平  8敗)
+      [7] 敵方: [dog-[garlic](7/5/L1), ant(5/5/L2), sheep(3/3/L1), dog(5/3/L1), rabbit(2/2/L1)]
+          ↳ 勝率:  10.0% ( 1勝  0平  9敗)
+--------------------------------------------------
+第 20 名 (排頭在左): [horse(4/7/L1), dodo(4/2/L1), parrot(7/3/L1), spider(2/2/L1), otter-[meat-bone](4/7/L1)]
+總勝率: 22.9% (16勝 18平 36敗)
+  ⚔️ 對戰各組敵人詳細結果:
+      [1] 敵方: [ant-[garlic](9/8/L3), spider, deer(3/3/L1), dolphin(7/4/L1), peacock]
+          ↳ 勝率:   0.0% ( 0勝  0平 10敗)
+      [2] 敵方: [elephant(4/8/L1), peacock(4/7/L2), hippo(4/6/L1), ant(6/7/L2), otter(3/7/L1)]
+          ↳ 勝率:   0.0% ( 0勝  2平  8敗)
+      [3] 敵方: [spider(3/3/L1), dodo(6/3/L1), ant(7/7/L2), giraffe, dog(10/6/L1)]
+          ↳ 勝率:   0.0% ( 0勝 10平  0敗)
+      [4] 敵方: [blowfish, beaver(5/6/L1), pig(8/5/L1), otter-[meat-bone](3/6/L1), ox(2/6/L1)]
+          ↳ 勝率: 100.0% (10勝  0平  0敗)
+      [5] 敵方: [blowfish(3/8/L1), mosquito(4/6/L2), dolphin(4/5/L1), dodo-[meat-bone](5/5/L1), swan(1/4/L1)]
+          ↳ 勝率:  30.0% ( 3勝  0平  7敗)
+      [6] 敵方: [crab(6/4/L2), spider(3/4/L1), whale(5/7/L1), horse(4/3/L2), elephant(3/7/L1)]
+          ↳ 勝率:  30.0% ( 3勝  6平  1敗)
+      [7] 敵方: [dog-[garlic](7/5/L1), ant(5/5/L2), sheep(3/3/L1), dog(5/3/L1), rabbit(2/2/L1)]
+          ↳ 勝率:   0.0% ( 0勝  0平 10敗)
+--------------------------------------------------

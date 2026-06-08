@@ -1,1 +1,2 @@
-[cow(4/6/L1), swan(4/7/L1), dodo-[meat-bone](8/10/L1), dolphin(5/6/L1), blowfish-[garlic](5/10/L1)]
+[peacock-[chili](10/13/L2), turtle-[melon](7/10/L2),  ant(8/10/L3), hippo(10/12/L2), gorilla(18/21/L1)]
+[cricket(11/16/L2), kangaroo-[garlic](8/10/L2),  crocodile-[garlic](22/20/L2), fly(6/6/L2), penguin(4/5/L2)]

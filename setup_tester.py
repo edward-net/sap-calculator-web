@@ -15,7 +15,8 @@ def parse_pet_str(ps):
     name, atk, hp, lvl, eq = ps, None, None, None, None
     
     if '(' in ps and ps.endswith(')'):
-        name_eq_part, stats_part = ps.split('(')
+        # 🌟 改用 rsplit 從右邊切第一刀，避免名字有其他括號時報錯
+        name_eq_part, stats_part = ps.rsplit('(', 1)
         stats_part = stats_part[:-1] 
         name = name_eq_part
         
@@ -153,17 +154,20 @@ def simulate_end_of_turn(team):
 # ⚙️ 參數區域 (定義你的神仙陣容)
 # ==========================================
 a = 5   # 己方隊伍總人數
-n = 10  # 每一組己方陣容，將對戰【每一個敵人】各 n 次
+n = 200  # 🌟 驗證模式可以把 n 調高，例如 1000 次
 
-enemy_file = "turn5_setup.txt" 
+enemy_file = "turn4_setup.txt" 
+my_setups_file = "setups.txt"   # 🌟 新增：己方固定陣容檔案 (存在則跳過排列組合)
+
+# ... (保留原有的 fixed_members, candidate_pool 等設定) ...
 
 # 1. 固定班底 (核心陣容)
 fixed_members = [
-    ("horse", 4, 7, 1),
-    ("otter", 4, 7, 1, "meat-bone"),
-    ("parrot", 7, 3, 1),
-    ("dodo", 4, 2, 1),
-    ("spider", 2, 2, 1)
+    ("gorilla", 12, 15, 2),
+    ("dog", 11, 16, 2, "garlic"),
+    ("sheep", 4, 4, 2),
+    ("turkey", 7, 10, 2, "garlic"),
+    ("mammoth", 9, 15, 1)
 ]
 # 2. 動物候選池
 candidate_pool = [
@@ -172,6 +176,7 @@ candidate_pool = [
 
 # 3. 🍖 食物分配池   (記得加 food- 前綴)
 food_pool = [
+    ("apple")
 ]
 # 預設敵方陣容
 enemy_setup = [
@@ -195,55 +200,64 @@ else:
     enemy_pool = [enemy_setup]
 
 # ==========================================
-# 🔍 產生並過濾所有排列組合
+# 🔍 產生或讀取己方陣容
 # ==========================================
-all_permutations = set()
+all_permutations = []
 
-if candidate_pool and food_pool:
-    print("⚠️ 錯誤：為避免維度爆炸，『動物候選池』與『食物分配池』請擇一使用 (將另一個設為空陣列 [])！")
-    exit()
-
-if candidate_pool:
-    slots_to_fill = a - len(fixed_members)
-    if slots_to_fill > 0:
-        for chosen in itertools.combinations(candidate_pool, slots_to_fill):
-            full_team = fixed_members + list(chosen)
-            for perm in itertools.permutations(full_team, a):
-                all_permutations.add(perm)
-    elif slots_to_fill == 0:
-        for perm in itertools.permutations(fixed_members, a):
-            all_permutations.add(perm)
-    else:
-        print("⚠️ 錯誤：固定成員的數量超過了隊伍總人數！")
-        exit()
-
-elif food_pool:
-    if len(fixed_members) != a:
-        print(f"⚠️ 錯誤：使用食物分配模式時，請先將 fixed_members 填滿 {a} 人！")
-        exit()
-        
-    padded_foods = food_pool + [None] * (a - len(food_pool))
-    unique_food_perms = set(itertools.permutations(padded_foods, a))
+if my_setups_file and os.path.exists(my_setups_file):
+    print(f"📥 檢測到己方陣容檔案 '{my_setups_file}'，將進行大數據驗證！(跳過排列組合)")
+    loaded_teams = parse_team_file(my_setups_file)
+    all_permutations = [tuple(team) for team in loaded_teams]
     
-    for food_perm in unique_food_perms:
-        equipped_team = []
-        for pet_bp, new_food in zip(fixed_members, food_perm):
-            base_stats = pet_bp[:4]
-            original_eq = pet_bp[4] if len(pet_bp) == 5 else None
-            
-            # 🌟 核心修改：不再取代裝備，而是將兩者同時存進藍圖中 (變成長度 6 的 Tuple)
-            equipped_team.append((*base_stats, original_eq, new_food))
-            
-        for perm in itertools.permutations(equipped_team, a):
-            all_permutations.add(perm)
-
 else:
-    for perm in itertools.permutations(fixed_members, a):
-        all_permutations.add(perm)
+    print("🔍 未檢測到己方陣容檔案，開始進行排列組合生成...")
+    temp_permutations = set()
+    
+    if candidate_pool and food_pool:
+        print("⚠️ 錯誤：為避免維度爆炸，『動物候選池』與『食物分配池』請擇一使用 (將另一個設為空陣列 [])！")
+        exit()
+
+    if candidate_pool:
+        slots_to_fill = a - len(fixed_members)
+        if slots_to_fill > 0:
+            for chosen in itertools.combinations(candidate_pool, slots_to_fill):
+                full_team = fixed_members + list(chosen)
+                for perm in itertools.permutations(full_team, a):
+                    temp_permutations.add(perm)
+        elif slots_to_fill == 0:
+            for perm in itertools.permutations(fixed_members, a):
+                temp_permutations.add(perm)
+        else:
+            print("⚠️ 錯誤：固定成員的數量超過了隊伍總人數！")
+            exit()
+
+    elif food_pool:
+        if len(fixed_members) != a:
+            print(f"⚠️ 錯誤：使用食物分配模式時，請先將 fixed_members 填滿 {a} 人！")
+            exit()
+            
+        padded_foods = food_pool + [None] * (a - len(food_pool))
+        unique_food_perms = set(itertools.permutations(padded_foods, a))
+        
+        for food_perm in unique_food_perms:
+            equipped_team = []
+            for pet_bp, new_food in zip(fixed_members, food_perm):
+                base_stats = pet_bp[:4]
+                original_eq = pet_bp[4] if len(pet_bp) == 5 else None
+                equipped_team.append((*base_stats, original_eq, new_food))
+                
+            for perm in itertools.permutations(equipped_team, a):
+                temp_permutations.add(perm)
+
+    else:
+        for perm in itertools.permutations(fixed_members, a):
+            temp_permutations.add(perm)
+            
+    all_permutations = list(temp_permutations)
 
 print("=" * 60)
 print("🧠 系統初始化中...")
-print(f"己方陣容總數: {len(all_permutations)} 種不重複的排兵布陣方式")
+print(f"己方陣容總數: {len(all_permutations)} 組")
 print(f"天梯敵人數: {len(enemy_pool)} 組不同隊伍")
 print("=" * 60)
 

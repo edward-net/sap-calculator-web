@@ -3,3 +3,4 @@
 [crocodile(11/7/L1), giraffe(3/4/L1), ant(8/8/L3), dodo-[garlic](11/8/L1), blowfish(4/7/L1)]
 [pig(10/8/L3), otter-[food-meat-bone](4/7/L1), ox(10/12/L1), blowfish-[food-meat-bone](7/9/L1), armadillo(4/8/L1)]
 [deer(2/2/L1), whale-[garlic](7/11/L1), spider(4/5/L1), whale(4/8/L1), dog(5/3/L1)]
+[dog(6/3/L1), sheep(4/4/L2), rabbit(5/5/L1), dog-[garlic](12/14/L1), turkey-[garlic](3/6/L1)]

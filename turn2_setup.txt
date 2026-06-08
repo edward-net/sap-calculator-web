@@ -4,3 +4,4 @@
 [pig, beaver(4/4/L1), beaver, pig(4/1/L1), otter(1/4/L1)]
 [pig(4/2/L1), duck(4/2/L1), horse(2/1/L1), ant(3/2/L1), otter(2/6/L1)]
 [beaver(3/2/L1), pig(4/1/L1), ant(3/3/L1), ant(2/2/L1), pig(4/1/L1)]
+[otter(2/5/L1), horse(2/4/L1), duck(4/2/L1), duck(4/2/L1), otter(2/4/L1)]
