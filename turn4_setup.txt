@@ -6,3 +6,4 @@
 [otter(4/7/L1), spider(3/4/L1), horse(3/2/L1), crab(5/3/L1), elephant(4/7/L1)]
 [flamingo(6/5/L1), ant(5/5/L1), pig(7/3/L1), dog(7/4/L1), rabbit(2/2/L1)]
 [otter-[meat-bone](4/7/L1), spider(2/2/L1), horse(3/6/L1), dodo(4/2/L1), duck(4/4/L1)]
+[dolphin(4/3/L1), otter(3/6/L1), duck(4/6/L1), sheep(2/2/L1), spider-[meat-bone](3/3/L1)]

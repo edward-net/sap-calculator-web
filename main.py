@@ -42,69 +42,66 @@ def make_pet(pet_blueprint):
     return p
 
 # ==========================================
-# 🌟 新增：商店階段 (EndOfTurn) 鸚鵡變身器
+# 🌟 商店階段 (EndOfTurn) 鸚鵡變身器 (攻擊力排序版)
 # ==========================================
 def simulate_end_of_turn(team):
-    """手動觸發商店結算，直接將鸚鵡替換成前方的動物！"""
+    # 1. 蒐集場上所有動物，並記錄牠們的原始位置 (index)
+    pets_with_idx = []
     for i, slot in enumerate(team):
-        if slot.empty:
-            continue
+        if not slot.empty and slot.pet.name != "pet-none" and "EMPTY" not in slot.pet.name:
+            pets_with_idx.append((slot.pet, i))
             
-        p = slot.pet
+    # 2. 按照攻擊力 (Attack) 由高到低排序，決定發動順序
+    # (SAP 原版機制為攻擊力高者先發動；若攻擊力相同則隨機，這裡我們靠 Python 穩定排序即可)
+    pets_with_idx.sort(key=lambda x: x[0].attack, reverse=True)
+    
+    # 3. 依照攻擊力順序，依序執行 End of Turn 技能
+    for original_pet, i in pets_with_idx:
+        p = team[i].pet  # 重新從隊伍抓取，確保拿到的還是最新的狀態
+        
         if p.name == "pet-parrot":
-            # 往前方 (靠近排頭 0 的方向) 尋找隊友
+            # 往前尋找最近的非空位隊友
             for j in range(i - 1, -1, -1):
                 front_slot = team[j]
                 if not front_slot.empty:
                     front_pet = front_slot.pet
                     if front_pet.name != "pet-none" and "EMPTY" not in front_pet.name:
-                        
-                        # 1. 記錄鸚鵡原本的狀態
+                        # 記住鸚鵡原本的體質、等級與裝備
                         parrot_atk = p.attack
                         parrot_hp = p.health
                         parrot_lvl = p.level
                         parrot_status = p.status
                         
-                        # 2. 製造一隻全新的「前方隊友」
+                        # 複製前方動物的物種
                         cloned_pet = Pet(front_pet.name)
                         
-                        # 3. 讓複製出來的動物達到鸚鵡的星級
+                        # 恢復鸚鵡原本的等級
                         if parrot_lvl == 2:
                             for _ in range(2): cloned_pet.gain_experience()
                         elif parrot_lvl == 3:
                             for _ in range(5): cloned_pet.gain_experience()
                             
-                        # 4. 把裝備、攻擊力與血量，強制設定成鸚鵡原本的數值
+                        # 恢復鸚鵡原本的裝備與面板
                         if parrot_status != "none":
                             cloned_pet._status = parrot_status
                         cloned_pet._attack = parrot_atk
                         cloned_pet._health = parrot_hp
                         
-                        # 🚨 關鍵修復：幫這隻新誕生的孤兒動物，手動接上隊伍的神經網絡！
+                        # 放回隊伍中原本的位置
                         cloned_pet.team = team
-                        
-                        # 5. 【偷天換日】直接把這隻新的動物，塞回原本鸚鵡的格子裡！
                         team[i] = cloned_pet
-                        
-                        print(f"   🦜 [商店階段] 鸚鵡變身了！牠變成了 {front_pet.name} (維持 {parrot_atk}攻 {parrot_hp}血)！")
                         break
 
 # ==========================================
 # 1. 建立雙方隊伍 
 # ==========================================
 my_team_setup = [
-    ('horse', 5, 8, 2, 'garlic'),
-    ('parrot', 8, 4, 1, None),
-    ('shark', 2, 2, 1, None),
-    ('duck', 3, 3, 1, None),
+    ('dolphin', 2, 2, 2, None)
 ]
 
 enemy_team_setup = [
-    ('ant', 8, 8, 3, None),
-    ('crocodile', 11, 7, 1, None),
-    ('dog', 6, 4, 1, None),
-    ('dodo', 8, 5, 1, 'garlic'),
-    ('giraffe', None, None, None, None)
+    ('dolphin', 1, 1, 1, None),
+    ('dolphin', 1, 1, 1, None)
 ]
 
 # 透過製造機實體化動物

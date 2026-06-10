@@ -6,3 +6,4 @@
 [crab(6/4/L2), spider(4/5/L1), whale(4/8/L1), dog(3/2/L1), elephant(5/9/L1)]
 [rabbit(2/2/L1), sheep(3/3/L1), ant-[garlic](6/7/L2), dog(4/4/L1), dog-[garlic](4/5/L1)]
 [otter-[meat-bone](4/7/L1), spider(3/3/L1), horse-[garlic](4/7/L1), dodo-[meat-bone](4/2/L1), parrot(8/4/L1)]
+[spider-[meat-bone](4/4/L1), otter(6/9/L1), turtle(2/7/L1), dolphin(6/7/L1), sheep(4/6/L1)]

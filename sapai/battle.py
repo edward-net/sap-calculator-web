@@ -496,9 +496,13 @@ def battle_phase_start(battle_obj, phase, teams, pet_priority, phase_dict):
     for team_idx, pet_idx in pp:
         p = teams[team_idx][pet_idx].pet
         
-        # 🌟 攔截點：如果這隻動物在輪到牠發動開場技能前，就已經被隊友吃掉 (或被敵方豹/蚊子狙擊致死)
-        # 牠就失去了發動技能的資格！
-        if p.health <= 0 or p.name == "pet-none":
+        # 🌟 攔截點 1：空位絕對不能發動技能
+        if p.name == "pet-none":
+            continue
+            
+        # 🌟 攔截點 2：實體互動型特例 (如鯨魚) 必須在存活狀態下才能發動技能
+        # 其他投射型動物 (如海豚、蚊子、豹) 即使血量 <= 0，依然可以執行死後開火！
+        if p.name == "pet-whale" and p.health <= 0:
             continue
             
         fteam, oteam = get_teams([team_idx, pet_idx], teams)

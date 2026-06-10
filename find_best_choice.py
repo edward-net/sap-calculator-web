@@ -114,37 +114,52 @@ def format_team_name(blueprint_list):
     return "[" + ", ".join(names) + "]"
 
 # ==========================================
-# 🌟 商店階段 (EndOfTurn) 鸚鵡變身器 (靜音版)
+# 🌟 商店階段 (EndOfTurn) 鸚鵡變身器 (攻擊力排序版)
 # ==========================================
 def simulate_end_of_turn(team):
+    # 1. 蒐集場上所有動物，並記錄牠們的原始位置 (index)
+    pets_with_idx = []
     for i, slot in enumerate(team):
-        if slot.empty:
-            continue
+        if not slot.empty and slot.pet.name != "pet-none" and "EMPTY" not in slot.pet.name:
+            pets_with_idx.append((slot.pet, i))
             
-        p = slot.pet
+    # 2. 按照攻擊力 (Attack) 由高到低排序，決定發動順序
+    # (SAP 原版機制為攻擊力高者先發動；若攻擊力相同則隨機，這裡我們靠 Python 穩定排序即可)
+    pets_with_idx.sort(key=lambda x: x[0].attack, reverse=True)
+    
+    # 3. 依照攻擊力順序，依序執行 End of Turn 技能
+    for original_pet, i in pets_with_idx:
+        p = team[i].pet  # 重新從隊伍抓取，確保拿到的還是最新的狀態
+        
         if p.name == "pet-parrot":
+            # 往前尋找最近的非空位隊友
             for j in range(i - 1, -1, -1):
                 front_slot = team[j]
                 if not front_slot.empty:
                     front_pet = front_slot.pet
                     if front_pet.name != "pet-none" and "EMPTY" not in front_pet.name:
+                        # 記住鸚鵡原本的體質、等級與裝備
                         parrot_atk = p.attack
                         parrot_hp = p.health
                         parrot_lvl = p.level
                         parrot_status = p.status
                         
+                        # 複製前方動物的物種
                         cloned_pet = Pet(front_pet.name)
                         
+                        # 恢復鸚鵡原本的等級
                         if parrot_lvl == 2:
                             for _ in range(2): cloned_pet.gain_experience()
                         elif parrot_lvl == 3:
                             for _ in range(5): cloned_pet.gain_experience()
                             
+                        # 恢復鸚鵡原本的裝備與面板
                         if parrot_status != "none":
                             cloned_pet._status = parrot_status
                         cloned_pet._attack = parrot_atk
                         cloned_pet._health = parrot_hp
                         
+                        # 放回隊伍中原本的位置
                         cloned_pet.team = team
                         team[i] = cloned_pet
                         break
@@ -155,15 +170,15 @@ def simulate_end_of_turn(team):
 a = 5   # 己方隊伍總人數
 n = 10  # 每一組己方陣容，將對戰【每一個敵人】各 n 次
 
-enemy_file = "turn9_setup.txt" 
+enemy_file = "turn10_setup.txt" 
 
 # 1. 固定班底 (核心陣容)
 fixed_members = [
-    ("parrot", 9, 5, 1),
-    ("horse", 6, 9, 2, "garlic"),
-    ("parrot", 7, 3, 1),
-    ("otter", 4, 7, 1, "meat-bone"),
-    ("shark", 4, 2, 1)
+    ("dolphin", 7, 8, 2, "chili"),
+    ("sheep", 4, 6, 1),
+    ("scorpion", 5, 7, 1),
+    ("turtle", 7, 10, 1),
+    ("rhino", 10, 11, 1),
 ]
 # 2. 動物候選池
 candidate_pool = [
@@ -172,6 +187,7 @@ candidate_pool = [
 
 # 3. 🍖 食物分配池   (記得加 food- 前綴)
 food_pool = [
+
 ]
 # 預設敵方陣容
 enemy_setup = [

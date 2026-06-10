@@ -4,3 +4,5 @@
 [mammoth-[chili](5/13/L1), blowfish-[food-meat-bone](9/11/L2), pig(10/8/L3), ox(12/14/L1), armadillo(5/9/L1)]
 [mammoth(8/14/L1), parrot(11/7/L2), whale-[garlic](9/13/L2), turkey(5/6/L1), gorilla(11/12/L1)]
 [mammoth(8/14/L1), gorilla(12/15/L2), sheep(4/4/L2), dog-[garlic](15/18/L2), turkey-[garlic](4/7/L1)]
+[gorilla(9/12/L1), horse-[garlic](6/9/L2), otter-[meat-bone](5/8/L1), shark(4/4/L2), parrot(13/9/L3)]
+[dolphin-[chili](7/8/L2), turtle(7/10/L1), rhino(10/11/L1), scorpion(5/7/L1), sheep(4/6/L1)]

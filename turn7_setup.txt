@@ -6,3 +6,4 @@
 [whale(6/10/L1), spider(4/5/L1), deer(2/2/L1), whale(3/7/L1), dog(7/4/L1)]
 [beaver(6/5/L2), fish-[honey](6/8/L2), ant(4/4/L1), camel-[garlic](4/4/L1), hippo-[garlic](4/6/L1)]
 [otter-[meat-bone](4/7/L1), horse-[garlic](5/8/L2), dodo-[meat-bone](4/2/L1), shark(4/2/L1), parrot(9/5/L1)]
+[rhino(7/8/L1), sheep(4/6/L1), turtle(2/7/L1), dolphin(7/8/L2), spider-[meat-bone](5/5/L1)]
