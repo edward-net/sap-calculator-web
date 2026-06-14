@@ -91,17 +91,36 @@ def simulate_end_of_turn(team):
                         cloned_pet.team = team
                         team[i] = cloned_pet
                         break
+        # 🌟 加上 Monkey 的 End of turn 技能邏輯
+        elif p.name == "pet-monkey":
+            # 尋找最右邊 (index 最小) 的非空位隊友
+            for j in range(5):
+                front_slot = team[j]
+                if not front_slot.empty and front_slot.pet.name != "pet-none" and "EMPTY" not in front_slot.pet.name:
+                    # 根據猴子的等級給予 +2/+2, +4/+4, +6/+6 (依據你給的 JSON 設定)
+                    buff_amount = p.level * 2
+                    front_slot.pet._attack += buff_amount
+                    front_slot.pet._health += buff_amount
+                    # 找到最右邊的第一隻動物並給完 Buff 後就可以跳出迴圈
+                    break
 
 # ==========================================
 # 1. 建立雙方隊伍 
 # ==========================================
 my_team_setup = [
-    ('dolphin', 2, 2, 2, None)
+    ('blowfish', 4, 3, 1, None),
+    ('otter', 2, 2, 1, None),
+    ('hedgehog', 4, 2, 1, None),
+    ('otter', 2, 30, 1, None),
+    ('wolverine', None, 30, 1, None),
 ]
 
 enemy_team_setup = [
-    ('dolphin', 1, 1, 1, None),
-    ('dolphin', 1, 1, 1, None)
+    ('otter', 2, 6, 1, None),
+    ('peacock', 2, 10, 1, None),
+    ('fish', None, None, None, None),
+    ('fish', None, None, None, None),
+    ('elephant', 2, 45, 1, None),
 ]
 
 # 透過製造機實體化動物

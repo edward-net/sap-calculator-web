@@ -10,35 +10,27 @@ from sapai.foods import Food
 # 🛠️ 輔助工具：動物製造機與格式化工具
 # ==========================================
 def parse_pet_str(ps):
-    """將文字格式轉換為藍圖 Tuple (支援新格式: name(atk/hp/lvl/eq/food))"""
+    """將文字格式轉換為藍圖 Tuple"""
     ps = ps.strip()
-    name, atk, hp, lvl, eq, additional_food = ps, None, None, None, None, None
+    name, atk, hp, lvl, eq = ps, None, None, None, None
     
     if '(' in ps and ps.endswith(')'):
-        # 用 1 限制分割次數，確保不會被意外的多餘括號干擾
-        name_part, stats_part = ps.split('(', 1)
-        name = name_part
-        stats_part = stats_part[:-1]  # 移除最後的 ')'
+        name_eq_part, stats_part = ps.split('(')
+        stats_part = stats_part[:-1] 
+        name = name_eq_part
         
         parts = stats_part.split('/')
-        # 1. 解析基礎數值 (攻擊/血量/等級)
-        if len(parts) >= 3:
+        if len(parts) == 3:
             atk = int(parts[0]) if parts[0] != '?' else None
             hp = int(parts[1]) if parts[1] != '?' else None
             lvl = int(parts[2].replace('L', '')) if parts[2] != '?' else None
+            
+    if '-[' in name:
+        name_part, eq_part = name.split('-[')
+        name = name_part
+        eq = eq_part.replace(']', '')
         
-        # 2. 解析原有裝備 (如果長度 >= 4)
-        if len(parts) >= 4:
-            eq = parts[3] if parts[3] and parts[3] != 'none' else None
-            
-        # 3. 解析額外分配的食物 (如果長度 >= 5)
-        if len(parts) >= 5:
-            additional_food = parts[4] if parts[4] and parts[4] != 'none' else None
-            
-    # 根據取得的資訊，回傳對應長度的 Tuple
-    if additional_food is not None:
-        return (name, atk, hp, lvl, eq, additional_food)
-    elif eq is not None:
+    if eq:
         return (name, atk, hp, lvl, eq)
     else:
         return (name, atk, hp, lvl)
@@ -95,7 +87,6 @@ def make_pet(pet_blueprint):
     return p
 
 def format_team_name(blueprint_list):
-    """將藍圖轉換回乾淨的新格式字串"""
     names = []
     for bp in blueprint_list:
         additional_food = None
@@ -107,7 +98,6 @@ def format_team_name(blueprint_list):
             name, atk, hp, lvl = bp
             eq = None
             
-        # 如果是全空，只顯示名字
         if atk is None and hp is None and lvl is None and eq is None and additional_food is None:
             names.append(name)
         else:
@@ -115,19 +105,11 @@ def format_team_name(blueprint_list):
             hp_str = "?" if hp is None else hp
             lvl_str = "1" if lvl is None else lvl
             
-            # 基礎字串結構
-            base_str = f"{name}({atk_str}/{hp_str}/L{lvl_str}"
+            eq_str = f"-[{eq}]" if eq else ""
+            # 🌟 顯示額外吃的食物標籤
+            food_str = f"(+{additional_food.replace('food-', '')})" if additional_food else ""
             
-            # 裝備與食物的格式化邏輯
-            if additional_food:
-                eq_str = eq if eq else "none"
-                food_str = additional_food.replace('food-', '') # 去除前綴讓畫面更乾淨
-                base_str += f"/{eq_str}/{food_str}"
-            elif eq:
-                base_str += f"/{eq}"
-                
-            base_str += ")"
-            names.append(base_str)
+            names.append(f"{name}{eq_str}{food_str}({atk_str}/{hp_str}/L{lvl_str})")
             
     return "[" + ", ".join(names) + "]"
 
@@ -142,6 +124,7 @@ def simulate_end_of_turn(team):
             pets_with_idx.append((slot.pet, i))
             
     # 2. 按照攻擊力 (Attack) 由高到低排序，決定發動順序
+    # (SAP 原版機制為攻擊力高者先發動；若攻擊力相同則隨機，這裡我們靠 Python 穩定排序即可)
     pets_with_idx.sort(key=lambda x: x[0].attack, reverse=True)
     
     # 3. 依照攻擊力順序，依序執行 End of Turn 技能
@@ -180,35 +163,22 @@ def simulate_end_of_turn(team):
                         cloned_pet.team = team
                         team[i] = cloned_pet
                         break
-        # 🌟 加上 Monkey 的 End of turn 技能邏輯
-        elif p.name == "pet-monkey":
-            # 尋找最右邊 (index 最小) 的非空位隊友
-            for j in range(5):
-                front_slot = team[j]
-                if not front_slot.empty and front_slot.pet.name != "pet-none" and "EMPTY" not in front_slot.pet.name:
-                    # 根據猴子的等級給予 +2/+2, +4/+4, +6/+6 (依據你給的 JSON 設定)
-                    buff_amount = p.level * 2
-                    front_slot.pet._attack += buff_amount
-                    front_slot.pet._health += buff_amount
-                    # 找到最右邊的第一隻動物並給完 Buff 後就可以跳出迴圈
-                    break
 
 # ==========================================
 # ⚙️ 參數區域 (定義你的神仙陣容)
 # ==========================================
 a = 5   # 己方隊伍總人數
-n = 100  # 🌟 驗證模式可以把 n 調高，例如 1000 次
+n = 10  # 每一組己方陣容，將對戰【每一個敵人】各 n 次
 
-enemy_file = "turn10_setup.txt" 
-my_setups_file = "setups.txt"   # 🌟 新增：己方固定陣容檔案 (存在則跳過排列組合)
+enemy_file = "turn4_setup.txt" 
 
 # 1. 固定班底 (核心陣容)
 fixed_members = [
-    ("gorilla", 12, 15, 2),
-    ("dog", 11, 16, 2, "garlic"),
-    ("sheep", 4, 4, 2),
-    ("turkey", 7, 10, 2, "garlic"),
-    ("mammoth", 9, 15, 1)
+    ("horse", 2, 2, 1),
+    ("beaver", 4, 3, 1),
+    ("otter", 3, 6, 1),
+    ("spider", 3, 3, 1),
+    ("hedgehog", 5, 3, 1),
 ]
 # 2. 動物候選池
 candidate_pool = [
@@ -217,7 +187,7 @@ candidate_pool = [
 
 # 3. 🍖 食物分配池   (記得加 food- 前綴)
 food_pool = [
-    ("apple")
+    ("meat-bone")
 ]
 # 預設敵方陣容
 enemy_setup = [
@@ -241,64 +211,55 @@ else:
     enemy_pool = [enemy_setup]
 
 # ==========================================
-# 🔍 產生或讀取己方陣容
+# 🔍 產生並過濾所有排列組合
 # ==========================================
-all_permutations = []
+all_permutations = set()
 
-if my_setups_file and os.path.exists(my_setups_file):
-    print(f"📥 檢測到己方陣容檔案 '{my_setups_file}'，將進行大數據驗證！(跳過排列組合)")
-    loaded_teams = parse_team_file(my_setups_file)
-    all_permutations = [tuple(team) for team in loaded_teams]
-    
-else:
-    print("🔍 未檢測到己方陣容檔案，開始進行排列組合生成...")
-    temp_permutations = set()
-    
-    if candidate_pool and food_pool:
-        print("⚠️ 錯誤：為避免維度爆炸，『動物候選池』與『食物分配池』請擇一使用 (將另一個設為空陣列 [])！")
+if candidate_pool and food_pool:
+    print("⚠️ 錯誤：為避免維度爆炸，『動物候選池』與『食物分配池』請擇一使用 (將另一個設為空陣列 [])！")
+    exit()
+
+if candidate_pool:
+    slots_to_fill = a - len(fixed_members)
+    if slots_to_fill > 0:
+        for chosen in itertools.combinations(candidate_pool, slots_to_fill):
+            full_team = fixed_members + list(chosen)
+            for perm in itertools.permutations(full_team, a):
+                all_permutations.add(perm)
+    elif slots_to_fill == 0:
+        for perm in itertools.permutations(fixed_members, a):
+            all_permutations.add(perm)
+    else:
+        print("⚠️ 錯誤：固定成員的數量超過了隊伍總人數！")
         exit()
 
-    if candidate_pool:
-        slots_to_fill = a - len(fixed_members)
-        if slots_to_fill > 0:
-            for chosen in itertools.combinations(candidate_pool, slots_to_fill):
-                full_team = fixed_members + list(chosen)
-                for perm in itertools.permutations(full_team, a):
-                    temp_permutations.add(perm)
-        elif slots_to_fill == 0:
-            for perm in itertools.permutations(fixed_members, a):
-                temp_permutations.add(perm)
-        else:
-            print("⚠️ 錯誤：固定成員的數量超過了隊伍總人數！")
-            exit()
-
-    elif food_pool:
-        if len(fixed_members) != a:
-            print(f"⚠️ 錯誤：使用食物分配模式時，請先將 fixed_members 填滿 {a} 人！")
-            exit()
-            
-        padded_foods = food_pool + [None] * (a - len(food_pool))
-        unique_food_perms = set(itertools.permutations(padded_foods, a))
+elif food_pool:
+    if len(fixed_members) != a:
+        print(f"⚠️ 錯誤：使用食物分配模式時，請先將 fixed_members 填滿 {a} 人！")
+        exit()
         
-        for food_perm in unique_food_perms:
-            equipped_team = []
-            for pet_bp, new_food in zip(fixed_members, food_perm):
-                base_stats = pet_bp[:4]
-                original_eq = pet_bp[4] if len(pet_bp) == 5 else None
-                equipped_team.append((*base_stats, original_eq, new_food))
-                
-            for perm in itertools.permutations(equipped_team, a):
-                temp_permutations.add(perm)
-
-    else:
-        for perm in itertools.permutations(fixed_members, a):
-            temp_permutations.add(perm)
+    padded_foods = food_pool + [None] * (a - len(food_pool))
+    unique_food_perms = set(itertools.permutations(padded_foods, a))
+    
+    for food_perm in unique_food_perms:
+        equipped_team = []
+        for pet_bp, new_food in zip(fixed_members, food_perm):
+            base_stats = pet_bp[:4]
+            original_eq = pet_bp[4] if len(pet_bp) == 5 else None
             
-    all_permutations = list(temp_permutations)
+            # 🌟 核心修改：不再取代裝備，而是將兩者同時存進藍圖中 (變成長度 6 的 Tuple)
+            equipped_team.append((*base_stats, original_eq, new_food))
+            
+        for perm in itertools.permutations(equipped_team, a):
+            all_permutations.add(perm)
+
+else:
+    for perm in itertools.permutations(fixed_members, a):
+        all_permutations.add(perm)
 
 print("=" * 60)
 print("🧠 系統初始化中...")
-print(f"己方陣容總數: {len(all_permutations)} 組")
+print(f"己方陣容總數: {len(all_permutations)} 種不重複的排兵布陣方式")
 print(f"天梯敵人數: {len(enemy_pool)} 組不同隊伍")
 print("=" * 60)
 
@@ -324,6 +285,11 @@ for combo_tuple in all_permutations:
         sub_my_wins = 0
         sub_enemy_wins = 0
         sub_draws = 0
+        
+        # 🌟 除錯雷達：在開打前先印出正在測試的雙方陣容！
+        # my_team_str = format_team_name(combo_tuple)
+        # enemy_team_str = format_team_name(enemy_bp)
+        # print(f"🔍 測試中: 我方 {my_team_str} ⚔️ 敵方 {enemy_team_str}")
         
         for _ in range(n):
             my_team_pets = [make_pet(blueprint) for blueprint in combo_tuple]
@@ -351,7 +317,7 @@ for combo_tuple in all_permutations:
         # 計算對上這組敵人的子勝率
         sub_win_rate = (sub_my_wins / n) * 100
         enemy_details.append({
-            "enemy_str": format_team_name(enemy_bp),
+            "enemy_str": format_team_name(enemy_bp),  # 假設你的 format_team_name 也可以吃 enemy_bp
             "win_rate": sub_win_rate,
             "wins": sub_my_wins,
             "draws": sub_draws,

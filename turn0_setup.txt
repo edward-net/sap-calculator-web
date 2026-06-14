@@ -1,1 +1,1 @@
-[mammoth-[mushroom](9/17/L2), armadillo-[melon](10/14/L1), gorilla-[melon](9/12/L1), ox(17/19/L1), blowfish-[food-meat-bone](11/13/L2)]
+[mammoth(9/17/L2/mushroom), armadillo(10/14/L1/melon), gorilla(9/12/L1/melon), ox(17/19/L1), blowfish(11/13/L2/food-meat-bone)]

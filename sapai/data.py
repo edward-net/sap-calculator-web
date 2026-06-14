@@ -6577,6 +6577,50 @@ data = {
                 },
             ],
         },
+        "pet-wolverine": {
+            "name": "Wolverine",
+            "id": "pet-wolverine",
+            "image": {
+                "source": "noto-emoji",
+                "commit": "e022fd6573782431ac9a65b520376b57511c31cd",
+                "unicodeCodePoint": "🦡",
+            },
+            "tier": 5,
+            "baseAttack": 5,
+            "baseHealth": 7,
+            "packs": ["GoldenPack"],
+            "level1Ability": {
+                "description": "Four friends hurt -> Remove 3 health from all enemies.", # 修改數值為 3
+                "trigger": "Hurt",
+                "triggeredBy": {"kind": "EachFriend"},
+                "effect": {
+                    "kind": "DealDamage",
+                    "target": {"kind": "EachEnemy"},
+                    "amount": 3, # 修改數值為 3
+                    "isNonLethal": True # 🌟 新增一個自訂標籤，告訴引擎這個傷害不能殺人！
+                },
+            },
+            "level2Ability": {
+                "description": "Four friends hurt -> Remove 6 health from all enemies.",
+                "trigger": "Hurt",
+                "triggeredBy": {"kind": "EachFriend"},
+                "effect": {
+                    "kind": "DealDamage",
+                    "target": {"kind": "EachEnemy"},
+                    "amount": 6,
+                },
+            },
+            "level3Ability": {
+                "description": "Four friends hurt -> Remove 9 health from all enemies.",
+                "trigger": "Hurt",
+                "triggeredBy": {"kind": "EachFriend"},
+                "effect": {
+                    "kind": "DealDamage",
+                    "target": {"kind": "EachEnemy"},
+                    "amount": 9,
+                },
+            },
+        },
         "pet-armadillo": {
             "name": "Armadillo",
             "id": "pet-armadillo",

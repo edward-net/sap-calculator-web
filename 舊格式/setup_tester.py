@@ -10,35 +10,28 @@ from sapai.foods import Food
 # 🛠️ 輔助工具：動物製造機與格式化工具
 # ==========================================
 def parse_pet_str(ps):
-    """將文字格式轉換為藍圖 Tuple (支援新格式: name(atk/hp/lvl/eq/food))"""
+    """將文字格式轉換為藍圖 Tuple"""
     ps = ps.strip()
-    name, atk, hp, lvl, eq, additional_food = ps, None, None, None, None, None
+    name, atk, hp, lvl, eq = ps, None, None, None, None
     
     if '(' in ps and ps.endswith(')'):
-        # 用 1 限制分割次數，確保不會被意外的多餘括號干擾
-        name_part, stats_part = ps.split('(', 1)
-        name = name_part
-        stats_part = stats_part[:-1]  # 移除最後的 ')'
+        # 🌟 改用 rsplit 從右邊切第一刀，避免名字有其他括號時報錯
+        name_eq_part, stats_part = ps.rsplit('(', 1)
+        stats_part = stats_part[:-1] 
+        name = name_eq_part
         
         parts = stats_part.split('/')
-        # 1. 解析基礎數值 (攻擊/血量/等級)
-        if len(parts) >= 3:
+        if len(parts) == 3:
             atk = int(parts[0]) if parts[0] != '?' else None
             hp = int(parts[1]) if parts[1] != '?' else None
             lvl = int(parts[2].replace('L', '')) if parts[2] != '?' else None
+            
+    if '-[' in name:
+        name_part, eq_part = name.split('-[')
+        name = name_part
+        eq = eq_part.replace(']', '')
         
-        # 2. 解析原有裝備 (如果長度 >= 4)
-        if len(parts) >= 4:
-            eq = parts[3] if parts[3] and parts[3] != 'none' else None
-            
-        # 3. 解析額外分配的食物 (如果長度 >= 5)
-        if len(parts) >= 5:
-            additional_food = parts[4] if parts[4] and parts[4] != 'none' else None
-            
-    # 根據取得的資訊，回傳對應長度的 Tuple
-    if additional_food is not None:
-        return (name, atk, hp, lvl, eq, additional_food)
-    elif eq is not None:
+    if eq:
         return (name, atk, hp, lvl, eq)
     else:
         return (name, atk, hp, lvl)
@@ -95,7 +88,6 @@ def make_pet(pet_blueprint):
     return p
 
 def format_team_name(blueprint_list):
-    """將藍圖轉換回乾淨的新格式字串"""
     names = []
     for bp in blueprint_list:
         additional_food = None
@@ -107,7 +99,6 @@ def format_team_name(blueprint_list):
             name, atk, hp, lvl = bp
             eq = None
             
-        # 如果是全空，只顯示名字
         if atk is None and hp is None and lvl is None and eq is None and additional_food is None:
             names.append(name)
         else:
@@ -115,92 +106,60 @@ def format_team_name(blueprint_list):
             hp_str = "?" if hp is None else hp
             lvl_str = "1" if lvl is None else lvl
             
-            # 基礎字串結構
-            base_str = f"{name}({atk_str}/{hp_str}/L{lvl_str}"
+            eq_str = f"-[{eq}]" if eq else ""
+            # 🌟 顯示額外吃的食物標籤
+            food_str = f"(+{additional_food.replace('food-', '')})" if additional_food else ""
             
-            # 裝備與食物的格式化邏輯
-            if additional_food:
-                eq_str = eq if eq else "none"
-                food_str = additional_food.replace('food-', '') # 去除前綴讓畫面更乾淨
-                base_str += f"/{eq_str}/{food_str}"
-            elif eq:
-                base_str += f"/{eq}"
-                
-            base_str += ")"
-            names.append(base_str)
+            names.append(f"{name}{eq_str}{food_str}({atk_str}/{hp_str}/L{lvl_str})")
             
     return "[" + ", ".join(names) + "]"
 
 # ==========================================
-# 🌟 商店階段 (EndOfTurn) 鸚鵡變身器 (攻擊力排序版)
+# 🌟 商店階段 (EndOfTurn) 鸚鵡變身器 (靜音版)
 # ==========================================
 def simulate_end_of_turn(team):
-    # 1. 蒐集場上所有動物，並記錄牠們的原始位置 (index)
-    pets_with_idx = []
     for i, slot in enumerate(team):
-        if not slot.empty and slot.pet.name != "pet-none" and "EMPTY" not in slot.pet.name:
-            pets_with_idx.append((slot.pet, i))
+        if slot.empty:
+            continue
             
-    # 2. 按照攻擊力 (Attack) 由高到低排序，決定發動順序
-    pets_with_idx.sort(key=lambda x: x[0].attack, reverse=True)
-    
-    # 3. 依照攻擊力順序，依序執行 End of Turn 技能
-    for original_pet, i in pets_with_idx:
-        p = team[i].pet  # 重新從隊伍抓取，確保拿到的還是最新的狀態
-        
+        p = slot.pet
         if p.name == "pet-parrot":
-            # 往前尋找最近的非空位隊友
             for j in range(i - 1, -1, -1):
                 front_slot = team[j]
                 if not front_slot.empty:
                     front_pet = front_slot.pet
                     if front_pet.name != "pet-none" and "EMPTY" not in front_pet.name:
-                        # 記住鸚鵡原本的體質、等級與裝備
                         parrot_atk = p.attack
                         parrot_hp = p.health
                         parrot_lvl = p.level
                         parrot_status = p.status
                         
-                        # 複製前方動物的物種
                         cloned_pet = Pet(front_pet.name)
                         
-                        # 恢復鸚鵡原本的等級
                         if parrot_lvl == 2:
                             for _ in range(2): cloned_pet.gain_experience()
                         elif parrot_lvl == 3:
                             for _ in range(5): cloned_pet.gain_experience()
                             
-                        # 恢復鸚鵡原本的裝備與面板
                         if parrot_status != "none":
                             cloned_pet._status = parrot_status
                         cloned_pet._attack = parrot_atk
                         cloned_pet._health = parrot_hp
                         
-                        # 放回隊伍中原本的位置
                         cloned_pet.team = team
                         team[i] = cloned_pet
                         break
-        # 🌟 加上 Monkey 的 End of turn 技能邏輯
-        elif p.name == "pet-monkey":
-            # 尋找最右邊 (index 最小) 的非空位隊友
-            for j in range(5):
-                front_slot = team[j]
-                if not front_slot.empty and front_slot.pet.name != "pet-none" and "EMPTY" not in front_slot.pet.name:
-                    # 根據猴子的等級給予 +2/+2, +4/+4, +6/+6 (依據你給的 JSON 設定)
-                    buff_amount = p.level * 2
-                    front_slot.pet._attack += buff_amount
-                    front_slot.pet._health += buff_amount
-                    # 找到最右邊的第一隻動物並給完 Buff 後就可以跳出迴圈
-                    break
 
 # ==========================================
 # ⚙️ 參數區域 (定義你的神仙陣容)
 # ==========================================
 a = 5   # 己方隊伍總人數
-n = 100  # 🌟 驗證模式可以把 n 調高，例如 1000 次
+n = 200  # 🌟 驗證模式可以把 n 調高，例如 1000 次
 
-enemy_file = "turn10_setup.txt" 
+enemy_file = "turn4_setup.txt" 
 my_setups_file = "setups.txt"   # 🌟 新增：己方固定陣容檔案 (存在則跳過排列組合)
+
+# ... (保留原有的 fixed_members, candidate_pool 等設定) ...
 
 # 1. 固定班底 (核心陣容)
 fixed_members = [
@@ -351,7 +310,7 @@ for combo_tuple in all_permutations:
         # 計算對上這組敵人的子勝率
         sub_win_rate = (sub_my_wins / n) * 100
         enemy_details.append({
-            "enemy_str": format_team_name(enemy_bp),
+            "enemy_str": format_team_name(enemy_bp),  # 假設你的 format_team_name 也可以吃 enemy_bp
             "win_rate": sub_win_rate,
             "wins": sub_my_wins,
             "draws": sub_draws,

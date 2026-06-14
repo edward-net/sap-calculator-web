@@ -699,58 +699,84 @@ class Pet:
         activated = True
         return activated, targets, possible
 
-    def hurt_trigger(self, trigger):
+    def hurt_trigger(self, trigger_pet=None, oteam=None):
         """
-        Apply pet's ability after being hurt attacking. Input trigger is the
-        opponent's Team. Only activate hurt trigger if the pet has health above
-        0.
-
-        There is no way to test if hurt_trigger should be activated within this
-        function. Therefore, only call hurt trigger where appropriate during
-        battle and shop phase.
-
-        Pets:
-            ["peacock", "blowfish", "camel", "gorilla"]
-
+        Apply pet's ability after being hurt. 
+        Supports 'Self' and 'EachFriend' (for Wolverine).
         """
         activated = False
         targets = []
         possible = []
-        if self._hurt == 0:
-            raise Exception("Called hurt trigger on pet that was not hurt")
-        else:
-            self._hurt -= 1
 
         if self.ability["trigger"] != "Hurt":
             return activated, targets, possible
 
-        if type(trigger).__name__ != "Team":
-            raise Exception("Trigger must be a Team")
-
+        # 1. Self 觸發 (原本的河豚、孔雀、大猩猩等)
         if self.ability["triggeredBy"]["kind"] == "Self":
-            pass
-        else:
-            raise Exception("Only Self trigger available for hurt_trigger")
-
-        ### Cannot call if health is less than zero because fainted
-        if self._health <= 0:
+            # 🌟 確保受傷的是自己
+            if trigger_pet != self:
+                return activated, targets, possible
+                
+            ### Cannot call if health is less than zero because fainted
+            if self._health <= 0:
+                return activated, targets, possible
+                
+            if "maxTriggers" in self.ability:
+                if self.ability_counter >= self.ability["maxTriggers"]:
+                    return activated, targets, possible
+                else:
+                    self.ability_counter += 1
+                    
+            trigger_team = oteam if oteam else self.team
+            func = get_effect_function(self)
+            pet_idx = self.team.get_idx(self)
+            targets, possible = tiger_func(
+                func, False, self, [0, pet_idx], [self.team, trigger_team], trigger_team
+            )
+            activated = True
             return activated, targets, possible
 
-        if "maxTriggers" in self.ability:
-            if self.ability_counter >= self.ability["maxTriggers"]:
+        # 2. EachFriend 觸發 (🌟 Wolverine 專區)
+        elif self.ability["triggeredBy"]["kind"] == "EachFriend":
+            if trigger_pet is None or type(trigger_pet).__name__ != "Pet":
                 return activated, targets, possible
-            else:
-                self.ability_counter += 1
-
-        func = get_effect_function(self)
-        pet_idx = self.team.get_idx(self)
-        targets, possible = tiger_func(
-            func, False, self, [0, pet_idx], [self.team, trigger], trigger
-        )
-
-        activated = True
-        return activated, targets, possible
-
+                
+            # 🌟 確保受傷的是隊友，且【不是自己】(Wolverine 自己受傷不算「隊友」)
+            if getattr(trigger_pet, 'team', None) != self.team or trigger_pet == self:
+                return activated, targets, possible
+                
+            # 🐺 Wolverine 專屬邏輯 (計數器 + 不致死扣血)
+            if self.name == "pet-wolverine":
+                if not hasattr(self, "wolverine_counter"):
+                    self.wolverine_counter = 0
+                
+                self.wolverine_counter += 1
+                
+                if self.wolverine_counter >= 4:
+                    self.wolverine_counter -= 4 
+                else:
+                    return False, targets, possible 
+                
+                damage_amount = self.ability["effect"]["amount"]
+                
+                if oteam is not None:
+                    for slot in oteam:
+                        if not slot.empty:
+                            enemy_pet = slot.pet
+                            # 關鍵邏輯：只扣血，但不致死
+                            new_health = enemy_pet.health - damage_amount
+                            if new_health <= 0:
+                                enemy_pet._health = 1 
+                            else:
+                                enemy_pet.hurt(damage_amount) 
+                                
+                    activated = True
+                    targets = [slot.pet for slot in oteam if not slot.empty]
+                    
+                return True, targets, possible
+        else:
+            return activated, targets, possible
+            
     def knockout_trigger(self, trigger):
         """
         Apply pet's ability after knockout on opponent. Input trigger is the

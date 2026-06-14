@@ -1,0 +1,5 @@
+[peacock-[chili](10/13/L2), turtle-[melon](7/10/L2),  ant(8/10/L3), hippo(8/10/L2), gorilla(10/13/L1)]
+[cricket(11/16/L2), kangaroo-[garlic](8/10/L2),  crocodile-[garlic](14/12/L2), fly(4/4/L1), penguin(4/5/L2)]
+[mammoth(9/15/L1), gorilla(13/16/L2), sheep(4/4/L2), dog-[garlic](11/16/L2), turkey-[garlic](7/10/L2)]
+[mammoth(7/13/L1), parrot(13/9/L3), gorilla(11/14/L1), horse-[garlic](8/11/L2), shark-[melon](4/4/L2)]
+[dolphin-[chili](7/8/L2), turtle(9/12/L2), rhino(10/11/L1), snake(11/6/L1), sheep(4/6/L1)]

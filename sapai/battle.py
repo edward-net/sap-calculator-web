@@ -520,8 +520,39 @@ def battle_phase_hurt_and_faint(battle_obj, phase, teams, pet_priority, phase_di
     phase_list = phase_dict[phase]
     pp = pet_priority
     status_list = []
+    
     while True:
-        ### Get a list of fainted pets
+        # ====================================================================
+        # 🌟 關鍵修改 1：將【受傷結算】移到迴圈最頂端！
+        # 這樣不論是不是致死傷害，只要有扣血（_hurt > 0），在被移出隊伍前都會先廣播出去！
+        # ====================================================================
+        hurt_list = []
+        for team_idx, pet_idx in pp:
+            fteam, oteam = get_teams([team_idx, pet_idx], teams)
+            hurt_pet = fteam[pet_idx].pet
+            
+            while hurt_pet._hurt > 0:
+                hurt_list.append([team_idx, pet_idx])
+                
+                # 在這裡統一扣減受傷次數，徹底根除死迴圈
+                hurt_pet._hurt -= 1
+                
+                # 廣播給場上所有動物（包含自己與隊友）
+                for te_team_idx, te_pet_idx in pp:
+                    other_pet = teams[te_team_idx][te_pet_idx].pet
+                    
+                    activated, targets, possible = other_pet.hurt_trigger(
+                        trigger_pet=hurt_pet, oteam=oteam
+                    )
+                    
+                    if activated:
+                        append_phase_list(
+                            phase_list, other_pet, te_team_idx, te_pet_idx, activated, targets, possible
+                        )
+
+        # ====================================================================
+        # 💀 接下來才進入原本的【死亡與收屍結算】
+        # ====================================================================
         fainted_list = []
         for team_idx, pet_idx in pp:
             p = teams[team_idx][pet_idx].pet
@@ -566,7 +597,7 @@ def battle_phase_hurt_and_faint(battle_obj, phase, teams, pet_priority, phase_di
                 )
 
             ### If no trigger was activated, then the pet was never removed.
-            ###   Check to see if it should be removed now.
+            ###    Check to see if it should be removed now.
             if teams[team_idx].check_friend(fainted_pet):
                 teams[team_idx].remove(fainted_pet)
                 ### Add this info to phase list
@@ -595,24 +626,17 @@ def battle_phase_hurt_and_faint(battle_obj, phase, teams, pet_priority, phase_di
                 possible,
             )
 
-        ### If pet was hurt, then need to check for hurt triggers
-        hurt_list = []
-        for team_idx, pet_idx in pp:
-            fteam, oteam = get_teams([team_idx, pet_idx], teams)
-            p = fteam[pet_idx].pet
-            while p._hurt > 0:
-                hurt_list.append([team_idx, pet_idx])
-                activated, targets, possible = p.hurt_trigger(oteam)
-                append_phase_list(
-                    phase_list, p, team_idx, pet_idx, activated, targets, possible
-                )
+        # ====================================================================
+        # 🌟 關鍵修改 2：原本這裡的 hurt_list 區塊已經移到最上面了，這裡直接刪除！
+        # ====================================================================
 
+        # 更新動態優先度
         battle_obj.pet_priority = battle_obj.update_pet_priority(
             battle_obj.t0, battle_obj.t1
         )
         pp = battle_obj.pet_priority
 
-        ### If nothing happend, stop the loop
+        ### If nothing happened, stop the loop
         if len(fainted_list) == 0 and len(hurt_list) == 0:
             break
 
