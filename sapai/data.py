@@ -6752,9 +6752,9 @@ data = {
                 "commit": "e022fd6573782431ac9a65b520376b57511c31cd",
                 "unicodeCodePoint": "🐓",
             },
-            "tier": 4,
-            "baseAttack": 5,
-            "baseHealth": 3,
+            "tier": 5,
+            "baseAttack": 6,
+            "baseHealth": 4,
             "packs": ["StandardPack", "ExpansionPack1"],
             "level1Ability": {
                 "description": "Faint: Summon a Chick with 1 health and half the Attack of this.",
@@ -7763,8 +7763,8 @@ data = {
                 "unicodeCodePoint": "🦏",
             },
             "tier": 5,
-            "baseAttack": 5,
-            "baseHealth": 8,
+            "baseAttack": 6,
+            "baseHealth": 7,
             "packs": ["StandardPack", "ExpansionPack1"],
             "level1Ability": {
                 "description": "Knock out: Deal 4 damage to the first enemy.",
