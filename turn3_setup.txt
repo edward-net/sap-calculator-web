@@ -8,3 +8,4 @@
 [horse(2/5/L1), dodo(5/2/L1), spider(3/2/L1), duck(4/4/L1), otter(4/7/L1)]
 [ant(2/4/L1), spider(2/2/L1), sheep(2/2/L1), duck(4/6/L1), otter(3/6/L1)]
 [horse(2/2/L1), hedgehog(5/2/L1), otter(3/6/L1), beaver(4/3/L1), spider(3/3/L1)]
+[camel(4/3/L1), spider(4/2/L1), ant(4/4/L1), horse(3/2/L1), cricket(1/3/L1)]

@@ -717,9 +717,7 @@ class Pet:
             if trigger_pet != self:
                 return activated, targets, possible
                 
-            ### Cannot call if health is less than zero because fainted
-            if self._health <= 0:
-                return activated, targets, possible
+            # (已經刪除 self._health <= 0 的限制，讓致死傷害也能完美觸發！)
                 
             if "maxTriggers" in self.ability:
                 if self.ability_counter >= self.ability["maxTriggers"]:

@@ -5,3 +5,4 @@
 [ant(2/2/L1), ant(2/2/L1), beaver(3/2/L1)]
 [otter(2/4/L1), otter(2/4/L1), horse(2/3/L1)]
 [otter(2/4/L1), beaver(4/2/L1), horse(2/2/L1)]
+[ant(2/2/L1), ant(2/2/L1), mosquito(2/2/L1)]

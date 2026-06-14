@@ -108,11 +108,11 @@ def simulate_end_of_turn(team):
 # 1. 建立雙方隊伍 
 # ==========================================
 my_team_setup = [
-    ('blowfish', 4, 3, 1, None),
-    ('otter', 2, 2, 1, None),
-    ('hedgehog', 4, 2, 1, None),
-    ('otter', 2, 30, 1, None),
-    ('wolverine', None, 30, 1, None),
+    ('camel', 4, 3, 1, None),
+    ('spider', 4, 2, 1, None),
+    ('ant', 4, 4, 1, None),
+    ('horse', 3, 2, 1, None),
+    ('cricket', 1, 3, 1, None),
 ]
 
 enemy_team_setup = [
