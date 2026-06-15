@@ -757,8 +757,6 @@ def battle_phase_attack_after(battle_obj, phase, teams, pet_priority, phase_dict
 def battle_phase_knockout(battle_obj, phase, teams, pet_priority, phase_dict):
     phase_list = phase_dict[phase]
 
-    #### Get knockout list from the end of the phase_attack info and remove
-    ####   the knockout list from phase attack
     attack_history = phase_dict["phase_attack"]
     if len(attack_history) == 0:
         return phase_dict
@@ -767,24 +765,23 @@ def battle_phase_knockout(battle_obj, phase, teams, pet_priority, phase_dict):
 
     for apet, team_idx in knockout_list:
         if apet.health > 0:
-            ### Need to loop to handle Rhino
             fteam, oteam = get_teams([team_idx, 0], teams)
-            current_length = 0
-            while True:
-                # 🌟 攔截點：確保這隻動物不但活著，而且還真的站在隊伍陣列裡！
-                # 如果牠不在隊伍裡，直接中斷這個動物的 Knockout 結算。
-                if not fteam.check_friend(apet):
-                    break
-                pet_idx = fteam.index(apet)
-                activated, targets, possible = apet.knockout_trigger(oteam)
-                append_phase_list(
-                    phase_list, apet, team_idx, pet_idx, activated, targets, possible
-                )
+            
+            # 🌟 攔截點：確保這隻動物還在隊伍裡
+            if not fteam.check_friend(apet):
+                continue
+                
+            pet_idx = fteam.index(apet)
+            
+            # 🌟 刪除 while True，現在只需呼叫一次！(pets.py 會自動處理完所有連鎖)
+            activated, targets, possible = apet.knockout_trigger(oteam)
+            
+            append_phase_list(
+                phase_list, apet, team_idx, pet_idx, activated, targets, possible
+            )
 
-                if not activated:
-                    ### Easy breaking condition
-                    break
-
+            # 如果技能有發動，執行一次收屍結算即可
+            if activated:
                 battle_phase(
                     battle_obj,
                     "phase_hurt_and_faint_k",
@@ -792,14 +789,6 @@ def battle_phase_knockout(battle_obj, phase, teams, pet_priority, phase_dict):
                     pet_priority,
                     phase_dict,
                 )
-
-                if len(phase_dict["phase_hurt_and_faint_k"]) == current_length:
-                    ### No more recursion needed because nothing else fainted
-                    break
-                else:
-                    ### Otherwise, something has been knockedout by Rhino
-                    ### ability and while loop should iterate again
-                    current_length = len(phase_dict["phase_hurt_and_faint_k"])
 
     return phase_dict
 

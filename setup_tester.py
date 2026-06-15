@@ -199,7 +199,7 @@ def simulate_end_of_turn(team):
 a = 5   # 己方隊伍總人數
 n = 100  # 🌟 驗證模式可以把 n 調高，例如 1000 次
 
-enemy_file = "turn7_setup.txt" 
+enemy_file = "turn9_setup.txt" 
 my_setups_file = "setups.txt"   # 🌟 新增：己方固定陣容檔案 (存在則跳過排列組合)
 
 # 1. 固定班底 (核心陣容)

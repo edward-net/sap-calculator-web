@@ -6,3 +6,4 @@
 [dog(6/3/L1), sheep(4/4/L2), rabbit(5/5/L1), dog(12/14/L1/garlic), turkey(3/6/L1/garlic)]
 [dolphin(7/8/L2), spider(5/5/L2/meat-bone), turtle(2/7/L1), rhino(9/10/L1), sheep(4/6/L1)]
 [deer(4/5/L1), otter(6/9/L1/meat-bone), spider(9/9/L1/none/pear), hedgehog(9/9/L2/honey), monkey(1/2/L1)]
+[rooster(6/5/L1), camel(6/6/L2), rhino(6/7/L1/none/pear), ant(6/6/L2/meat-bone), spider(5/5/L2/meat-bone)]

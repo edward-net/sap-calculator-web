@@ -777,43 +777,80 @@ class Pet:
             
     def knockout_trigger(self, trigger):
         """
-        Apply pet's ability after knockout on opponent. Input trigger is the
-        opponent's Team. Only activate trigger if the pet has health above 0.
-
-        There is no way to test if knockout_trigger should be activated within
-        this function. Therefore, only call knockout_trigger where appropriate
-        during the battle phase.
-
-        Pets:
-            ["hippo", "rhino"]
+        Apply pet's ability after knockout on opponent. 
+        Supports Hippo (buffs self) and Rhino (piercing, infinite chain).
         """
         activated = False
-        targets = []
+        all_targets = []
         possible = []
+        
         if self.ability["trigger"] != "KnockOut":
-            return activated, targets, possible
+            return activated, all_targets, possible
 
         if type(trigger).__name__ != "Team":
             raise Exception("Trigger must be a Team")
 
-        ### Cannot call if health is less than zero because fainted
-        if self._health <= 0:
-            return activated, targets, possible
+        # ====================================================
+        # 🦛 Hippo 專屬限制：如果是加數值的動物，死掉就不能發動了
+        # ====================================================
+        if self.name != "pet-rhino" and self._health <= 0:
+            return activated, all_targets, possible
 
         if "maxTriggers" in self.ability:
             if self.ability_counter >= self.ability["maxTriggers"]:
-                return activated, targets, possible
+                return activated, all_targets, possible
             else:
                 self.ability_counter += 1
 
-        func = get_effect_function(self)
-        pet_idx = self.team.get_idx(self)
-        targets, possible = tiger_func(
-            func, False, self, [0, pet_idx], [self.team, trigger], trigger
-        )
+        # 🦏 🌟 Rhino 專屬的「穿透與無限連鎖迴圈」(Hippo 也會共用這段，但會立刻 break)
+        while True:
+            # 【神級障眼法】：透過 Team 的索引直接替換，繞過 TeamSlot 的唯讀限制！
+            hidden_pets = []
+            for i, slot in enumerate(trigger): # trigger 就是 oteam
+                if not slot.empty and slot.pet.health <= 0:
+                    hidden_pets.append((i, slot.pet))
+                    # 🌟 修正點：用正規的隊伍覆寫方式，將空動物放進該位置
+                    trigger[i] = Pet("pet-none") 
 
-        activated = True
-        return activated, targets, possible
+            # 發射 Knockout 技能！
+            func = get_effect_function(self)
+            pet_idx = self.team.get_idx(self)
+            current_targets, current_possible = tiger_func(
+                func, False, self, [0, pet_idx], [self.team, trigger], trigger
+            )
+
+            # 【解除障眼法】：技能發射完畢，立刻把死掉的屍體放回原位！
+            for i, orig_pet in hidden_pets:
+                # 🌟 修正點：用相同的正規方式，把屍體放回去
+                trigger[i] = orig_pet
+
+            # 記錄這次打擊的結果
+            if current_possible:
+                possible = current_possible
+            
+            # 如果沒打到任何人，或者技能沒生效，結束連鎖
+            if not current_targets:
+                break
+
+            activated = True
+            all_targets.extend(current_targets)
+
+            # ====================================================
+            # 🦏 檢查 Rhino 這次砲彈有沒有擊殺任何敵人
+            # ====================================================
+            killed_any = False
+            for t in current_targets:
+                if t.health <= 0:
+                    killed_any = True
+
+            # 如果是 Rhino 且成功擊殺，迴圈繼續，立刻發射下一發！
+            if self.name == "pet-rhino" and killed_any:
+                continue 
+            else:
+                # 如果是 Hippo，或者 Rhino 的砲彈沒有打死人，連鎖結束。
+                break
+
+        return activated, all_targets, possible
 
     def __repr__(self):
         return f"< {self.name} {self.attack}-{self.health} {self.status} {self.level}-{self.experience} >"
