@@ -54,23 +54,30 @@ with col_left:
     else:
         my_team_config["mode"] = "manual"
         st.write("設定您的五個位置 (1為排頭，5為最後)：")
-        st.write("") # 增加一點留白
         
+        # 🌟 建立「共用標題列」(分 6 個欄位，第 1 欄留空給動物編號)
+        h_cols = st.columns([1.5, 3, 2, 2, 2, 2])
+        h_cols[1].markdown("**名稱**")
+        h_cols[2].markdown("**攻擊力**")
+        h_cols[3].markdown("**生命值**")
+        h_cols[4].markdown("**等級**")
+        h_cols[5].markdown("**裝備**")
+
         fixed_members = []
         for i in range(team_size):
-            st.markdown(f"**🐾 動物 {i+1} 設定**")
-            cols = st.columns(5)
-            # 🌟 加入 index=None 讓選單徹底淨空
-            pet_name = cols[0].selectbox("名稱", ANIMAL_LIST, index=None, placeholder="選擇動物", key=f"my_name_{i}")
-            # 🌟 placeholder 改為 "" 讓畫面徹底乾淨
-            pet_atk = cols[1].text_input("攻擊力", key=f"my_atk_{i}", placeholder="")
-            pet_hp = cols[2].text_input("生命值", key=f"my_hp_{i}", placeholder="")
-            pet_lvl = cols[3].selectbox("等級", [1, 2, 3], index=None, placeholder="預設: 1", key=f"my_lvl_{i}")
-            pet_eq = cols[4].text_input("裝備", key=f"my_eq_{i}", placeholder="")
+            # 🌟 每行動物分配 6 個欄位
+            cols = st.columns([1.5, 3, 2, 2, 2, 2])
             
-            st.write("") 
+            # 🌟 第 1 欄：放置「🐾 動物 X」，用 HTML 微調高度與輸入框對齊
+            cols[0].markdown(f"<div style='padding-top: 6px;'><b>🐾 動物 {i+1}</b></div>", unsafe_allow_html=True)
             
-            # 🌟 邏輯大幅簡化！不用再去判斷 .lower() != "none" 了
+            # 🌟 其餘欄位：加上 label_visibility="collapsed" 徹底消滅多餘的行距
+            pet_name = cols[1].selectbox("名稱", ANIMAL_LIST, index=None, placeholder="選擇動物", key=f"my_name_{i}", label_visibility="collapsed")
+            pet_atk = cols[2].text_input("攻擊力", key=f"my_atk_{i}", placeholder="", label_visibility="collapsed")
+            pet_hp = cols[3].text_input("生命值", key=f"my_hp_{i}", placeholder="", label_visibility="collapsed")
+            pet_lvl = cols[4].selectbox("等級", [1, 2, 3], index=None, placeholder="預設:1", key=f"my_lvl_{i}", label_visibility="collapsed")
+            pet_eq = cols[5].text_input("裝備", key=f"my_eq_{i}", placeholder="", label_visibility="collapsed")
+            
             if pet_name:
                 atk = int(pet_atk) if pet_atk else None
                 hp = int(pet_hp) if pet_hp else None
@@ -79,8 +86,6 @@ with col_left:
                 fixed_members.append((pet_name, atk, hp, lvl, eq))
                     
         my_team_config["fixed_members"] = fixed_members
-        
-        # (預留：未來可以在這裡加上候選池與食物分配的輸入框)
         my_team_config["candidate_pool"] = []
         my_team_config["food_pool"] = []
 
@@ -103,19 +108,26 @@ with col_right:
     else:
         enemy_team_config["mode"] = "manual"
         st.write("設定敵方固定陣容：")
-        st.write("")
+        
+        # 🌟 敵方的「共用標題列」
+        h_cols = st.columns([1.5, 3, 2, 2, 2, 2])
+        h_cols[1].markdown("**名稱**")
+        h_cols[2].markdown("**攻擊力**")
+        h_cols[3].markdown("**生命值**")
+        h_cols[4].markdown("**等級**")
+        h_cols[5].markdown("**裝備**")
         
         enemy_fixed = []
         for i in range(team_size):
-            st.markdown(f"**🐾 敵方動物 {i+1} 設定**")
-            cols = st.columns(5)
-            pet_name = cols[0].selectbox("名稱", ANIMAL_LIST, index=None, placeholder="選擇動物", key=f"en_name_{i}")
-            pet_atk = cols[1].text_input("攻擊", key=f"en_atk_{i}", placeholder="")
-            pet_hp = cols[2].text_input("生命", key=f"en_hp_{i}", placeholder="")
-            pet_lvl = cols[3].selectbox("等級", [1, 2, 3], index=None, placeholder="預設: 1", key=f"en_lvl_{i}")
-            pet_eq = cols[4].text_input("裝備", key=f"en_eq_{i}", placeholder="")
+            cols = st.columns([1.5, 3, 2, 2, 2, 2])
             
-            st.write("") 
+            cols[0].markdown(f"<div style='padding-top: 6px;'><b>🐾 動物 {i+1}</b></div>", unsafe_allow_html=True)
+            
+            pet_name = cols[1].selectbox("名稱", ANIMAL_LIST, index=None, placeholder="選擇動物", key=f"en_name_{i}", label_visibility="collapsed")
+            pet_atk = cols[2].text_input("攻擊力", key=f"en_atk_{i}", placeholder="", label_visibility="collapsed")
+            pet_hp = cols[3].text_input("生命值", key=f"en_hp_{i}", placeholder="", label_visibility="collapsed")
+            pet_lvl = cols[4].selectbox("等級", [1, 2, 3], index=None, placeholder="預設:1", key=f"en_lvl_{i}", label_visibility="collapsed")
+            pet_eq = cols[5].text_input("裝備", key=f"en_eq_{i}", placeholder="", label_visibility="collapsed")
             
             if pet_name:
                 atk = int(pet_atk) if pet_atk else None
