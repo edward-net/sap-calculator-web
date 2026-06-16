@@ -108,7 +108,7 @@ def simulate_end_of_turn(team):
 # 1. 建立雙方隊伍 
 # ==========================================
 my_team_setup = [
-    ('rhino', 6, 7, 1, None),
+    ('pigeon', None, None, 1, None),
 ]
 
 enemy_team_setup = [

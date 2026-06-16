@@ -1804,6 +1804,49 @@ data = {
                 },
             ],
         },
+        "pet-pigeon": {
+            "name": "Pigeon",
+            "id": "pet-pigeon",
+            "image": {
+                "source": "noto-emoji",
+                "commit": "e022fd6573782431ac9a65b520376b57511c31cd",
+                "unicodeCodePoint": "🐦",
+            },
+            "tier": 1,
+            "baseAttack": 3,
+            "baseHealth": 2,
+            "packs": ["PuppyPack"], # 鴿子通常在小狗包或自訂包，可以視需求改為 "StandardPack"
+            "level1Ability": {
+                "description": "Sell: Stock one free Bread Crumbs.",
+                "trigger": "Sell",
+                "triggeredBy": {"kind": "Self"},
+                "effect": {
+                    "kind": "StockFood",
+                    "food": "food-bread-crumbs",
+                    "amount": 1
+                },
+            },
+            "level2Ability": {
+                "description": "Sell: Stock two free Bread Crumbs.",
+                "trigger": "Sell",
+                "triggeredBy": {"kind": "Self"},
+                "effect": {
+                    "kind": "StockFood",
+                    "food": "food-bread-crumbs",
+                    "amount": 2
+                },
+            },
+            "level3Ability": {
+                "description": "Sell: Stock three free Bread Crumbs.",
+                "trigger": "Sell",
+                "triggeredBy": {"kind": "Self"},
+                "effect": {
+                    "kind": "StockFood",
+                    "food": "food-bread-crumbs",
+                    "amount": 3
+                },
+            },
+        },
         "pet-sloth": {
             "name": "Sloth",
             "id": "pet-sloth",

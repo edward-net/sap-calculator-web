@@ -778,7 +778,7 @@ class Pet:
     def knockout_trigger(self, trigger):
         """
         Apply pet's ability after knockout on opponent. 
-        Supports Hippo (buffs self) and Rhino (piercing, infinite chain).
+        Supports Hippo (buffs self) and Rhino (piercing, infinite chain, Double dmg vs Tier 1).
         """
         activated = False
         all_targets = []
@@ -802,26 +802,46 @@ class Pet:
             else:
                 self.ability_counter += 1
 
-        # 🦏 🌟 Rhino 專屬的「穿透與無限連鎖迴圈」(Hippo 也會共用這段，但會立刻 break)
+        # 🦏 🌟 Rhino 專屬的「穿透與無限連鎖迴圈」
         while True:
-            # 【神級障眼法】：透過 Team 的索引直接替換，繞過 TeamSlot 的唯讀限制！
+            # 【神級障眼法】：透過 Team 的索引直接替換
             hidden_pets = []
+            first_enemy = None # 🌟 新增：尋找 Rhino 這次開火的瞄準目標
+            
             for i, slot in enumerate(trigger): # trigger 就是 oteam
                 if not slot.empty and slot.pet.health <= 0:
                     hidden_pets.append((i, slot.pet))
-                    # 🌟 修正點：用正規的隊伍覆寫方式，將空動物放進該位置
                     trigger[i] = Pet("pet-none") 
+                # 🌟 找出障眼法過後，第一隻還活著、準備要被打的敵人
+                elif not slot.empty and slot.pet.name != "pet-none" and first_enemy is None:
+                    first_enemy = slot.pet
 
-            # 發射 Knockout 技能！
+            # ====================================================
+            # 🦏 🌟 Rhino 專屬：對 Tier 1 動物傷害翻倍！
+            # ====================================================
+            original_amount = None
+            if self.name == "pet-rhino" and first_enemy is not None:
+                if "amount" in self.ability["effect"]:
+                    # 備份原始傷害 (例如 4 點)
+                    original_amount = self.ability["effect"]["amount"]
+                    # 檢查目標是否為 Tier 1 (使用 getattr 防呆，避免取不到屬性報錯)
+                    if getattr(first_enemy, "tier", 0) == 1:
+                        # 發現是一階動物，瞬間將技能面板傷害 x2！
+                        self.ability["effect"]["amount"] = original_amount * 2
+
+            # 發射 Knockout 技能！(此時的傷害可能已經被我們動態翻倍了)
             func = get_effect_function(self)
             pet_idx = self.team.get_idx(self)
             current_targets, current_possible = tiger_func(
                 func, False, self, [0, pet_idx], [self.team, trigger], trigger
             )
 
+            # 🌟 技能發射完畢，立刻將 Rhino 的傷害復原，避免永久破壞原藍圖！
+            if original_amount is not None:
+                self.ability["effect"]["amount"] = original_amount
+
             # 【解除障眼法】：技能發射完畢，立刻把死掉的屍體放回原位！
             for i, orig_pet in hidden_pets:
-                # 🌟 修正點：用相同的正規方式，把屍體放回去
                 trigger[i] = orig_pet
 
             # 記錄這次打擊的結果
