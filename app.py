@@ -65,22 +65,23 @@ with col_left:
 
         fixed_members = []
         for i in range(team_size):
-            # 🌟 每行動物分配 6 個欄位
             cols = st.columns([1.5, 3, 2, 2, 2, 2])
             
-            # 🌟 第 1 欄：放置「🐾 動物 X」，用 HTML 微調高度與輸入框對齊
             cols[0].markdown(f"<div style='padding-top: 6px;'><b>🐾 動物 {i+1}</b></div>", unsafe_allow_html=True)
             
-            # 🌟 其餘欄位：加上 label_visibility="collapsed" 徹底消滅多餘的行距
             pet_name = cols[1].selectbox("名稱", ANIMAL_LIST, index=None, placeholder="選擇動物", key=f"my_name_{i}", label_visibility="collapsed")
-            pet_atk = cols[2].text_input("攻擊力", key=f"my_atk_{i}", placeholder="", label_visibility="collapsed")
-            pet_hp = cols[3].text_input("生命值", key=f"my_hp_{i}", placeholder="", label_visibility="collapsed")
+            
+            # 🌟 將 text_input 改為 number_input，預設 value=None 保持乾淨
+            pet_atk = cols[2].number_input("攻擊力", min_value=1, max_value=50, value=None, step=1, key=f"my_atk_{i}", placeholder="攻擊", label_visibility="collapsed")
+            pet_hp = cols[3].number_input("生命值", min_value=1, max_value=50, value=None, step=1, key=f"my_hp_{i}", placeholder="生命", label_visibility="collapsed")
+            
             pet_lvl = cols[4].selectbox("等級", [1, 2, 3], index=None, placeholder="預設:1", key=f"my_lvl_{i}", label_visibility="collapsed")
             pet_eq = cols[5].text_input("裝備", key=f"my_eq_{i}", placeholder="", label_visibility="collapsed")
             
             if pet_name:
-                atk = int(pet_atk) if pet_atk else None
-                hp = int(pet_hp) if pet_hp else None
+                # 🌟 邏輯再簡化：因為 number_input 回傳的就是整數 (或 None)，不需要 int() 了！
+                atk = pet_atk 
+                hp = pet_hp   
                 lvl = int(pet_lvl) if pet_lvl else 1
                 eq = pet_eq if pet_eq else None
                 fixed_members.append((pet_name, atk, hp, lvl, eq))
@@ -124,14 +125,17 @@ with col_right:
             cols[0].markdown(f"<div style='padding-top: 6px;'><b>🐾 動物 {i+1}</b></div>", unsafe_allow_html=True)
             
             pet_name = cols[1].selectbox("名稱", ANIMAL_LIST, index=None, placeholder="選擇動物", key=f"en_name_{i}", label_visibility="collapsed")
-            pet_atk = cols[2].text_input("攻擊力", key=f"en_atk_{i}", placeholder="", label_visibility="collapsed")
-            pet_hp = cols[3].text_input("生命值", key=f"en_hp_{i}", placeholder="", label_visibility="collapsed")
+            
+            # 🌟 同樣改為 number_input
+            pet_atk = cols[2].number_input("攻擊力", min_value=1, max_value=50, value=None, step=1, key=f"en_atk_{i}", placeholder="攻擊", label_visibility="collapsed")
+            pet_hp = cols[3].number_input("生命值", min_value=1, max_value=50, value=None, step=1, key=f"en_hp_{i}", placeholder="生命", label_visibility="collapsed")
+            
             pet_lvl = cols[4].selectbox("等級", [1, 2, 3], index=None, placeholder="預設:1", key=f"en_lvl_{i}", label_visibility="collapsed")
             pet_eq = cols[5].text_input("裝備", key=f"en_eq_{i}", placeholder="", label_visibility="collapsed")
             
             if pet_name:
-                atk = int(pet_atk) if pet_atk else None
-                hp = int(pet_hp) if pet_hp else None
+                atk = pet_atk
+                hp = pet_hp
                 lvl = int(pet_lvl) if pet_lvl else 1
                 eq = pet_eq if pet_eq else None
                 enemy_fixed.append((pet_name, atk, hp, lvl, eq))
