@@ -93,6 +93,32 @@ with col_left:
         st.info("將讀取同目錄下的 setups.txt 作為測試組合。")
     else:
         my_team_config["mode"] = "manual"
+        
+        # ==========================================
+        # 🔄 快速交換工具 (一鍵整隊互換)
+        # ==========================================
+        if st.button("🔄 一鍵交換 (固定陣容 ⇄ 動物候選池)", type="secondary", use_container_width=True):
+            keys = ["name", "atk", "hp", "lvl", "eq"]
+            
+            # 跑一個 0~4 的迴圈，把 固定(my) 和 候選(cand) 對應位置的資料全部對調
+            for i in range(5):
+                for k in keys:
+                    key_a = f"my_{k}_{i}"
+                    key_b = f"cand_{k}_{i}"
+                    
+                    # 安全地取得目前數值
+                    val_a = st.session_state.get(key_a, None)
+                    val_b = st.session_state.get(key_b, None)
+                    
+                    # 在底層直接對調兩者的資料
+                    st.session_state[key_a] = val_b
+                    st.session_state[key_b] = val_a
+                    
+            # 🌟 觸發強制刷新，畫面瞬間無縫更新
+            st.rerun() 
+            
+        st.markdown("---")
+        
         st.write("設定您的固定陣容 (若有空位，系統會自動填入候選池動物)：")
         
         # --- 1. 固定陣容 (Fixed Members) ---
