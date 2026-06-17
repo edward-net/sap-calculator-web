@@ -8,17 +8,19 @@ st.set_page_config(page_title="SAP 戰鬥模擬器", layout="wide")
 # ==========================================
 # 🌟 狀態初始化與自動查表邏輯 (Callback)
 # ==========================================
-# 預先初始化所有輸入框的 Session State，讓它們一開始是乾淨的空值
 if "initialized" not in st.session_state:
-    for i in range(10): # 預留給隊伍擴充
+    for i in range(10): 
         st.session_state[f"my_atk_{i}"] = None
         st.session_state[f"my_hp_{i}"] = None
         st.session_state[f"en_atk_{i}"] = None
         st.session_state[f"en_hp_{i}"] = None
-        # 🌟 新增：預留給候選池 (candidate pool) 的狀態
         st.session_state[f"cand_atk_{i}"] = None
         st.session_state[f"cand_hp_{i}"] = None
     st.session_state["initialized"] = True
+
+# 🌟 新增：用來記錄哪一個按鈕被「下壓」了
+if "swap_source" not in st.session_state:
+    st.session_state["swap_source"] = None
 
 def auto_fill_stats(prefix, idx):
     """當下拉選單改變時，瞬間查表並填入攻擊力與生命值"""
@@ -48,6 +50,33 @@ def auto_fill_stats(prefix, idx):
         st.session_state[atk_key] = None
         st.session_state[hp_key] = None
 
+# 🌟 新增：點對點交換的核心 Callback
+def handle_swap(clicked_id):
+    if st.session_state["swap_source"] is None:
+        # 第一下點擊：鎖定按鈕 (變成下壓狀態)
+        st.session_state["swap_source"] = clicked_id
+    elif st.session_state["swap_source"] == clicked_id:
+        # 點擊同一個按鈕：取消鎖定 (彈起)
+        st.session_state["swap_source"] = None
+    else:
+        # 第二下點擊：執行瞬間互換！
+        src_prefix, src_idx = st.session_state["swap_source"].split("_")
+        tgt_prefix, tgt_idx = clicked_id.split("_")
+        
+        keys = ["name", "atk", "hp", "lvl", "eq"]
+        for k in keys:
+            key_a = f"{src_prefix}_{k}_{src_idx}"
+            key_b = f"{tgt_prefix}_{k}_{tgt_idx}"
+            
+            val_a = st.session_state.get(key_a, None)
+            val_b = st.session_state.get(key_b, None)
+            
+            st.session_state[key_a] = val_b
+            st.session_state[key_b] = val_a
+            
+        # 互換完成，解除鎖定 (彈起)
+        st.session_state["swap_source"] = None
+        
 # ==========================================
 # 🐾 預設動物清單
 # ==========================================
@@ -132,7 +161,18 @@ with col_left:
         fixed_members = []
         for i in range(team_size):
             cols = st.columns([1.5, 3, 2, 2, 2, 2])
-            cols[0].markdown(f"<div style='padding-top: 6px;'><b>🐾 固定 {i+1}</b></div>", unsafe_allow_html=True)
+            
+            # 🌟 動態判斷按鈕狀態：如果被點過，就變紅(primary)並改字，否則正常(secondary)
+            my_id = f"my_{i}"
+            is_selected = (st.session_state["swap_source"] == my_id)
+            btn_type = "primary" if is_selected else "secondary"
+            btn_label = f"🎯 選擇替換" if is_selected else f"🐾 固定 {i+1}"
+            
+            # 🌟 繪製按鈕並綁定 callback
+            cols[0].button(
+                btn_label, key=f"btn_swap_my_{i}", type=btn_type, 
+                on_click=handle_swap, args=(my_id,), use_container_width=True
+            )
             
             pet_name = cols[1].selectbox(
                 "名稱", ANIMAL_LIST, index=None, placeholder="選擇動物", 
@@ -168,10 +208,19 @@ with col_left:
             c_cols[5].markdown("**裝備**")
             
             candidate_pool = []
-            # 預設給予 5 個候選空位
             for i in range(5):
                 cols = st.columns([1.5, 3, 2, 2, 2, 2])
-                cols[0].markdown(f"<div style='padding-top: 6px;'><b>🔄 候選 {i+1}</b></div>", unsafe_allow_html=True)
+                
+                # 🌟 候選池的動態按鈕
+                cand_id = f"cand_{i}"
+                is_selected = (st.session_state["swap_source"] == cand_id)
+                btn_type = "primary" if is_selected else "secondary"
+                btn_label = f"🎯 選擇替換" if is_selected else f"🔄 候選 {i+1}"
+                
+                cols[0].button(
+                    btn_label, key=f"btn_swap_cand_{i}", type=btn_type, 
+                    on_click=handle_swap, args=(cand_id,), use_container_width=True
+                )
                 
                 # 🌟 綁定自動查表 (前綴改為 "cand")
                 pet_name = cols[1].selectbox(
