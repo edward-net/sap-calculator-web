@@ -1,7 +1,56 @@
 import streamlit as st
 import backend 
 from sapai.data import data # 🌟 新增：載入 sapai 官方資料庫
+import os
+import re
 
+# ==========================================
+# 🖼️ SVG 戰隊合照渲染器
+# ==========================================
+def render_team_images(combo_str):
+    """將字串 [ant(2/2/L1), duck] 轉換成五個圖片欄位"""
+    # 移除中括號並切割動物
+    clean_str = combo_str.strip("[]")
+    if not clean_str:
+        return
+        
+    pet_strs = clean_str.split(", ")
+    
+    # 建立 5 個欄位來排排站
+    cols = st.columns(5)
+    
+    for i, p_str in enumerate(pet_strs):
+        if i >= 5: break
+        
+        # 使用 Regex 切割名稱與數值 (例如分離 "ant" 和 "2/2/L1")
+        match = re.match(r"([a-zA-Z0-9-]+)(?:\((.*)\))?", p_str)
+        if match:
+            name = match.group(1)
+            stats = match.group(2)
+        else:
+            name = p_str
+            stats = None
+            
+        with cols[i]:
+            # 🌟 組合 SVG 路徑 (對應你下載的 pet-ant.svg)
+            img_path = os.path.join("assets", f"pet-{name}.svg")
+            
+            # 渲染圖片
+            if os.path.exists(img_path):
+                st.image(img_path, use_container_width=True)
+            else:
+                # 找不到圖時的防呆佔位符號
+                st.markdown(f"<div style='text-align:center; padding:10px; border:1px dashed #aaa; border-radius:5px;'>無圖片<br>{name}</div>", unsafe_allow_html=True)
+            
+            # 在圖片下方加上排版精美的數值文字
+            display_name = name.capitalize()
+            html_str = f"<div style='text-align: center; margin-top: 5px;'><b style='font-size:16px;'>{display_name}</b><br>"
+            if stats:
+                html_str += f"<span style='color: #888; font-size:14px;'>{stats}</span>"
+            html_str += "</div>"
+            
+            st.markdown(html_str, unsafe_allow_html=True)
+            
 # 頁面基本設定 (使用寬螢幕佈局)
 st.set_page_config(page_title="SAP 戰鬥模擬器", layout="wide")
 
@@ -329,13 +378,19 @@ if st.button("開始模擬 (Run Simulation)", use_container_width=True, type="pr
             col3.metric("單一陣容平均耗時", f"{stats['avg_time_per_combo']} 秒")
             col4.metric("單場戰鬥平均耗時", f"{stats['avg_time_per_battle']} 秒")
             
+            # 顯示戰報排行榜
             st.subheader(f"🏆 Top {len(top_results)} 最佳陣容")
             for i, res in enumerate(top_results):
                 rank = i + 1
                 medal = "🥇" if rank == 1 else "🥈" if rank == 2 else "🥉" if rank == 3 else "🏅"
                 
                 expander_title = f"{medal} 第 {rank} 名: {res['combo_str']} 👉 勝率 {res['win_rate']:.1f}% ({res['wins']}勝 / {res['draws']}平 / {res['losses']}敗)"
+                
                 with st.expander(expander_title):
+                    # 🌟 呼叫渲染器，畫出這組陣容的圖片！
+                    render_team_images(res['combo_str'])
+                    
+                    st.write("---") # 加上一條分隔線
                     st.write("⚔️ **對戰各組敵人詳細勝率:**")
                     for ed in res['enemy_details']:
                         st.markdown(f"- 🆚 敵方 `{ed['enemy_str']}` ➡️ **{ed['win_rate']:.1f}%** *( {ed['wins']}勝 / {ed['draws']}平 / {ed['losses']}敗 )*")
