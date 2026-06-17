@@ -1,28 +1,28 @@
 import streamlit as st
 import backend 
-from sapai.data import data # 🌟 新增：載入 sapai 官方資料庫
+from sapai.data import data
 import os
 import re
+
+# 頁面基本設定 (使用寬螢幕佈局)
+st.set_page_config(page_title="SAP 戰鬥模擬器", layout="wide")
 
 # ==========================================
 # 🖼️ SVG 戰隊合照渲染器
 # ==========================================
 def render_team_images(combo_str):
     """將字串 [ant(2/2/L1), duck] 轉換成五個圖片欄位"""
-    # 移除中括號並切割動物
     clean_str = combo_str.strip("[]")
     if not clean_str:
         return
         
     pet_strs = clean_str.split(", ")
-    
-    # 建立 5 個欄位來排排站
     cols = st.columns(5)
     
     for i, p_str in enumerate(pet_strs):
         if i >= 5: break
         
-        # 使用 Regex 切割名稱與數值 (例如分離 "ant" 和 "2/2/L1")
+        # 使用 Regex 切割名稱與數值
         match = re.match(r"([a-zA-Z0-9-]+)(?:\((.*)\))?", p_str)
         if match:
             name = match.group(1)
@@ -32,17 +32,15 @@ def render_team_images(combo_str):
             stats = None
             
         with cols[i]:
-            # 🌟 組合 SVG 路徑 (對應你下載的 pet-ant.svg)
+            # 對應 assets 目錄下的 SVG
             img_path = os.path.join("assets", f"pet-{name}.svg")
             
-            # 渲染圖片
             if os.path.exists(img_path):
-                st.image(img_path, use_container_width=True)
+                st.image(img_path, width="stretch") 
             else:
-                # 找不到圖時的防呆佔位符號
                 st.markdown(f"<div style='text-align:center; padding:10px; border:1px dashed #aaa; border-radius:5px;'>無圖片<br>{name}</div>", unsafe_allow_html=True)
             
-            # 在圖片下方加上排版精美的數值文字
+            # 圖片下方加上排版精美的數值文字
             display_name = name.capitalize()
             html_str = f"<div style='text-align: center; margin-top: 5px;'><b style='font-size:16px;'>{display_name}</b><br>"
             if stats:
@@ -50,9 +48,7 @@ def render_team_images(combo_str):
             html_str += "</div>"
             
             st.markdown(html_str, unsafe_allow_html=True)
-            
-# 頁面基本設定 (使用寬螢幕佈局)
-st.set_page_config(page_title="SAP 戰鬥模擬器", layout="wide")
+
 
 # ==========================================
 # 🌟 狀態初始化與自動查表邏輯 (Callback)
@@ -67,48 +63,35 @@ if "initialized" not in st.session_state:
         st.session_state[f"cand_hp_{i}"] = None
     st.session_state["initialized"] = True
 
-# 🌟 新增：用來記錄哪一個按鈕被「下壓」了
 if "swap_source" not in st.session_state:
     st.session_state["swap_source"] = None
 
 def auto_fill_stats(prefix, idx):
-    """當下拉選單改變時，瞬間查表並填入攻擊力與生命值"""
     pet_name = st.session_state[f"{prefix}_name_{idx}"]
     atk_key = f"{prefix}_atk_{idx}"
     hp_key = f"{prefix}_hp_{idx}"
     
     if pet_name:
         pet_id = f"pet-{pet_name}"
-        # 確保資料庫裡有這隻動物
         if pet_id in data["pets"]:
             b_atk = data["pets"][pet_id].get("baseAttack")
             b_hp = data["pets"][pet_id].get("baseHealth")
             
-            # 更新 Session State (畫面上的數字會瞬間跟著變！)
-            if isinstance(b_atk, int):
-                st.session_state[atk_key] = b_atk
-            else:
-                st.session_state[atk_key] = None
+            if isinstance(b_atk, int): st.session_state[atk_key] = b_atk
+            else: st.session_state[atk_key] = None
                 
-            if isinstance(b_hp, int):
-                st.session_state[hp_key] = b_hp
-            else:
-                st.session_state[hp_key] = None
+            if isinstance(b_hp, int): st.session_state[hp_key] = b_hp
+            else: st.session_state[hp_key] = None
     else:
-        # 如果把名稱清空，數值也自動幫你清空
         st.session_state[atk_key] = None
         st.session_state[hp_key] = None
 
-# 🌟 新增：點對點交換的核心 Callback
 def handle_swap(clicked_id):
     if st.session_state["swap_source"] is None:
-        # 第一下點擊：鎖定按鈕 (變成下壓狀態)
         st.session_state["swap_source"] = clicked_id
     elif st.session_state["swap_source"] == clicked_id:
-        # 點擊同一個按鈕：取消鎖定 (彈起)
         st.session_state["swap_source"] = None
     else:
-        # 第二下點擊：執行瞬間互換！
         src_prefix, src_idx = st.session_state["swap_source"].split("_")
         tgt_prefix, tgt_idx = clicked_id.split("_")
         
@@ -123,7 +106,6 @@ def handle_swap(clicked_id):
             st.session_state[key_a] = val_b
             st.session_state[key_b] = val_a
             
-        # 互換完成，解除鎖定 (彈起)
         st.session_state["swap_source"] = None
         
 # ==========================================
@@ -143,9 +125,6 @@ ANIMAL_LIST = [
 
 st.title("🐾 Super Auto Pets 戰鬥模擬器")
 
-# ==========================================
-# 1. 頂部通用設定區
-# ==========================================
 with st.container():
     st.subheader("⚙️ 模擬參數設定")
     col_n, col_a = st.columns(2)
@@ -157,9 +136,6 @@ with st.container():
 st.markdown("---")
 col_left, col_right = st.columns(2)
 
-# ==========================================
-# 2. 左半部：己方陣容 (My Team)
-# ==========================================
 with col_left:
     st.header("🔵 己方陣容")
     my_mode = st.radio("選擇輸入模式 (己方)", ["手動選取模式", "讀取檔案模式 (setups.txt)"])
@@ -172,34 +148,22 @@ with col_left:
     else:
         my_team_config["mode"] = "manual"
         
-        # ==========================================
-        # 🔄 快速交換工具 (一鍵整隊互換)
-        # ==========================================
-        if st.button("🔄 一鍵交換 (固定陣容 ⇄ 動物候選池)", type="secondary", use_container_width=True):
+        # 🌟 解決警告：改用 width="stretch"
+        if st.button("🔄 一鍵交換 (固定陣容 ⇄ 動物候選池)", type="secondary", width="stretch"):
             keys = ["name", "atk", "hp", "lvl", "eq"]
-            
-            # 跑一個 0~4 的迴圈，把 固定(my) 和 候選(cand) 對應位置的資料全部對調
             for i in range(5):
                 for k in keys:
                     key_a = f"my_{k}_{i}"
                     key_b = f"cand_{k}_{i}"
-                    
-                    # 安全地取得目前數值
                     val_a = st.session_state.get(key_a, None)
                     val_b = st.session_state.get(key_b, None)
-                    
-                    # 在底層直接對調兩者的資料
                     st.session_state[key_a] = val_b
                     st.session_state[key_b] = val_a
-                    
-            # 🌟 觸發強制刷新，畫面瞬間無縫更新
             st.rerun() 
             
         st.markdown("---")
-        
         st.write("設定您的固定陣容 (若有空位，系統會自動填入候選池動物)：")
         
-        # --- 1. 固定陣容 (Fixed Members) ---
         h_cols = st.columns([1.5, 3, 2, 2, 2, 2])
         h_cols[1].markdown("**名稱**")
         h_cols[2].markdown("**攻擊力**")
@@ -211,44 +175,35 @@ with col_left:
         for i in range(team_size):
             cols = st.columns([1.5, 3, 2, 2, 2, 2])
             
-            # 🌟 動態判斷按鈕狀態：如果被點過，就變紅(primary)並改字，否則正常(secondary)
             my_id = f"my_{i}"
             is_selected = (st.session_state["swap_source"] == my_id)
             btn_type = "primary" if is_selected else "secondary"
             btn_label = f"🎯 選擇替換" if is_selected else f"🐾 固定 {i+1}"
             
-            # 🌟 繪製按鈕並綁定 callback
+            # 🌟 解決警告：改用 width="stretch"
             cols[0].button(
                 btn_label, key=f"btn_swap_my_{i}", type=btn_type, 
-                on_click=handle_swap, args=(my_id,), use_container_width=True
+                on_click=handle_swap, args=(my_id,), width="stretch"
             )
             
-            pet_name = cols[1].selectbox(
-                "名稱", ANIMAL_LIST, index=None, placeholder="選擇動物", 
-                key=f"my_name_{i}", label_visibility="collapsed",
-                on_change=auto_fill_stats, args=("my", i)
-            )
-            
+            pet_name = cols[1].selectbox("名稱", ANIMAL_LIST, index=None, placeholder="選擇動物", key=f"my_name_{i}", label_visibility="collapsed", on_change=auto_fill_stats, args=("my", i))
             pet_atk = cols[2].number_input("攻擊力", min_value=1, max_value=50, step=1, key=f"my_atk_{i}", placeholder="攻擊", label_visibility="collapsed")
             pet_hp = cols[3].number_input("生命值", min_value=1, max_value=50, step=1, key=f"my_hp_{i}", placeholder="生命", label_visibility="collapsed")
             pet_lvl = cols[4].selectbox("等級", [1, 2, 3], index=None, placeholder="預設:1", key=f"my_lvl_{i}", label_visibility="collapsed")
             pet_eq = cols[5].text_input("裝備", key=f"my_eq_{i}", placeholder="", label_visibility="collapsed")
             
             if pet_name:
-                atk = pet_atk 
-                hp = pet_hp   
+                atk, hp = pet_atk, pet_hp   
                 lvl = int(pet_lvl) if pet_lvl else 1
                 eq = pet_eq if pet_eq else None
                 fixed_members.append((pet_name, atk, hp, lvl, eq))
                     
         my_team_config["fixed_members"] = fixed_members
         
-        # --- 2. 動物候選池 (Candidate Pool) ---
-        st.write("") # 留點白
+        st.write("") 
         with st.expander("➕ 設定動物候選池 (將與上方固定陣容排列組合)"):
             st.info("💡 如果上方固定陣容未滿 5 人，系統會將這裡的動物自動填入空缺並嘗試所有組合！")
             
-            # 候選池標題列
             c_cols = st.columns([1.5, 3, 2, 2, 2, 2])
             c_cols[1].markdown("**名稱**")
             c_cols[2].markdown("**攻擊力**")
@@ -260,43 +215,33 @@ with col_left:
             for i in range(5):
                 cols = st.columns([1.5, 3, 2, 2, 2, 2])
                 
-                # 🌟 候選池的動態按鈕
                 cand_id = f"cand_{i}"
                 is_selected = (st.session_state["swap_source"] == cand_id)
                 btn_type = "primary" if is_selected else "secondary"
                 btn_label = f"🎯 選擇替換" if is_selected else f"🔄 候選 {i+1}"
                 
+                # 🌟 解決警告：改用 width="stretch"
                 cols[0].button(
                     btn_label, key=f"btn_swap_cand_{i}", type=btn_type, 
-                    on_click=handle_swap, args=(cand_id,), use_container_width=True
+                    on_click=handle_swap, args=(cand_id,), width="stretch"
                 )
                 
-                # 🌟 綁定自動查表 (前綴改為 "cand")
-                pet_name = cols[1].selectbox(
-                    "名稱", ANIMAL_LIST, index=None, placeholder="選擇動物", 
-                    key=f"cand_name_{i}", label_visibility="collapsed",
-                    on_change=auto_fill_stats, args=("cand", i)
-                )
-                
+                pet_name = cols[1].selectbox("名稱", ANIMAL_LIST, index=None, placeholder="選擇動物", key=f"cand_name_{i}", label_visibility="collapsed", on_change=auto_fill_stats, args=("cand", i))
                 pet_atk = cols[2].number_input("攻擊力", min_value=1, max_value=50, step=1, key=f"cand_atk_{i}", placeholder="攻擊", label_visibility="collapsed")
                 pet_hp = cols[3].number_input("生命值", min_value=1, max_value=50, step=1, key=f"cand_hp_{i}", placeholder="生命", label_visibility="collapsed")
                 pet_lvl = cols[4].selectbox("等級", [1, 2, 3], index=None, placeholder="預設:1", key=f"cand_lvl_{i}", label_visibility="collapsed")
                 pet_eq = cols[5].text_input("裝備", key=f"cand_eq_{i}", placeholder="", label_visibility="collapsed")
                 
                 if pet_name:
-                    atk = pet_atk 
-                    hp = pet_hp   
+                    atk, hp = pet_atk, pet_hp   
                     lvl = int(pet_lvl) if pet_lvl else 1
                     eq = pet_eq if pet_eq else None
                     candidate_pool.append((pet_name, atk, hp, lvl, eq))
             
             my_team_config["candidate_pool"] = candidate_pool
-        
         my_team_config["food_pool"] = []
 
-# ==========================================
-# 3. 右半部：敵方陣容 (Enemy Team)
-# ==========================================
+
 with col_right:
     st.header("🔴 敵方陣容")
     enemy_mode = st.radio("選擇輸入模式 (敵方)", ["讀取檔案模式 (天梯資料)", "手動選取模式"])
@@ -323,22 +268,14 @@ with col_right:
             cols = st.columns([1.5, 3, 2, 2, 2, 2])
             cols[0].markdown(f"<div style='padding-top: 6px;'><b>🐾 動物 {i+1}</b></div>", unsafe_allow_html=True)
             
-            # 🌟 敵方同樣綁定回調函數
-            pet_name = cols[1].selectbox(
-                "名稱", ANIMAL_LIST, index=None, placeholder="選擇動物", 
-                key=f"en_name_{i}", label_visibility="collapsed",
-                on_change=auto_fill_stats, args=("en", i)
-            )
-            
+            pet_name = cols[1].selectbox("名稱", ANIMAL_LIST, index=None, placeholder="選擇動物", key=f"en_name_{i}", label_visibility="collapsed", on_change=auto_fill_stats, args=("en", i))
             pet_atk = cols[2].number_input("攻擊力", min_value=1, max_value=50, step=1, key=f"en_atk_{i}", placeholder="攻擊", label_visibility="collapsed")
             pet_hp = cols[3].number_input("生命值", min_value=1, max_value=50, step=1, key=f"en_hp_{i}", placeholder="生命", label_visibility="collapsed")
-            
             pet_lvl = cols[4].selectbox("等級", [1, 2, 3], index=None, placeholder="預設:1", key=f"en_lvl_{i}", label_visibility="collapsed")
             pet_eq = cols[5].text_input("裝備", key=f"en_eq_{i}", placeholder="", label_visibility="collapsed")
             
             if pet_name:
-                atk = pet_atk
-                hp = pet_hp
+                atk, hp = pet_atk, pet_hp
                 lvl = int(pet_lvl) if pet_lvl else 1
                 eq = pet_eq if pet_eq else None
                 enemy_fixed.append((pet_name, atk, hp, lvl, eq))
@@ -347,9 +284,6 @@ with col_right:
 
 st.markdown("---")
 
-# ==========================================
-# 4. 底部：執行模擬與輸出戰報
-# ==========================================
 st.header("🚀 模擬結果")
 
 config = {
@@ -361,7 +295,8 @@ config = {
     "enemy_team": enemy_team_config
 }
 
-if st.button("開始模擬 (Run Simulation)", use_container_width=True, type="primary"):
+# 🌟 解決警告：改用 width="stretch"
+if st.button("開始模擬 (Run Simulation)", width="stretch", type="primary"):
     with st.spinner('引擎全速運算中... 請稍候...'):
         response = backend.run_simulation(config)
         
@@ -378,19 +313,18 @@ if st.button("開始模擬 (Run Simulation)", use_container_width=True, type="pr
             col3.metric("單一陣容平均耗時", f"{stats['avg_time_per_combo']} 秒")
             col4.metric("單場戰鬥平均耗時", f"{stats['avg_time_per_battle']} 秒")
             
-            # 顯示戰報排行榜
             st.subheader(f"🏆 Top {len(top_results)} 最佳陣容")
             for i, res in enumerate(top_results):
                 rank = i + 1
                 medal = "🥇" if rank == 1 else "🥈" if rank == 2 else "🥉" if rank == 3 else "🏅"
                 
                 expander_title = f"{medal} 第 {rank} 名: {res['combo_str']} 👉 勝率 {res['win_rate']:.1f}% ({res['wins']}勝 / {res['draws']}平 / {res['losses']}敗)"
-                
                 with st.expander(expander_title):
-                    # 🌟 呼叫渲染器，畫出這組陣容的圖片！
+                    
+                    # 🌟 在這裡呼叫我們新寫的 SVG 戰隊渲染器！
                     render_team_images(res['combo_str'])
                     
-                    st.write("---") # 加上一條分隔線
+                    st.write("---")
                     st.write("⚔️ **對戰各組敵人詳細勝率:**")
                     for ed in res['enemy_details']:
                         st.markdown(f"- 🆚 敵方 `{ed['enemy_str']}` ➡️ **{ed['win_rate']:.1f}%** *( {ed['wins']}勝 / {ed['draws']}平 / {ed['losses']}敗 )*")
