@@ -138,7 +138,39 @@ col_left, col_right = st.columns(2)
 
 with col_left:
     st.header("🔵 己方陣容")
+    
+    # ==========================================
+    # 💾 智慧備份與還原系統 (完美修復自動補全)
+    # ==========================================
+    # 1. 初始化記憶變數
+    if "prev_my_mode" not in st.session_state:
+        st.session_state["prev_my_mode"] = "手動選取模式"
+    if "manual_backup" not in st.session_state:
+        st.session_state["manual_backup"] = {}
+
     my_mode = st.radio("選擇輸入模式 (己方)", ["手動選取模式", "讀取檔案模式 (setups.txt)"])
+    
+    # 2. 偵測模式切換的「瞬間」來執行存檔或還原
+    if st.session_state["prev_my_mode"] == "手動選取模式" and my_mode == "讀取檔案模式 (setups.txt)":
+        # 剛剛離開手動模式 ➡️ 拍照存檔
+        for i in range(5):
+            for k in ["name", "atk", "hp", "lvl", "eq"]:
+                for prefix in ["my", "cand"]:
+                    key = f"{prefix}_{k}_{i}"
+                    if key in st.session_state:
+                        st.session_state["manual_backup"][key] = st.session_state[key]
+                        
+    elif st.session_state["prev_my_mode"] == "讀取檔案模式 (setups.txt)" and my_mode == "手動選取模式":
+        # 剛剛切回手動模式 ➡️ 倒回備份
+        for key, val in st.session_state["manual_backup"].items():
+            st.session_state[key] = val
+            
+    # 更新目前模式記憶
+    st.session_state["prev_my_mode"] = my_mode
+    
+    # ==========================================
+    # 🎨 UI 介面渲染
+    # ==========================================
     my_team_config = {}
     
     if my_mode == "讀取檔案模式 (setups.txt)":
@@ -148,7 +180,6 @@ with col_left:
     else:
         my_team_config["mode"] = "manual"
         
-        # 🌟 解決警告：改用 width="stretch"
         if st.button("🔄 一鍵交換 (固定陣容 ⇄ 動物候選池)", type="secondary", width="stretch"):
             keys = ["name", "atk", "hp", "lvl", "eq"]
             for i in range(5):
@@ -180,7 +211,6 @@ with col_left:
             btn_type = "primary" if is_selected else "secondary"
             btn_label = f"🎯 選擇替換" if is_selected else f"🐾 固定 {i+1}"
             
-            # 🌟 解決警告：改用 width="stretch"
             cols[0].button(
                 btn_label, key=f"btn_swap_my_{i}", type=btn_type, 
                 on_click=handle_swap, args=(my_id,), width="stretch"
@@ -220,7 +250,6 @@ with col_left:
                 btn_type = "primary" if is_selected else "secondary"
                 btn_label = f"🎯 選擇替換" if is_selected else f"🔄 候選 {i+1}"
                 
-                # 🌟 解決警告：改用 width="stretch"
                 cols[0].button(
                     btn_label, key=f"btn_swap_cand_{i}", type=btn_type, 
                     on_click=handle_swap, args=(cand_id,), width="stretch"
