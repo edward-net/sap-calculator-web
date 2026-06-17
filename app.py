@@ -15,6 +15,9 @@ if "initialized" not in st.session_state:
         st.session_state[f"my_hp_{i}"] = None
         st.session_state[f"en_atk_{i}"] = None
         st.session_state[f"en_hp_{i}"] = None
+        # 🌟 新增：預留給候選池 (candidate pool) 的狀態
+        st.session_state[f"cand_atk_{i}"] = None
+        st.session_state[f"cand_hp_{i}"] = None
     st.session_state["initialized"] = True
 
 def auto_fill_stats(prefix, idx):
@@ -90,8 +93,9 @@ with col_left:
         st.info("將讀取同目錄下的 setups.txt 作為測試組合。")
     else:
         my_team_config["mode"] = "manual"
-        st.write("設定您的五個位置 (1為排頭，5為最後)：")
+        st.write("設定您的固定陣容 (若有空位，系統會自動填入候選池動物)：")
         
+        # --- 1. 固定陣容 (Fixed Members) ---
         h_cols = st.columns([1.5, 3, 2, 2, 2, 2])
         h_cols[1].markdown("**名稱**")
         h_cols[2].markdown("**攻擊力**")
@@ -102,19 +106,16 @@ with col_left:
         fixed_members = []
         for i in range(team_size):
             cols = st.columns([1.5, 3, 2, 2, 2, 2])
-            cols[0].markdown(f"<div style='padding-top: 6px;'><b>🐾 動物 {i+1}</b></div>", unsafe_allow_html=True)
+            cols[0].markdown(f"<div style='padding-top: 6px;'><b>🐾 固定 {i+1}</b></div>", unsafe_allow_html=True)
             
-            # 🌟 綁定 on_change 回調函數
             pet_name = cols[1].selectbox(
                 "名稱", ANIMAL_LIST, index=None, placeholder="選擇動物", 
                 key=f"my_name_{i}", label_visibility="collapsed",
                 on_change=auto_fill_stats, args=("my", i)
             )
             
-            # 🌟 移除 value=None，讓預設值完全由 Session State 接管
             pet_atk = cols[2].number_input("攻擊力", min_value=1, max_value=50, step=1, key=f"my_atk_{i}", placeholder="攻擊", label_visibility="collapsed")
             pet_hp = cols[3].number_input("生命值", min_value=1, max_value=50, step=1, key=f"my_hp_{i}", placeholder="生命", label_visibility="collapsed")
-            
             pet_lvl = cols[4].selectbox("等級", [1, 2, 3], index=None, placeholder="預設:1", key=f"my_lvl_{i}", label_visibility="collapsed")
             pet_eq = cols[5].text_input("裝備", key=f"my_eq_{i}", placeholder="", label_visibility="collapsed")
             
@@ -126,7 +127,47 @@ with col_left:
                 fixed_members.append((pet_name, atk, hp, lvl, eq))
                     
         my_team_config["fixed_members"] = fixed_members
-        my_team_config["candidate_pool"] = []
+        
+        # --- 2. 動物候選池 (Candidate Pool) ---
+        st.write("") # 留點白
+        with st.expander("➕ 設定動物候選池 (將與上方固定陣容排列組合)"):
+            st.info("💡 如果上方固定陣容未滿 5 人，系統會將這裡的動物自動填入空缺並嘗試所有組合！")
+            
+            # 候選池標題列
+            c_cols = st.columns([1.5, 3, 2, 2, 2, 2])
+            c_cols[1].markdown("**名稱**")
+            c_cols[2].markdown("**攻擊力**")
+            c_cols[3].markdown("**生命值**")
+            c_cols[4].markdown("**等級**")
+            c_cols[5].markdown("**裝備**")
+            
+            candidate_pool = []
+            # 預設給予 5 個候選空位
+            for i in range(5):
+                cols = st.columns([1.5, 3, 2, 2, 2, 2])
+                cols[0].markdown(f"<div style='padding-top: 6px;'><b>🔄 候選 {i+1}</b></div>", unsafe_allow_html=True)
+                
+                # 🌟 綁定自動查表 (前綴改為 "cand")
+                pet_name = cols[1].selectbox(
+                    "名稱", ANIMAL_LIST, index=None, placeholder="選擇動物", 
+                    key=f"cand_name_{i}", label_visibility="collapsed",
+                    on_change=auto_fill_stats, args=("cand", i)
+                )
+                
+                pet_atk = cols[2].number_input("攻擊力", min_value=1, max_value=50, step=1, key=f"cand_atk_{i}", placeholder="攻擊", label_visibility="collapsed")
+                pet_hp = cols[3].number_input("生命值", min_value=1, max_value=50, step=1, key=f"cand_hp_{i}", placeholder="生命", label_visibility="collapsed")
+                pet_lvl = cols[4].selectbox("等級", [1, 2, 3], index=None, placeholder="預設:1", key=f"cand_lvl_{i}", label_visibility="collapsed")
+                pet_eq = cols[5].text_input("裝備", key=f"cand_eq_{i}", placeholder="", label_visibility="collapsed")
+                
+                if pet_name:
+                    atk = pet_atk 
+                    hp = pet_hp   
+                    lvl = int(pet_lvl) if pet_lvl else 1
+                    eq = pet_eq if pet_eq else None
+                    candidate_pool.append((pet_name, atk, hp, lvl, eq))
+            
+            my_team_config["candidate_pool"] = candidate_pool
+        
         my_team_config["food_pool"] = []
 
 # ==========================================
