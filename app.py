@@ -122,6 +122,11 @@ ANIMAL_LIST = [
     "squirrel", "swan", "tabby-cat", "tiger", "tropical-fish", "turkey", "turtle", 
     "tyrannosaurus", "whale", "worm"
 ]
+# 🌟 新增：預設食物清單
+FOOD_LIST = [
+    "apple", "honey", "cupcake", "meat-bone", "sleeping-pill", "garlic", "salad-bowl", 
+    "canned-food", "pear", "chili", "chocolate", "sushi", "melon", "mushroom", "pizza", "steak", "milk"
+]
 
 st.title("🐾 Super Auto Pets 戰鬥模擬器")
 
@@ -231,44 +236,81 @@ with col_left:
         my_team_config["fixed_members"] = fixed_members
         
         st.write("") 
-        with st.expander("➕ 設定動物候選池 (將與上方固定陣容排列組合)"):
-            st.info("💡 如果上方固定陣容未滿 5 人，系統會將這裡的動物自動填入空缺並嘗試所有組合！")
-            
-            c_cols = st.columns([1.5, 3, 2, 2, 2, 2])
-            c_cols[1].markdown("**名稱**")
-            c_cols[2].markdown("**攻擊力**")
-            c_cols[3].markdown("**生命值**")
-            c_cols[4].markdown("**等級**")
-            c_cols[5].markdown("**裝備**")
+        with st.expander("➕ 進階排列組合：動物候選 / 食物分配 (互斥)"):
+            # 🌟 加入 Radio 按鈕來切換模式 (儲存於 session_state 供備份使用)
+            pool_mode = st.radio(
+                "選擇進階模式", 
+                ["不使用", "動物候選池", "食物分配 (單一食物)"], 
+                horizontal=True,
+                key="pool_mode_radio"
+            )
             
             candidate_pool = []
-            for i in range(5):
-                cols = st.columns([1.5, 3, 2, 2, 2, 2])
+            food_pool = []
+            
+            if pool_mode == "動物候選池":
+                st.info("💡 若上方固定陣容未滿 5 人，系統會將這裡的動物自動填入空缺並嘗試所有組合！")
                 
-                cand_id = f"cand_{i}"
-                is_selected = (st.session_state["swap_source"] == cand_id)
-                btn_type = "primary" if is_selected else "secondary"
-                btn_label = f"🎯 選擇替換" if is_selected else f"🔄 候選 {i+1}"
+                c_cols = st.columns([1.5, 3, 2, 2, 2, 2])
+                c_cols[1].markdown("**名稱**")
+                c_cols[2].markdown("**攻擊力**")
+                c_cols[3].markdown("**生命值**")
+                c_cols[4].markdown("**等級**")
+                c_cols[5].markdown("**裝備**")
                 
-                cols[0].button(
-                    btn_label, key=f"btn_swap_cand_{i}", type=btn_type, 
-                    on_click=handle_swap, args=(cand_id,), width="stretch"
+                for i in range(5):
+                    cols = st.columns([1.5, 3, 2, 2, 2, 2])
+                    cand_id = f"cand_{i}"
+                    is_selected = (st.session_state["swap_source"] == cand_id)
+                    btn_type = "primary" if is_selected else "secondary"
+                    btn_label = f"🎯 選擇替換" if is_selected else f"🔄 候選 {i+1}"
+                    
+                    cols[0].button(
+                        btn_label, key=f"btn_swap_cand_{i}", type=btn_type, 
+                        on_click=handle_swap, args=(cand_id,), width="stretch"
+                    )
+                    
+                    pet_name = cols[1].selectbox("名稱", ANIMAL_LIST, index=None, placeholder="選擇動物", key=f"cand_name_{i}", label_visibility="collapsed", on_change=auto_fill_stats, args=("cand", i))
+                    pet_atk = cols[2].number_input("攻擊力", min_value=1, max_value=50, step=1, key=f"cand_atk_{i}", placeholder="攻擊", label_visibility="collapsed")
+                    pet_hp = cols[3].number_input("生命值", min_value=1, max_value=50, step=1, key=f"cand_hp_{i}", placeholder="生命", label_visibility="collapsed")
+                    pet_lvl = cols[4].number_input("等級", min_value=1, max_value=3, step=1, key=f"cand_lvl_{i}", label_visibility="collapsed")
+                    pet_eq = cols[5].text_input("裝備", key=f"cand_eq_{i}", placeholder="", label_visibility="collapsed")
+                    
+                    if pet_name:
+                        atk, hp = pet_atk, pet_hp   
+                        lvl = int(pet_lvl) if pet_lvl else 1
+                        eq = pet_eq if pet_eq else None
+                        candidate_pool.append((pet_name, atk, hp, lvl, eq))
+                        
+            elif pool_mode == "食物分配 (單一食物)":
+                st.info("💡 系統會將您選擇的 1 個食物，輪流分配給固定陣容中的一隻動物 (需先將固定陣容填滿 5 人)。")
+                food_name = st.selectbox(
+                    "選擇要分配的食物", 
+                    FOOD_LIST, 
+                    index=None, 
+                    placeholder="點擊選擇食物 (例如: garlic)", 
+                    key="cand_food_select"
                 )
-                
-                pet_name = cols[1].selectbox("名稱", ANIMAL_LIST, index=None, placeholder="選擇動物", key=f"cand_name_{i}", label_visibility="collapsed", on_change=auto_fill_stats, args=("cand", i))
-                pet_atk = cols[2].number_input("攻擊力", min_value=1, max_value=50, step=1, key=f"cand_atk_{i}", placeholder="攻擊", label_visibility="collapsed")
-                pet_hp = cols[3].number_input("生命值", min_value=1, max_value=50, step=1, key=f"cand_hp_{i}", placeholder="生命", label_visibility="collapsed")
-                pet_lvl = cols[4].number_input("等級", min_value=1, max_value=3, step=1, key=f"cand_lvl_{i}", label_visibility="collapsed")
-                pet_eq = cols[5].text_input("裝備", key=f"cand_eq_{i}", placeholder="", label_visibility="collapsed")
-                
-                if pet_name:
-                    atk, hp = pet_atk, pet_hp   
-                    lvl = int(pet_lvl) if pet_lvl else 1
-                    eq = pet_eq if pet_eq else None
-                    candidate_pool.append((pet_name, atk, hp, lvl, eq))
+                if food_name:
+                    food_pool = [food_name]
             
             my_team_config["candidate_pool"] = candidate_pool
-        my_team_config["food_pool"] = []
+            my_team_config["food_pool"] = food_pool
+            
+            # ====================
+            # 👇 在這裡補上食物與模式的備份
+            # ====================
+            for i in range(5):
+                for k in ["name", "atk", "hp", "lvl", "eq"]:
+                    for prefix in ["my", "cand"]:
+                        key = f"{prefix}_{k}_{i}"
+                        if key in st.session_state:
+                            st.session_state["manual_backup"][key] = st.session_state[key]
+                        
+            # 🌟 額外備份食物模式選項與選中的食物
+            for key in ["pool_mode_radio", "cand_food_select"]:
+                if key in st.session_state:
+                    st.session_state["manual_backup"][key] = st.session_state[key]
 
 
 with col_right:
