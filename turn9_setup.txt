@@ -8,3 +8,4 @@
 [dolphin(7/8/L2/chili), turtle(6/9/L1), rhino(9/10/L1), scorpion(4/6/L1), sheep(4/6/L1)]
 [otter(7/10/L1/meat-bone), deer(7/8/L1), spider(12/12/L2), snake(9/4/L1), hedgehog(9/9/L2/honey)]
 [camel(8/8/L2), rhino(9/10/L1), ant(7/7/L2/meat-bone), rooster(6/5/L1/none/pear), spider(5/5/L2/meat-bone)]
+[seal(8/22/L1), snake(12/5/L1), spider(11/7/L3), sheep(7/5/L2), cow(7/8/L1)]

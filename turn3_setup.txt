@@ -10,3 +10,4 @@
 [horse(2/2/L1), hedgehog(5/2/L1), otter(3/6/L1), beaver(4/3/L1), spider(3/3/L1)]
 [camel(4/3/L1), spider(4/2/L1), ant(4/4/L1), horse(3/2/L1), cricket(1/3/L1)]
 [spider(4/2/L1), sheep(4/2/L1), kangaroo(3/2/L1), horse(3/3/L1), otter(4/8/L1)]
+[mosquito(3/2/L1), dog(6/3/L1), crab(4/1/L3), pig(7/4/L1), cricket(1/3/L1)]

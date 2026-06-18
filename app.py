@@ -219,7 +219,7 @@ with col_left:
             pet_name = cols[1].selectbox("名稱", ANIMAL_LIST, index=None, placeholder="選擇動物", key=f"my_name_{i}", label_visibility="collapsed", on_change=auto_fill_stats, args=("my", i))
             pet_atk = cols[2].number_input("攻擊力", min_value=1, max_value=50, step=1, key=f"my_atk_{i}", placeholder="攻擊", label_visibility="collapsed")
             pet_hp = cols[3].number_input("生命值", min_value=1, max_value=50, step=1, key=f"my_hp_{i}", placeholder="生命", label_visibility="collapsed")
-            pet_lvl = cols[4].selectbox("等級", [1, 2, 3], index=None, placeholder="預設:1", key=f"my_lvl_{i}", label_visibility="collapsed")
+            pet_lvl = cols[4].number_input("等級", min_value=1, max_value=3, step=1, key=f"my_lvl_{i}", label_visibility="collapsed")
             pet_eq = cols[5].text_input("裝備", key=f"my_eq_{i}", placeholder="", label_visibility="collapsed")
             
             if pet_name:
@@ -258,7 +258,7 @@ with col_left:
                 pet_name = cols[1].selectbox("名稱", ANIMAL_LIST, index=None, placeholder="選擇動物", key=f"cand_name_{i}", label_visibility="collapsed", on_change=auto_fill_stats, args=("cand", i))
                 pet_atk = cols[2].number_input("攻擊力", min_value=1, max_value=50, step=1, key=f"cand_atk_{i}", placeholder="攻擊", label_visibility="collapsed")
                 pet_hp = cols[3].number_input("生命值", min_value=1, max_value=50, step=1, key=f"cand_hp_{i}", placeholder="生命", label_visibility="collapsed")
-                pet_lvl = cols[4].selectbox("等級", [1, 2, 3], index=None, placeholder="預設:1", key=f"cand_lvl_{i}", label_visibility="collapsed")
+                pet_lvl = cols[4].number_input("等級", min_value=1, max_value=3, step=1, key=f"cand_lvl_{i}", label_visibility="collapsed")
                 pet_eq = cols[5].text_input("裝備", key=f"cand_eq_{i}", placeholder="", label_visibility="collapsed")
                 
                 if pet_name:
@@ -300,7 +300,7 @@ with col_right:
             pet_name = cols[1].selectbox("名稱", ANIMAL_LIST, index=None, placeholder="選擇動物", key=f"en_name_{i}", label_visibility="collapsed", on_change=auto_fill_stats, args=("en", i))
             pet_atk = cols[2].number_input("攻擊力", min_value=1, max_value=50, step=1, key=f"en_atk_{i}", placeholder="攻擊", label_visibility="collapsed")
             pet_hp = cols[3].number_input("生命值", min_value=1, max_value=50, step=1, key=f"en_hp_{i}", placeholder="生命", label_visibility="collapsed")
-            pet_lvl = cols[4].selectbox("等級", [1, 2, 3], index=None, placeholder="預設:1", key=f"en_lvl_{i}", label_visibility="collapsed")
+            pet_lvl = cols[4].number_input("等級", min_value=1, max_value=3, step=1, key=f"en_lvl_{i}", label_visibility="collapsed")
             pet_eq = cols[5].text_input("裝備", key=f"en_eq_{i}", placeholder="", label_visibility="collapsed")
             
             if pet_name:

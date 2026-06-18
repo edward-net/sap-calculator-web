@@ -7026,7 +7026,7 @@ data = {
                 "unicodeCodePoint": "🐿",
             },
             "tier": 4,
-            "baseAttack": 2,
+            "baseAttack": 3,
             "baseHealth": 5,
             "packs": ["StandardPack", "ExpansionPack1"],
             "level1Ability": {

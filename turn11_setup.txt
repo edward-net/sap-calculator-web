@@ -4,3 +4,4 @@
 [mammoth(7/13/L1), parrot(13/9/L3), gorilla(11/14/L1), horse(8/11/L2/garlic), shark(4/4/L2/melon)]
 [dolphin(7/8/L2/chili), turtle(9/12/L2), rhino(10/11/L1), snake(11/6/L1), sheep(4/6/L1)]
 [ant(7/7/L2/meat-bone), camel(10/10/L3), rhino(9/17/L1), rooster(9/8/L1), spider(5/5/L2/meat-bone)]
+[seal(14/28/L1), spider(16/7/L3), snake(17/5/L1), cow(12/8/L1), sheep(13/5/L2)]
