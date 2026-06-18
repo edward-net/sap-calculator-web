@@ -324,36 +324,61 @@ config = {
     "enemy_team": enemy_team_config
 }
 
-# 🌟 解決警告：改用 width="stretch"
+# 🌟 改變邏輯：點擊模擬後，把結果存進 session_state
 if st.button("開始模擬 (Run Simulation)", width="stretch", type="primary"):
     with st.spinner('引擎全速運算中... 請稍候...'):
-        response = backend.run_simulation(config)
+        st.session_state["sim_response"] = backend.run_simulation(config)
+
+# 🌟 從 session_state 讀取並渲染畫面 (這樣點擊內部按鈕就不會消失了！)
+if "sim_response" in st.session_state:
+    response = st.session_state["sim_response"]
+    
+    if response["status"] == "error":
+        st.error(f"⚠️ 錯誤：{response['message']}")
+    else:
+        stats = response["stats"]
+        top_results = response["top_results"]
         
-        if response["status"] == "error":
-            st.error(f"⚠️ 錯誤：{response['message']}")
-        else:
-            stats = response["stats"]
-            top_results = response["top_results"]
-            
-            st.success(f"✅ 運算完成！總共進行了 {stats['total_battles']} 場戰鬥。")
-            col1, col2, col3, col4 = st.columns(4)
-            col1.metric("己方陣容總數", f"{stats['total_combinations']} 種")
-            col2.metric("總耗時", f"{stats['total_time']} 秒")
-            col3.metric("單一陣容平均耗時", f"{stats['avg_time_per_combo']} 秒")
-            col4.metric("單場戰鬥平均耗時", f"{stats['avg_time_per_battle']} 秒")
-            
+        st.success(f"✅ 運算完成！總共進行了 {stats['total_battles']} 場戰鬥。")
+        col1, col2, col3, col4 = st.columns(4)
+        col1.metric("己方陣容總數", f"{stats['total_combinations']} 種")
+        col2.metric("總耗時", f"{stats['total_time']} 秒")
+        col3.metric("單一陣容平均耗時", f"{stats['avg_time_per_combo']} 秒")
+        col4.metric("單場戰鬥平均耗時", f"{stats['avg_time_per_battle']} 秒")
+        
+        # 🌟 新增：將標題與「匯出按鈕」並排顯示
+        col_title, col_btn = st.columns([4, 1])
+        with col_title:
             st.subheader(f"🏆 Top {len(top_results)} 最佳陣容")
-            for i, res in enumerate(top_results):
-                rank = i + 1
-                medal = "🥇" if rank == 1 else "🥈" if rank == 2 else "🥉" if rank == 3 else "🏅"
+        with col_btn:
+            # 點擊後，以覆寫模式 ("w") 寫入 setups.txt
+            if st.button("💾 匯出至 setups.txt", width="stretch", type="primary"):
+                try:
+                    with open("setups.txt", "w", encoding="utf-8") as f:
+                        for res in top_results:
+                            # 每一行寫入方括號字串，並加上換行符號
+                            f.write(res['combo_str'] + "\n")
+                            
+                    # st.toast 會在右下角彈出短暫的成功提示，不干擾畫面！
+                    st.toast("✅ 已成功覆寫並寫入 setups.txt！", icon="💾")
+                except Exception as e:
+                    st.error(f"寫入失敗: {e}")
+        
+        for i, res in enumerate(top_results):
+            rank = i + 1
+            medal = "🥇" if rank == 1 else "🥈" if rank == 2 else "🥉" if rank == 3 else "🏅"
+            
+            expander_title = f"{medal} 第 {rank} 名: {res['combo_str']} 👉 勝率 {res['win_rate']:.1f}% ({res['wins']}勝 / {res['draws']}平 / {res['losses']}敗)"
+            with st.expander(expander_title):
                 
-                expander_title = f"{medal} 第 {rank} 名: {res['combo_str']} 👉 勝率 {res['win_rate']:.1f}% ({res['wins']}勝 / {res['draws']}平 / {res['losses']}敗)"
-                with st.expander(expander_title):
-                    
-                    # 🌟 在這裡呼叫我們新寫的 SVG 戰隊渲染器！
-                    render_team_images(res['combo_str'])
-                    
-                    st.write("---")
-                    st.write("⚔️ **對戰各組敵人詳細勝率:**")
-                    for ed in res['enemy_details']:
-                        st.markdown(f"- 🆚 敵方 `{ed['enemy_str']}` ➡️ **{ed['win_rate']:.1f}%** *( {ed['wins']}勝 / {ed['draws']}平 / {ed['losses']}敗 )*")
+                # 依然保留一鍵複製區塊
+                st.markdown("📋 **點擊右側按鈕一鍵複製陣容：**")
+                st.code(res['combo_str'], language=None)
+                
+                # 呼叫我們新寫的 SVG 戰隊渲染器！
+                render_team_images(res['combo_str'])
+                
+                st.write("---")
+                st.write("⚔️ **對戰各組敵人詳細勝率:**")
+                for ed in res['enemy_details']:
+                    st.markdown(f"- 🆚 敵方 `{ed['enemy_str']}` ➡️ **{ed['win_rate']:.1f}%** *( {ed['wins']}勝 / {ed['draws']}平 / {ed['losses']}敗 )*")
