@@ -2,6 +2,14 @@ import os
 import time
 import itertools
 import concurrent.futures
+import logging
+
+# ==========================================
+# 🛑 靜音設定：關閉 Streamlit 多核心切換時的無效警告
+# ==========================================
+logging.getLogger("streamlit.runtime.scriptrunner_utils.script_run_context").setLevel(logging.ERROR)
+logging.getLogger("streamlit.runtime.state.session_state_proxy").setLevel(logging.ERROR)
+logging.getLogger("streamlit").setLevel(logging.ERROR)
 from sapai import Team
 from sapai.pets import Pet
 from sapai.battle import Battle

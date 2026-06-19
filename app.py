@@ -113,7 +113,7 @@ def handle_swap(clicked_id):
 # ==========================================
 ANIMAL_LIST = [
     "ant", "badger", "bat", "beaver", "bison", "blowfish", "boar", "camel", 
-    "cat", "cow", "crab", "cricket", "crocodile", "deer", "dog", "dolphin", "dragon", 
+    "cat", "cow", "crab", "cricket", "crocodile", "deer", "dodo", "dog", "dolphin", "dragon", 
     "dromedary", "duck", "eagle", "elephant", "fish", "flamingo", "fly", "giraffe", 
     "gorilla", "hedgehog", "hippo", "horse", "kangaroo", "leopard", "llama", "mammoth", 
     "microbe", "monkey", "mosquito", "octopus", "otter", "owl", "ox", "parrot", "peacock", 
@@ -124,7 +124,7 @@ ANIMAL_LIST = [
 ]
 # 🌟 新增：預設食物清單
 FOOD_LIST = [
-    "apple", "honey", "cupcake", "meat-bone", "sleeping-pill", "garlic", "salad-bowl", 
+    "apple", "bread","honey", "cupcake", "meat-bone", "sleeping-pill", "garlic", "salad-bowl", 
     "canned-food", "pear", "chili", "chocolate", "sushi", "melon", "mushroom", "pizza", "steak", "milk"
 ]
 

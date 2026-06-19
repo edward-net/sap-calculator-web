@@ -10103,6 +10103,30 @@ data = {
                 },
             ],
         },
+        "food-bread": {
+            "name": "Bread",
+            "id": "food-bread",
+            "image": {
+                "source": "noto-emoji",
+                "commit": "e022fd6573782431ac9a65b520376b57511c31cd",
+                "unicodeCodePoint": "🍞",
+            },
+            "tier": 4, # 你可以根據平衡需求修改 Tier (這裡暫定為 Tier 2)
+            "packs": ["StandardPack", "ExpansionPack1"],
+            "ability": {
+                "description": "Give an animal +7 health.",
+                "triggeredBy": {"kind": "Self"},
+                "trigger": "Buy",
+                "effect": {
+                    "kind": "ModifyStats",
+                    "target": {"kind": "PurchaseTarget"},
+                    "attackAmount": 0,
+                    "healthAmount": 7,
+                    "untilEndOfBattle": False,
+                },
+            },
+            # 這裡可以加上你想要的出現機率 (probabilities) 設定，
+        },
         "food-canned-food": {
             "name": "Canned Food",
             "id": "food-canned-food",
