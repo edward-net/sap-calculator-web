@@ -225,7 +225,8 @@ with col_left:
             pet_atk = cols[2].number_input("攻擊力", min_value=1, max_value=50, step=1, key=f"my_atk_{i}", placeholder="攻擊", label_visibility="collapsed")
             pet_hp = cols[3].number_input("生命值", min_value=1, max_value=50, step=1, key=f"my_hp_{i}", placeholder="生命", label_visibility="collapsed")
             pet_lvl = cols[4].number_input("等級", min_value=1, max_value=3, step=1, key=f"my_lvl_{i}", label_visibility="collapsed")
-            pet_eq = cols[5].text_input("裝備", key=f"my_eq_{i}", placeholder="", label_visibility="collapsed")
+            # 🌟 已修改：手動輸入改為下拉選單
+            pet_eq = cols[5].selectbox("裝備", FOOD_LIST, index=None, placeholder="裝備", key=f"my_eq_{i}", label_visibility="collapsed")
             
             if pet_name:
                 atk, hp = pet_atk, pet_hp   
@@ -274,7 +275,8 @@ with col_left:
                     pet_atk = cols[2].number_input("攻擊力", min_value=1, max_value=50, step=1, key=f"cand_atk_{i}", placeholder="攻擊", label_visibility="collapsed")
                     pet_hp = cols[3].number_input("生命值", min_value=1, max_value=50, step=1, key=f"cand_hp_{i}", placeholder="生命", label_visibility="collapsed")
                     pet_lvl = cols[4].number_input("等級", min_value=1, max_value=3, step=1, key=f"cand_lvl_{i}", label_visibility="collapsed")
-                    pet_eq = cols[5].text_input("裝備", key=f"cand_eq_{i}", placeholder="", label_visibility="collapsed")
+                    # 🌟 已修改：手動輸入改為下拉選單
+                    pet_eq = cols[5].selectbox("裝備", FOOD_LIST, index=None, placeholder="裝備", key=f"cand_eq_{i}", label_visibility="collapsed")
                     
                     if pet_name:
                         atk, hp = pet_atk, pet_hp   
@@ -306,7 +308,7 @@ with col_left:
                         key = f"{prefix}_{k}_{i}"
                         if key in st.session_state:
                             st.session_state["manual_backup"][key] = st.session_state[key]
-                        
+                            
             # 🌟 額外備份食物模式選項與選中的食物
             for key in ["pool_mode_radio", "cand_food_select"]:
                 if key in st.session_state:
@@ -343,7 +345,8 @@ with col_right:
             pet_atk = cols[2].number_input("攻擊力", min_value=1, max_value=50, step=1, key=f"en_atk_{i}", placeholder="攻擊", label_visibility="collapsed")
             pet_hp = cols[3].number_input("生命值", min_value=1, max_value=50, step=1, key=f"en_hp_{i}", placeholder="生命", label_visibility="collapsed")
             pet_lvl = cols[4].number_input("等級", min_value=1, max_value=3, step=1, key=f"en_lvl_{i}", label_visibility="collapsed")
-            pet_eq = cols[5].text_input("裝備", key=f"en_eq_{i}", placeholder="", label_visibility="collapsed")
+            # 🌟 已修改：手動輸入改為下拉選單
+            pet_eq = cols[5].selectbox("裝備", FOOD_LIST, index=None, placeholder="裝備", key=f"en_eq_{i}", label_visibility="collapsed")
             
             if pet_name:
                 atk, hp = pet_atk, pet_hp
