@@ -9,3 +9,4 @@
 [spider(4/4/L1/meat-bone), otter(6/9/L1), turtle(2/7/L1), dolphin(6/7/L1), sheep(4/6/L1)]
 [deer(4/3/L1), spider(3/3/L1), spider(2/2/L1), otter(4/7/L1/meat-bone), hedgehog(8/6/L2/honey)]
 [horse(6/5/L1), peacock(2/5/L1), camel(5/5/L1), ant(6/6/L2/meat-bone), spider(4/4/L1/meat-bone)]
+[dog(8/5/L1/garlic), squirrel(3/6/L1/meat-bone), crab(4/1/L1), crab(6/4/L1), rabbit(3/6/L1/meat-bone)]

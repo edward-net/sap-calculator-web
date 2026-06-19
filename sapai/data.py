@@ -6797,7 +6797,7 @@ data = {
             },
             "tier": 5,
             "baseAttack": 6,
-            "baseHealth": 4,
+            "baseHealth": 5,
             "packs": ["StandardPack", "ExpansionPack1"],
             "level1Ability": {
                 "description": "Faint: Summon a Chick with 1 health and half the Attack of this.",

@@ -1,6 +1,7 @@
 import os
 import time
 import itertools
+import concurrent.futures
 from sapai import Team
 from sapai.pets import Pet
 from sapai.battle import Battle
@@ -168,7 +169,65 @@ def simulate_end_of_turn(team):
                     front_slot.pet._attack += buff_amount
                     front_slot.pet._health += buff_amount
                     break
-
+# ==========================================
+# ⚡ 多核心工人函數：負責單一陣容的完整運算
+# ==========================================
+def worker_simulate_combo(args):
+    """供 ProcessPool 呼叫的獨立函數，處理單一 combo_tuple 與所有敵人的對戰"""
+    combo_tuple, enemy_pool, n = args
+    
+    my_wins = 0
+    enemy_wins = 0
+    draws = 0
+    enemy_details = [] 
+    
+    for enemy_bp in enemy_pool:
+        sub_my_wins = 0
+        sub_enemy_wins = 0
+        sub_draws = 0
+        
+        for _ in range(n):
+            # 這裡就是最耗時的地方，我們讓不同 CPU 核心分頭執行這段
+            my_team_pets = [make_pet(blueprint) for blueprint in combo_tuple]
+            enemy_team_pets = [make_pet(blueprint) for blueprint in enemy_bp]
+            
+            my_team = Team(my_team_pets)
+            enemy_team = Team(enemy_team_pets)
+            
+            battle = Battle(my_team, enemy_team)
+            simulate_end_of_turn(battle.t0)
+            simulate_end_of_turn(battle.t1)
+            
+            winner = battle.battle()
+            
+            if winner == 0:
+                my_wins += 1; sub_my_wins += 1
+            elif winner == 1:
+                enemy_wins += 1; sub_enemy_wins += 1
+            else:
+                draws += 1; sub_draws += 1
+        
+        sub_win_rate = (sub_my_wins / n) * 100
+        enemy_details.append({
+            "enemy_str": format_team_name(enemy_bp),
+            "win_rate": sub_win_rate,
+            "wins": sub_my_wins,
+            "draws": sub_draws,
+            "losses": sub_enemy_wins
+        })
+                
+    total_matches_for_this_combo = len(enemy_pool) * n
+    win_rate = (my_wins / total_matches_for_this_combo) * 100
+    
+    # 直接回傳這組的最終統計字典
+    return {
+        "combo_str": format_team_name(combo_tuple),
+        "win_rate": win_rate,
+        "wins": my_wins,
+        "draws": draws,
+        "losses": enemy_wins,
+        "enemy_details": enemy_details
+    }
 # ==========================================
 # ⚙️ 後端 API: 接收 Config 並執行大數據模擬
 # ==========================================
@@ -261,63 +320,24 @@ def run_simulation(config):
         return {"status": "error", "message": "未能產生任何己方隊伍，請檢查輸入參數。"}
 
     # ---------------------------------------------------------
-    # 4. 執行戰鬥模擬
+    # 4. 執行戰鬥模擬 (🚀 多核心火力全開版)
     # ---------------------------------------------------------
     results = []
     total_combos = len(all_permutations)
     total_battles = total_combos * len(enemy_pool) * n
 
-    for combo_tuple in all_permutations:
-        my_wins = 0
-        enemy_wins = 0
-        draws = 0
-        enemy_details = [] 
-        
-        for enemy_bp in enemy_pool:
-            sub_my_wins = 0
-            sub_enemy_wins = 0
-            sub_draws = 0
-            
-            for _ in range(n):
-                my_team_pets = [make_pet(blueprint) for blueprint in combo_tuple]
-                enemy_team_pets = [make_pet(blueprint) for blueprint in enemy_bp]
-                
-                my_team = Team(my_team_pets)
-                enemy_team = Team(enemy_team_pets)
-                
-                battle = Battle(my_team, enemy_team)
-                simulate_end_of_turn(battle.t0)
-                simulate_end_of_turn(battle.t1)
-                
-                winner = battle.battle()
-                
-                if winner == 0:
-                    my_wins += 1; sub_my_wins += 1
-                elif winner == 1:
-                    enemy_wins += 1; sub_enemy_wins += 1
-                else:
-                    draws += 1; sub_draws += 1
-            
-            sub_win_rate = (sub_my_wins / n) * 100
-            enemy_details.append({
-                "enemy_str": format_team_name(enemy_bp),
-                "win_rate": sub_win_rate,
-                "wins": sub_my_wins,
-                "draws": sub_draws,
-                "losses": sub_enemy_wins
-            })
-                    
-        total_matches_for_this_combo = len(enemy_pool) * n
-        win_rate = (my_wins / total_matches_for_this_combo) * 100
-        
-        results.append({
-            "combo_str": format_team_name(combo_tuple),
-            "win_rate": win_rate,
-            "wins": my_wins,
-            "draws": draws,
-            "losses": enemy_wins,
-            "enemy_details": enemy_details
-        })
+    # 準備分配給工人的參數包
+    worker_args = [(combo, enemy_pool, n) for combo in all_permutations]
+    
+    # 自動偵測你的電腦有幾顆 CPU 核心
+    max_workers = os.cpu_count() or 4 
+    print(f"啟動多核心引擎：使用 {max_workers} 個 CPU 核心進行運算...")
+    
+    # 開啟進程池 (ProcessPoolExecutor) 進行並行運算
+    with concurrent.futures.ProcessPoolExecutor(max_workers=max_workers) as executor:
+        # map 函數會自動把 worker_args 派發給所有核心，並收集結果
+        for res in executor.map(worker_simulate_combo, worker_args):
+            results.append(res)
 
     # ---------------------------------------------------------
     # 5. 打包並回傳結構化資料
