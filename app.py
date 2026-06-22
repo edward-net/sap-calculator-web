@@ -3,6 +3,10 @@ import backend
 from sapai.data import data
 import os
 import re
+import time
+import threading
+import multiprocessing
+from streamlit.runtime.scriptrunner import add_script_run_ctx
 
 # 頁面基本設定 (使用寬螢幕佈局)
 st.set_page_config(page_title="SAP 戰鬥模擬器", layout="wide")
@@ -122,9 +126,8 @@ ANIMAL_LIST = [
     "squirrel", "swan", "tabby-cat", "tiger", "tropical-fish", "turkey", "turtle", 
     "tyrannosaurus", "whale", "worm"
 ]
-# 🌟 新增：預設食物清單
 FOOD_LIST = [
-    "apple", "bread","honey", "cupcake", "meat-bone", "sleeping-pill", "garlic", "salad-bowl", 
+    "apple", "bread", "bread-crumbs","honey", "cupcake", "meat-bone", "sleeping-pill", "garlic", "salad-bowl", 
     "canned-food", "pear", "chili", "chocolate", "sushi", "melon", "mushroom", "pizza", "steak", "milk"
 ]
 
@@ -144,10 +147,6 @@ col_left, col_right = st.columns(2)
 with col_left:
     st.header("🔵 己方陣容")
     
-    # ==========================================
-    # 💾 智慧備份與還原系統 (完美修復自動補全)
-    # ==========================================
-    # 1. 初始化記憶變數
     if "prev_my_mode" not in st.session_state:
         st.session_state["prev_my_mode"] = "手動選取模式"
     if "manual_backup" not in st.session_state:
@@ -155,9 +154,7 @@ with col_left:
 
     my_mode = st.radio("選擇輸入模式 (己方)", ["手動選取模式", "讀取檔案模式 (setups.txt)"])
     
-    # 2. 偵測模式切換的「瞬間」來執行存檔或還原
     if st.session_state["prev_my_mode"] == "手動選取模式" and my_mode == "讀取檔案模式 (setups.txt)":
-        # 剛剛離開手動模式 ➡️ 拍照存檔
         for i in range(5):
             for k in ["name", "atk", "hp", "lvl", "eq"]:
                 for prefix in ["my", "cand"]:
@@ -166,16 +163,11 @@ with col_left:
                         st.session_state["manual_backup"][key] = st.session_state[key]
                         
     elif st.session_state["prev_my_mode"] == "讀取檔案模式 (setups.txt)" and my_mode == "手動選取模式":
-        # 剛剛切回手動模式 ➡️ 倒回備份
         for key, val in st.session_state["manual_backup"].items():
             st.session_state[key] = val
             
-    # 更新目前模式記憶
     st.session_state["prev_my_mode"] = my_mode
     
-    # ==========================================
-    # 🎨 UI 介面渲染
-    # ==========================================
     my_team_config = {}
     
     if my_mode == "讀取檔案模式 (setups.txt)":
@@ -225,7 +217,6 @@ with col_left:
             pet_atk = cols[2].number_input("攻擊力", min_value=1, max_value=50, step=1, key=f"my_atk_{i}", placeholder="攻擊", label_visibility="collapsed")
             pet_hp = cols[3].number_input("生命值", min_value=1, max_value=50, step=1, key=f"my_hp_{i}", placeholder="生命", label_visibility="collapsed")
             pet_lvl = cols[4].number_input("等級", min_value=1, max_value=3, step=1, key=f"my_lvl_{i}", label_visibility="collapsed")
-            # 🌟 已修改：手動輸入改為下拉選單
             pet_eq = cols[5].selectbox("裝備", FOOD_LIST, index=None, placeholder="裝備", key=f"my_eq_{i}", label_visibility="collapsed")
             
             if pet_name:
@@ -238,7 +229,6 @@ with col_left:
         
         st.write("") 
         with st.expander("➕ 進階排列組合：動物候選 / 食物分配 (互斥)"):
-            # 🌟 加入 Radio 按鈕來切換模式 (儲存於 session_state 供備份使用)
             pool_mode = st.radio(
                 "選擇進階模式", 
                 ["不使用", "動物候選池", "食物分配 (單一食物)"], 
@@ -275,7 +265,6 @@ with col_left:
                     pet_atk = cols[2].number_input("攻擊力", min_value=1, max_value=50, step=1, key=f"cand_atk_{i}", placeholder="攻擊", label_visibility="collapsed")
                     pet_hp = cols[3].number_input("生命值", min_value=1, max_value=50, step=1, key=f"cand_hp_{i}", placeholder="生命", label_visibility="collapsed")
                     pet_lvl = cols[4].number_input("等級", min_value=1, max_value=3, step=1, key=f"cand_lvl_{i}", label_visibility="collapsed")
-                    # 🌟 已修改：手動輸入改為下拉選單
                     pet_eq = cols[5].selectbox("裝備", FOOD_LIST, index=None, placeholder="裝備", key=f"cand_eq_{i}", label_visibility="collapsed")
                     
                     if pet_name:
@@ -299,9 +288,6 @@ with col_left:
             my_team_config["candidate_pool"] = candidate_pool
             my_team_config["food_pool"] = food_pool
             
-            # ====================
-            # 👇 在這裡補上食物與模式的備份
-            # ====================
             for i in range(5):
                 for k in ["name", "atk", "hp", "lvl", "eq"]:
                     for prefix in ["my", "cand"]:
@@ -309,7 +295,6 @@ with col_left:
                         if key in st.session_state:
                             st.session_state["manual_backup"][key] = st.session_state[key]
                             
-            # 🌟 額外備份食物模式選項與選中的食物
             for key in ["pool_mode_radio", "cand_food_select"]:
                 if key in st.session_state:
                     st.session_state["manual_backup"][key] = st.session_state[key]
@@ -345,7 +330,6 @@ with col_right:
             pet_atk = cols[2].number_input("攻擊力", min_value=1, max_value=50, step=1, key=f"en_atk_{i}", placeholder="攻擊", label_visibility="collapsed")
             pet_hp = cols[3].number_input("生命值", min_value=1, max_value=50, step=1, key=f"en_hp_{i}", placeholder="生命", label_visibility="collapsed")
             pet_lvl = cols[4].number_input("等級", min_value=1, max_value=3, step=1, key=f"en_lvl_{i}", label_visibility="collapsed")
-            # 🌟 已修改：手動輸入改為下拉選單
             pet_eq = cols[5].selectbox("裝備", FOOD_LIST, index=None, placeholder="裝備", key=f"en_eq_{i}", label_visibility="collapsed")
             
             if pet_name:
@@ -357,7 +341,6 @@ with col_right:
         enemy_team_config["fixed_members"] = enemy_fixed
 
 st.markdown("---")
-
 st.header("🚀 模擬結果")
 
 config = {
@@ -369,17 +352,78 @@ config = {
     "enemy_team": enemy_team_config
 }
 
-# 🌟 改變邏輯：點擊模擬後，把結果存進 session_state
-if st.button("開始模擬 (Run Simulation)", width="stretch", type="primary"):
-    with st.spinner('引擎全速運算中... 請稍候...'):
-        st.session_state["sim_response"] = backend.run_simulation(config)
+# ==========================================
+# 🌟 背景執行與中止機制 (Threading - 完美避開 StopException)
+# ==========================================
+# 初始化一個「字典」來儲存狀態，避免 Streamlit 直接攔截賦值動作引發崩潰
+if "task_state" not in st.session_state:
+    st.session_state["task_state"] = {"is_running": False, "response": None}
+if "cancel_event" not in st.session_state:
+    st.session_state["cancel_event"] = None
 
-# 🌟 從 session_state 讀取並渲染畫面 (這樣點擊內部按鈕就不會消失了！)
-if "sim_response" in st.session_state:
-    response = st.session_state["sim_response"]
+# 使用 columns 並排按鈕
+col_btn_start, col_btn_stop = st.columns(2)
+
+with col_btn_start:
+    # 執行中時，開始按鈕會被禁用
+    start_btn = st.button("▶️ 開始模擬 (Run Simulation)", width="stretch", type="primary", disabled=st.session_state["task_state"]["is_running"])
+
+with col_btn_stop:
+    # 只有執行中時，停止按鈕才能被點擊
+    stop_btn = st.button("🛑 停止模擬", width="stretch", type="secondary", disabled=not st.session_state["task_state"]["is_running"])
+
+# 處理按下開始按鈕
+if start_btn:
+    st.session_state["task_state"]["is_running"] = True
+    st.session_state["task_state"]["response"] = None
+    
+    # 建立跨進程通訊用的 Manager 與 Event
+    manager = multiprocessing.Manager()
+    st.session_state["cancel_event"] = manager.Event()
+    
+    # 定義背景執行緒的工作 (傳入字典 dict_state)
+    def run_simulation_bg(cfg, evt, dict_state):
+        try:
+            res = backend.run_simulation(cfg, cancel_event=evt)
+            # 修改字典內部的值，不會觸發 Streamlit 的 StopException
+            dict_state["response"] = res
+        except Exception as e:
+            dict_state["response"] = {"status": "error", "message": str(e)}
+        finally:
+            # 確保不管成功或被中斷，最後都會解鎖畫面
+            dict_state["is_running"] = False
+            
+    # 建立並啟動背景 Thread (將 task_state 字典傳進去)
+    t = threading.Thread(target=run_simulation_bg, args=(config, st.session_state["cancel_event"], st.session_state["task_state"]))
+    add_script_run_ctx(t) 
+    t.start()
+    
+    st.rerun() # 重整網頁
+
+# 處理按下停止按鈕
+if stop_btn:
+    if st.session_state["cancel_event"]:
+        st.session_state["cancel_event"].set() # 亮起紅燈，通知 backend 停下
+    st.rerun()
+
+# 顯示進度狀態與自動更新
+if st.session_state["task_state"]["is_running"]:
+    st.info("🚀 引擎全速運算中... (若需中斷請點擊上方停止按鈕)")
+    st.progress(60, text="背景正在執行多核心運算任務，請稍候...")
+    
+    time.sleep(1) # 每隔 1 秒自動重整一次畫面，檢查 Thread 是否算完了
+    st.rerun()
+
+
+# 🌟 讀取並渲染結果畫面 (從 task_state 字典中讀取)
+if st.session_state["task_state"]["response"] is not None and not st.session_state["task_state"]["is_running"]:
+    response = st.session_state["task_state"]["response"]
     
     if response["status"] == "error":
         st.error(f"⚠️ 錯誤：{response['message']}")
+    elif response["status"] == "cancelled":
+        # 顯示安全中止的提示
+        st.warning(f"{response['message']}")
     else:
         stats = response["stats"]
         top_results = response["top_results"]
@@ -391,20 +435,15 @@ if "sim_response" in st.session_state:
         col3.metric("單一陣容平均耗時", f"{stats['avg_time_per_combo']} 秒")
         col4.metric("單場戰鬥平均耗時", f"{stats['avg_time_per_battle']} 秒")
         
-        # 🌟 新增：將標題與「匯出按鈕」並排顯示
         col_title, col_btn = st.columns([4, 1])
         with col_title:
             st.subheader(f"🏆 Top {len(top_results)} 最佳陣容")
         with col_btn:
-            # 點擊後，以覆寫模式 ("w") 寫入 setups.txt
             if st.button("💾 匯出至 setups.txt", width="stretch", type="primary"):
                 try:
                     with open("setups.txt", "w", encoding="utf-8") as f:
                         for res in top_results:
-                            # 每一行寫入方括號字串，並加上換行符號
                             f.write(res['combo_str'] + "\n")
-                            
-                    # st.toast 會在右下角彈出短暫的成功提示，不干擾畫面！
                     st.toast("✅ 已成功覆寫並寫入 setups.txt！", icon="💾")
                 except Exception as e:
                     st.error(f"寫入失敗: {e}")
@@ -415,12 +454,9 @@ if "sim_response" in st.session_state:
             
             expander_title = f"{medal} 第 {rank} 名: {res['combo_str']} 👉 勝率 {res['win_rate']:.1f}% ({res['wins']}勝 / {res['draws']}平 / {res['losses']}敗)"
             with st.expander(expander_title):
-                
-                # 依然保留一鍵複製區塊
                 st.markdown("📋 **點擊右側按鈕一鍵複製陣容：**")
                 st.code(res['combo_str'], language=None)
                 
-                # 呼叫我們新寫的 SVG 戰隊渲染器！
                 render_team_images(res['combo_str'])
                 
                 st.write("---")

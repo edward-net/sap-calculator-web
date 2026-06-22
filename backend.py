@@ -3,6 +3,8 @@ import time
 import itertools
 import concurrent.futures
 import logging
+# 🌟 新增：引入 multiprocessing 用於跨進程通訊
+import multiprocessing
 
 # ==========================================
 # 🛑 靜音設定：關閉 Streamlit 多核心切換時的無效警告
@@ -169,6 +171,7 @@ def simulate_end_of_turn(team):
                         cloned_pet.team = team
                         team[i] = cloned_pet
                         break
+                        
         elif p.name == "pet-monkey":
             for j in range(5):
                 front_slot = team[j]
@@ -177,12 +180,33 @@ def simulate_end_of_turn(team):
                     front_slot.pet._attack += buff_amount
                     front_slot.pet._health += buff_amount
                     break
+                    
+        # 🦬 🌟 在這裡新增：野牛 (Bison) 能力邏輯
+        elif p.name == "pet-bison":
+            has_lvl3_friend = False
+            # 遍歷隊伍尋找有沒有等級 3 的朋友
+            for friend_slot in team:
+                if not friend_slot.empty:
+                    f_pet = friend_slot.pet
+                    # 條件：必須是有效的動物，且「不能是野牛自己」
+                    if f_pet != p and f_pet.name != "pet-none" and "EMPTY" not in f_pet.name:
+                        if f_pet.level == 3:
+                            has_lvl3_friend = True
+                            break # 只要找到一隻符合條件就足夠了，跳出尋找迴圈
+            
+            # 如果有 3 等隊友，根據野牛自身的等級給予 Buff (+2/+2, +4/+4, +6/+6)
+            if has_lvl3_friend:
+                buff_amount = p.level * 2
+                p._attack += buff_amount
+                p._health += buff_amount
+
 # ==========================================
 # ⚡ 多核心工人函數：負責單一陣容的完整運算
 # ==========================================
 def worker_simulate_combo(args):
     """供 ProcessPool 呼叫的獨立函數，處理單一 combo_tuple 與所有敵人的對戰"""
-    combo_tuple, enemy_pool, n = args
+    # 🌟 新增：接收 cancel_event 參數
+    combo_tuple, enemy_pool, n, cancel_event = args
     
     my_wins = 0
     enemy_wins = 0
@@ -190,12 +214,15 @@ def worker_simulate_combo(args):
     enemy_details = [] 
     
     for enemy_bp in enemy_pool:
+        # 🌟 新增：定期檢查是否收到中止訊號
+        if cancel_event is not None and cancel_event.is_set():
+            return None # 收到中止訊號，丟下工作直接回傳 None
+            
         sub_my_wins = 0
         sub_enemy_wins = 0
         sub_draws = 0
         
         for _ in range(n):
-            # 這裡就是最耗時的地方，我們讓不同 CPU 核心分頭執行這段
             my_team_pets = [make_pet(blueprint) for blueprint in combo_tuple]
             enemy_team_pets = [make_pet(blueprint) for blueprint in enemy_bp]
             
@@ -227,7 +254,6 @@ def worker_simulate_combo(args):
     total_matches_for_this_combo = len(enemy_pool) * n
     win_rate = (my_wins / total_matches_for_this_combo) * 100
     
-    # 直接回傳這組的最終統計字典
     return {
         "combo_str": format_team_name(combo_tuple),
         "win_rate": win_rate,
@@ -236,10 +262,12 @@ def worker_simulate_combo(args):
         "losses": enemy_wins,
         "enemy_details": enemy_details
     }
+
 # ==========================================
 # ⚙️ 後端 API: 接收 Config 並執行大數據模擬
 # ==========================================
-def run_simulation(config):
+# 🌟 新增：允許前端傳入 cancel_event
+def run_simulation(config, cancel_event=None):
     """
     接收前端傳入的 config 字典，進行隊伍生成與對戰模擬，
     並回傳結構化的戰報資料 (JSON-like dictionary)。
@@ -328,24 +356,36 @@ def run_simulation(config):
         return {"status": "error", "message": "未能產生任何己方隊伍，請檢查輸入參數。"}
 
     # ---------------------------------------------------------
-    # 4. 執行戰鬥模擬 (🚀 多核心火力全開版)
+    # 4. 執行戰鬥模擬 (🚀 多核心火力全開版 - 支援手動中斷)
     # ---------------------------------------------------------
     results = []
     total_combos = len(all_permutations)
     total_battles = total_combos * len(enemy_pool) * n
 
-    # 準備分配給工人的參數包
-    worker_args = [(combo, enemy_pool, n) for combo in all_permutations]
+    # 🌟 新增：將 cancel_event 包進去發給工人
+    worker_args = [(combo, enemy_pool, n, cancel_event) for combo in all_permutations]
     
-    # 自動偵測你的電腦有幾顆 CPU 核心
     max_workers = os.cpu_count() or 4 
     print(f"啟動多核心引擎：使用 {max_workers} 個 CPU 核心進行運算...")
     
-    # 開啟進程池 (ProcessPoolExecutor) 進行並行運算
+    # 🌟 修改：使用 submit + as_completed，讓我們能即時監聽並攔截結果
     with concurrent.futures.ProcessPoolExecutor(max_workers=max_workers) as executor:
-        # map 函數會自動把 worker_args 派發給所有核心，並收集結果
-        for res in executor.map(worker_simulate_combo, worker_args):
-            results.append(res)
+        futures = [executor.submit(worker_simulate_combo, arg) for arg in worker_args]
+        
+        for future in concurrent.futures.as_completed(futures):
+            # 如果發現紅綠燈亮了（前端按了暫停）
+            if cancel_event is not None and cancel_event.is_set():
+                print("⚠️ 收到中斷訊號，正在緊急關閉進程池...")
+                # 釋放資源，取消還沒開始的任務
+                executor.shutdown(wait=False, cancel_futures=True)
+                return {
+                    "status": "cancelled", 
+                    "message": "🚫 模擬已被手動中斷，已安全釋放 CPU 資源。"
+                }
+                
+            res = future.result()
+            if res is not None:
+                results.append(res)
 
     # ---------------------------------------------------------
     # 5. 打包並回傳結構化資料

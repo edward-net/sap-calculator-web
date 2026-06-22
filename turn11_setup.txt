@@ -6,3 +6,6 @@
 [ant(7/7/L2/meat-bone), camel(10/10/L3), rhino(9/17/L1), rooster(9/8/L1), spider(5/5/L2/meat-bone)]
 [seal(14/28/L1), spider(16/7/L3), snake(17/5/L1), cow(12/8/L1), sheep(13/5/L2)]
 [mammoth(11/15/L1), leopard(17/7/L1), turkey(10/10/L1), hippo(10/13/L2/meat-bone), gorilla(11/12/L1)]
+[flamingo(7/6/L2), dodo(12/9/L2), ox(7/9/L1/bread), snake(11/6/L1/melon), parrot(8/6/L1)]
+[cat(9/10/L1), dodo(14/16/L2/chili), boar(15/11/L1/melon), shark(8/8/L1/bread), cow(7/9/L1)]
+[ox(14/14/L1/garlic), snake(12/7/L2), otter(17/17/L3), kangaroo(4/6/L2/garlic), skunk(7/9/L2)]

@@ -3565,7 +3565,7 @@ data = {
             },
             "tier": 2,
             "baseAttack": 1,
-            "baseHealth": 3,
+            "baseHealth": 2,
             "packs": ["StandardPack", "ExpansionPack1"],
             "level1Ability": {
                 "description": "Start of turn: Gain 1 gold.",
@@ -8056,8 +8056,8 @@ data = {
                 "unicodeCodePoint": "🦈",
             },
             "tier": 5,
-            "baseAttack": 4,
-            "baseHealth": 4,
+            "baseAttack": 2,
+            "baseHealth": 2,
             "packs": ["StandardPack"],
             "level1Ability": {
                 "description": "Friend faints: Gain +2/+2.",
@@ -8969,8 +8969,8 @@ data = {
                 "unicodeCodePoint": "🐅",
             },
             "tier": 6,
-            "baseAttack": 4,
-            "baseHealth": 3,
+            "baseAttack": 6,
+            "baseHealth": 4,
             "packs": ["StandardPack", "ExpansionPack1"],
             "level1Ability": {
                 "description": "The friend ahead repeats their ability in battle as if they were level 1.",

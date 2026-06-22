@@ -1,2 +1,3 @@
 [mammoth(7/15/L2/mushroom), armadillo(8/12/L1/melon), gorilla(7/10/L1/melon), ox(17/19/L1), blowfish(11/13/L2/food-meat-bone)]
 [mammoth(6/14/L1/steak), parrot(14/10/L3/chili), gorilla(14/17/L2), horse(8/11/L2/garlic), shark(5/5/L2/melon)]
+[mammoth(7/15/L1), snake(16/11/L1/melon), ox(8/10/L1/bread), parrot(8/6/L1), dodo(14/11/L2)]

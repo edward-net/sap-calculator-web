@@ -12,3 +12,8 @@
 [spider(4/2/L1), sheep(4/2/L1), kangaroo(3/2/L1), horse(3/3/L1), otter(4/8/L1)]
 [mosquito(3/2/L1), dog(6/3/L1), crab(4/1/L3), pig(7/4/L1), cricket(1/3/L1)]
 [flamingo(3/2/L1), dodo(5/2/L1), mosquito(3/3/L1), pig(6/3/L1), spider(2/2/L1)]
+[camel(4/4/L1), giraffe(1/2/L2), ant(2/2/L1), fish(4/6/L1), otter(2/5/L1)]
+[ant(4/4/L1), dodo(5/2/L1), fish(4/5/L1), horse(2/1/L1), cricket(4/5/L1)]
+[dolphin(4/3/L1), flamingo(3/2/L1), ant(3/3/L1), peacock(2/5/L1), pigeon(3/2/L1)]
+[beaver(3/2/L1), ox(1/3/L1), ox(3/3/L1), cricket(5/5/L1), worm(1/4/L1)]
+[mosquito(2/2/L1), ox(1/3/L1), ant(2/2/L1), mosquito(4/6/L2), otter(2/5/L1)]

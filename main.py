@@ -42,7 +42,7 @@ def make_pet(pet_blueprint):
     return p
 
 # ==========================================
-# 🌟 商店階段 (EndOfTurn) 鸚鵡變身器 (攻擊力排序版)
+# 🌟 商店階段 (EndOfTurn) 技能觸發器 (攻擊力排序版)
 # ==========================================
 def simulate_end_of_turn(team):
     # 1. 蒐集場上所有動物，並記錄牠們的原始位置 (index)
@@ -52,67 +52,79 @@ def simulate_end_of_turn(team):
             pets_with_idx.append((slot.pet, i))
             
     # 2. 按照攻擊力 (Attack) 由高到低排序，決定發動順序
-    # (SAP 原版機制為攻擊力高者先發動；若攻擊力相同則隨機，這裡我們靠 Python 穩定排序即可)
     pets_with_idx.sort(key=lambda x: x[0].attack, reverse=True)
     
     # 3. 依照攻擊力順序，依序執行 End of Turn 技能
     for original_pet, i in pets_with_idx:
         p = team[i].pet  # 重新從隊伍抓取，確保拿到的還是最新的狀態
         
+        # 🦜 鸚鵡能力邏輯
         if p.name == "pet-parrot":
-            # 往前尋找最近的非空位隊友
             for j in range(i - 1, -1, -1):
                 front_slot = team[j]
                 if not front_slot.empty:
                     front_pet = front_slot.pet
                     if front_pet.name != "pet-none" and "EMPTY" not in front_pet.name:
-                        # 記住鸚鵡原本的體質、等級與裝備
                         parrot_atk = p.attack
                         parrot_hp = p.health
                         parrot_lvl = p.level
                         parrot_status = p.status
                         
-                        # 複製前方動物的物種
                         cloned_pet = Pet(front_pet.name)
                         
-                        # 恢復鸚鵡原本的等級
                         if parrot_lvl == 2:
                             for _ in range(2): cloned_pet.gain_experience()
                         elif parrot_lvl == 3:
                             for _ in range(5): cloned_pet.gain_experience()
                             
-                        # 恢復鸚鵡原本的裝備與面板
                         if parrot_status != "none":
                             cloned_pet._status = parrot_status
                         cloned_pet._attack = parrot_atk
                         cloned_pet._health = parrot_hp
                         
-                        # 放回隊伍中原本的位置
                         cloned_pet.team = team
                         team[i] = cloned_pet
                         break
-        # 🌟 加上 Monkey 的 End of turn 技能邏輯
+
+        # 🐵 猴子能力邏輯
         elif p.name == "pet-monkey":
-            # 尋找最右邊 (index 最小) 的非空位隊友
             for j in range(5):
                 front_slot = team[j]
                 if not front_slot.empty and front_slot.pet.name != "pet-none" and "EMPTY" not in front_slot.pet.name:
-                    # 根據猴子的等級給予 +2/+2, +4/+4, +6/+6 (依據你給的 JSON 設定)
                     buff_amount = p.level * 2
                     front_slot.pet._attack += buff_amount
                     front_slot.pet._health += buff_amount
-                    # 找到最右邊的第一隻動物並給完 Buff 後就可以跳出迴圈
                     break
+
+        # 🦬 🌟 新增：野牛 (Bison) 能力邏輯
+        elif p.name == "pet-bison":
+            # 檢查隊伍中是否有「其他」等級 3 的隊友
+            has_lvl3_friend = False
+            for friend_slot in team:
+                if not friend_slot.empty:
+                    f_pet = friend_slot.pet
+                    # 必須是有效動物、且不是野牛自己
+                    if f_pet != p and f_pet.name != "pet-none" and "EMPTY" not in f_pet.name:
+                        if f_pet.level == 3:
+                            has_lvl3_friend = True
+                            break  # 只要找到一隻就符合條件，提早結束檢查
+            
+            # 若條件成立，根據野牛等級給予自我增益 (+2/+2, +4/+4, +6/+6)
+            if has_lvl3_friend:
+                buff_amount = p.level * 2
+                p._attack += buff_amount
+                p._health += buff_amount
 
 # ==========================================
 # 1. 建立雙方隊伍 
 # ==========================================
 my_team_setup = [
-    ('ant', None, None, 1, "bread"),
+    ('otter', None, None, 3),
+    ('bison', None, None, 1),
 ]
 
 enemy_team_setup = [
-    ('ant', None, None, 1, None)
+    ('elephant', None, None, 1, None)
 ]
 
 # 透過製造機實體化動物
