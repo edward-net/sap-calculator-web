@@ -16,3 +16,4 @@
 [ant(3/3/L1), flamingo(3/2/L1), peacock(4/7/L1), pigeon(6/5/L1), dolphin(4/3/L1)]
 [swan(1/2/L1), ox(6/5/L1), kangaroo(2/2/L1), worm(1/4/L1), cricket(6/5/L1)]
 [swan(1/2/L1/meat-bone), ant(2/2/L1), mosquito(6/8/L2), otter(2/5/L1), ox(1/3/L1)]
+[hedgehog(4/2/L1), hedgehog(5/2/L1), snail(2/6/L1), crab(5/2/L1), peacock(5/8/L1)]

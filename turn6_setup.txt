@@ -16,3 +16,4 @@
 [flamingo(4/3/L1), hippo(5/6/L1/garlic), ant(4/4/L2), peacock(5/7/L1), dolphin(5/4/L1)]
 [swan(3/4/L1), ox(11/10/L1), cricket(7/6/L1), worm(2/5/L1), penguin(2/3/L1)]
 [mosquito(7/9/L3/garlic), bison(6/6/L1), swan(2/3/L1/meat-bone), ox(3/5/L1), otter(2/5/L1)]
+[fish(8/9/L1/garlic), kangaroo(8/7/L1), giraffe(3/4/L1), swan(5/5/L1/meat-bone), skunk(5/7/L1)]

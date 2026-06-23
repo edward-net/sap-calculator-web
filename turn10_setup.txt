@@ -14,3 +14,4 @@
 [camel(25/27/L3), boar(10/6/L1), mammoth(5/13/L1), squirrel(5/7/L1/meat-bone), monkey(2/3/L1)]
 [hippo(14/19/L1/garlic), flamingo(4/3/L1), peacock(10/12/L2/bread), cow(7/9/L1/chili), dolphin(7/6/L2)]
 [mammoth(5/13/L1), penguin(8/9/L2), ox(21/22/L1/bread), swan(7/8/L1), cricket(14/13/L2)]
+[bison(18/23/L1), rhino(10/11/L2/bread), swan(5/7/L1/meat-bone), cow(7/9/L1), mosquito(7/9/L3/garlic)]

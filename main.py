@@ -11,14 +11,18 @@ from sapai.battle import Battle
 from sapai.foods import Food  # 🌟 記得在最上方引入 Food 類別！
 
 # ==========================================
-# 🛠️ 輔助函式：根據藍圖製造自訂數值的動物
+# 🛠️ 輔助函式：根據藍圖製造自訂數值的動物 (🌟 已支援 additional_food)
 # ==========================================
 def make_pet(pet_blueprint):
-    if len(pet_blueprint) == 5:
-        name, atk, hp, lvl, equipment = pet_blueprint
+    # 🌟 動態解析藍圖：支援 4(無), 5(有裝備), 或 6(有裝備+額外食物) 個參數
+    additional_food = None
+    if len(pet_blueprint) == 6:
+        name, atk, hp, lvl, eq, additional_food = pet_blueprint
+    elif len(pet_blueprint) == 5:
+        name, atk, hp, lvl, eq = pet_blueprint
     else:
         name, atk, hp, lvl = pet_blueprint
-        equipment = None
+        eq = None
 
     p = Pet(name)
     
@@ -35,9 +39,13 @@ def make_pet(pet_blueprint):
     if hp is not None:
         p._health = hp
             
-    # 3. 🍖 穿上裝備 (使用官方 API：吃食物！)
-    if equipment is not None:
-        p.eat(Food(equipment))
+    # 3. 🍖 穿上裝備 (例如: food-meat-bone)
+    if eq is not None:
+        p.eat(Food(eq))
+
+    # 4. 🍎 🌟 吃下分配到的額外食物 (例如: food-bread)，數值會自動疊加上去！
+    if additional_food is not None:
+        p.eat(Food(additional_food))
 
     return p
 
@@ -98,18 +106,15 @@ def simulate_end_of_turn(team):
 
         # 🦬 🌟 新增：野牛 (Bison) 能力邏輯
         elif p.name == "pet-bison":
-            # 檢查隊伍中是否有「其他」等級 3 的隊友
             has_lvl3_friend = False
             for friend_slot in team:
                 if not friend_slot.empty:
                     f_pet = friend_slot.pet
-                    # 必須是有效動物、且不是野牛自己
                     if f_pet != p and f_pet.name != "pet-none" and "EMPTY" not in f_pet.name:
                         if f_pet.level == 3:
                             has_lvl3_friend = True
-                            break  # 只要找到一隻就符合條件，提早結束檢查
+                            break
             
-            # 若條件成立，根據野牛等級給予自我增益 (+2/+2, +4/+4, +6/+6)
             if has_lvl3_friend:
                 buff_amount = p.level * 2
                 p._attack += buff_amount
@@ -119,12 +124,14 @@ def simulate_end_of_turn(team):
 # 1. 建立雙方隊伍 
 # ==========================================
 my_team_setup = [
-    ('otter', None, None, 3),
+    # 🌟 測試 6 參數：給水獺吃一塊麵包 (預設裝備為 None)
+    ('otter', None, None, 3, 'chili', 'food-bread'),
     ('bison', None, None, 1),
 ]
 
 enemy_team_setup = [
-    ('elephant', None, None, 1, None)
+    ('elephant', None, None, 1, None),
+    ('ant', None, None, 1, None)
 ]
 
 # 透過製造機實體化動物
@@ -142,7 +149,7 @@ print("🐾 戰鬥準備就緒！準備開打...")
 # 🚨 關鍵改變：先產生 Battle (讓系統生成複製人)，再對準備上場的軍隊進行變身手術！
 battle = Battle(my_team, enemy_team)
 
-print("🐾 執行商店結算階段 (鸚鵡變身)...")
+print("🐾 執行商店結算階段 (回合結束技能)...")
 simulate_end_of_turn(battle.t0)
 simulate_end_of_turn(battle.t1)
 
