@@ -199,6 +199,10 @@ def simulate_end_of_turn(team):
                 buff_amount = p.level * 2
                 p._attack += buff_amount
                 p._health += buff_amount
+        # 🍞 🌟 新增：麵包 (Bread) 狀態邏輯 (不限動物種類，只要有這個狀態就發動)
+        if p.status == "status-bread":
+            # 麵包的效果是回合結束時 +7 血量 (因為你是在進入戰鬥前觸發，等同於戰鬥內暫時 +7 血)
+            p._health += 7
 
 # ==========================================
 # ⚡ 多核心工人函數：負責單一陣容的完整運算

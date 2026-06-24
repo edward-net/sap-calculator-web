@@ -69,6 +69,7 @@ apply_null_dict = {
     "status-splash-attack": apply_,
     "status-steak-attack": apply_,
     "status-weak": apply_,
+    "status-bread": apply_,  # 🍞 🌟 新增這裡
 }
 
 apply_damage_dict = {
@@ -83,6 +84,7 @@ apply_damage_dict = {
     "status-splash-attack": apply_,
     "status-steak-attack": apply_,
     "status-weak": apply_weak,
+    "status-bread": apply_,  # 🍞 🌟 新增這裡
 }
 
 apply_attack_dict = {
@@ -97,6 +99,7 @@ apply_attack_dict = {
     "status-splash-attack": apply_splash_attack,
     "status-steak-attack": apply_steak_attack,
     "status-weak": apply_,
+    "status-bread": apply_,  # 🍞 🌟 新增這裡
 }
 
 apply_faint_dict = {
@@ -111,6 +114,7 @@ apply_faint_dict = {
     "status-splash-attack": apply_,
     "status-steak-attack": apply_,
     "status-weak": apply_,
+    "status-bread": apply_,  # 🍞 🌟 新增這裡
 }
 
 apply_once = {

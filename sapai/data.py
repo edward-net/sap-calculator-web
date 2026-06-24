@@ -10103,6 +10103,7 @@ data = {
                 },
             ],
         },
+        # 在 data["foods"] 中找到你之前加的 food-bread 並改成這樣：
         "food-bread": {
             "name": "Bread",
             "id": "food-bread",
@@ -10111,21 +10112,18 @@ data = {
                 "commit": "e022fd6573782431ac9a65b520376b57511c31cd",
                 "unicodeCodePoint": "🍞",
             },
-            "tier": 4, # 你可以根據平衡需求修改 Tier (這裡暫定為 Tier 2)
+            "tier": 4, # 根據 Wiki，麵包是 Tier 4
             "packs": ["StandardPack", "ExpansionPack1"],
             "ability": {
-                "description": "Give an animal +7 health.",
+                "description": "Give a pet the Bread perk. End turn: Gain +7 health until next turn.",
                 "triggeredBy": {"kind": "Self"},
                 "trigger": "Buy",
                 "effect": {
-                    "kind": "ModifyStats",
-                    "target": {"kind": "PurchaseTarget"},
-                    "attackAmount": 0,
-                    "healthAmount": 7,
-                    "untilEndOfBattle": False,
+                    "kind": "ApplyStatus", # 🌟 改為賦予狀態
+                    "status": "status-bread", # 指定要給的狀態 ID
+                    "target": {"kind": "PurchaseTarget"}
                 },
             },
-            # 這裡可以加上你想要的出現機率 (probabilities) 設定，
         },
         "food-canned-food": {
             "name": "Canned Food",
@@ -10793,6 +10791,23 @@ data = {
                     "kind": "ModifyDamage",
                     "damageModifier": None,
                     "appliesOnce": False,
+                },
+            },
+        },
+        # 🌟 在這裡新增麵包狀態
+        "status-bread": {
+            "id": "status-bread",
+            "name": "Bread",
+            "ability": {
+                "description": "End turn: Gain +7 health until next turn.",
+                "trigger": "EndOfTurn",
+                "triggeredBy": {"kind": "Self"},
+                "effect": {
+                    "kind": "ModifyStats",
+                    "target": {"kind": "Self"},
+                    "attackAmount": 0,
+                    "healthAmount": 7,
+                    "untilEndOfBattle": True, # 戰鬥結束後失效
                 },
             },
         },
