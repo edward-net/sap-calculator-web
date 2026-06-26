@@ -124,7 +124,7 @@ ANIMAL_LIST = [
     "penguin", "pig", "pigeon", "poodle", "rabbit", "rat", "rhino", "rooster", "sauropod", "scorpion", 
     "seal", "shark", "sheep", "shrimp", "skunk", "sloth", "snail", "snake", "spider", 
     "squirrel", "swan", "tabby-cat", "tiger", "tropical-fish", "turkey", "turtle", 
-    "tyrannosaurus", "whale", "worm"
+    "tyrannosaurus", "whale", "wolverine", "worm"
 ]
 FOOD_LIST = [
     "apple", "bread", "bread-crumbs","honey", "cupcake", "meat-bone", "sleeping-pill", "garlic", "salad-bowl", 

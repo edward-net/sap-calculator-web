@@ -9,3 +9,4 @@
 [flamingo(7/6/L2), dodo(12/9/L2), ox(7/9/L1/bread), snake(11/6/L1/melon), parrot(8/6/L1)]
 [cat(9/10/L1), dodo(14/16/L2/chili), boar(15/11/L1/melon), shark(8/8/L1/bread), cow(7/9/L1)]
 [ox(14/14/L1/garlic), snake(12/7/L2), otter(17/17/L3), kangaroo(4/6/L2/garlic), skunk(7/9/L2)]
+[skunk(8/10/L2/chili), swan(11/11/L3/meat-bone), mammoth(7/17/L1), snake(11/6/L1/melon), kangaroo(14/13/L2/bread)]

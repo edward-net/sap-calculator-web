@@ -1815,15 +1815,13 @@ data = {
             "tier": 1,
             "baseAttack": 3,
             "baseHealth": 2,
-            "packs": ["PuppyPack"], # 鴿子通常在小狗包或自訂包，可以視需求改為 "StandardPack"
+            "packs": ["PuppyPack"],
             "level1Ability": {
                 "description": "Sell: Stock one free Bread Crumbs.",
                 "trigger": "Sell",
                 "triggeredBy": {"kind": "Self"},
                 "effect": {
-                    "kind": "StockFood",
-                    "food": "food-bread-crumbs",
-                    "amount": 1
+                    "kind": "none"  # 🌟 改為 none，並刪除 food 和 amount
                 },
             },
             "level2Ability": {
@@ -1831,9 +1829,7 @@ data = {
                 "trigger": "Sell",
                 "triggeredBy": {"kind": "Self"},
                 "effect": {
-                    "kind": "StockFood",
-                    "food": "food-bread-crumbs",
-                    "amount": 2
+                    "kind": "none"  # 🌟 改為 none
                 },
             },
             "level3Ability": {
@@ -1841,9 +1837,7 @@ data = {
                 "trigger": "Sell",
                 "triggeredBy": {"kind": "Self"},
                 "effect": {
-                    "kind": "StockFood",
-                    "food": "food-bread-crumbs",
-                    "amount": 3
+                    "kind": "none"  # 🌟 改為 none
                 },
             },
         },
@@ -2737,7 +2731,7 @@ data = {
                 "unicodeCodePoint": "🦔",
             },
             "tier": 2,
-            "baseAttack": 3,
+            "baseAttack": 4,
             "baseHealth": 2,
             "packs": ["StandardPack", "ExpansionPack1"],
             "level1Ability": {

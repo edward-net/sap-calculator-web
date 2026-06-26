@@ -17,3 +17,4 @@
 [penguin(2/3/L1), ox(8/7/L1), cricket(6/5/L1), worm(2/5/L1), swan(2/3/L1)]
 [mosquito(7/9/L3), ox(2/4/L1/none/apple), swan(1/2/L1/meat-bone), bison(4/4/L1), otter(2/5/L1)]
 [swan(5/5/L1/meat-bone), fish(7/8/L1/none/garlic), kangaroo(6/5/L1), skunk(4/6/L1), giraffe(2/3/L1)]
+[spider(2/2/L2), dodo(8/4/L1), ox(5/5/L2), giraffe(3/2/L1/meat-bone), spider(2/2/L1)]
