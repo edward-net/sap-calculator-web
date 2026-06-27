@@ -8446,8 +8446,8 @@ data = {
                 "effect": {
                     "kind": "SummonPet",
                     "pet": "pet-zombie-fly",
-                    "withAttack": 5,
-                    "withHealth": 5,
+                    "withAttack": 4,
+                    "withHealth": 4,
                     "team": "Friendly",
                 },
                 "maxTriggers": 3,
@@ -8459,8 +8459,8 @@ data = {
                 "effect": {
                     "kind": "SummonPet",
                     "pet": "pet-zombie-fly",
-                    "withAttack": 10,
-                    "withHealth": 10,
+                    "withAttack": 8,
+                    "withHealth": 8,
                     "team": "Friendly",
                 },
                 "maxTriggers": 3,
@@ -8472,8 +8472,8 @@ data = {
                 "effect": {
                     "kind": "SummonPet",
                     "pet": "pet-zombie-fly",
-                    "withAttack": 15,
-                    "withHealth": 15,
+                    "withAttack": 12,
+                    "withHealth": 12,
                     "team": "Friendly",
                 },
                 "maxTriggers": 3,

@@ -16,3 +16,4 @@
 [cricket(12/11/L1), ox(20/21/L1/bread), penguin(6/7/L1), swan(6/7/L1), cow(5/7/L1)]
 [bison(16/21/L1), cow(7/9/L1), rhino(9/10/L1), swan(4/6/L1/meat-bone), mosquito(7/9/L3/garlic)]
 [skunk(8/10/L1/chili), mammoth(4/12/L1), kangaroo(10/9/L1/bread), giraffe(4/5/L1), swan(8/8/L2/meat-bone)]
+[hippo(11/11/L1/bread), ox(9/9/L1), dodo(10/6/L1), fly(10/8/L1), turkey(4/5/L1)]

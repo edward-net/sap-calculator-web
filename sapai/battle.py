@@ -515,6 +515,58 @@ def battle_phase_start(battle_obj, phase, teams, pet_priority, phase_dict):
 
     return phase_list
 
+def drain_summon_queue(teams, phase_list):
+    """
+    🌟 NEW: 檢查並清空召喚等待佇列。
+    只要場上有空位，就把排隊中的動物拉上場，並觸發相關技能！
+    """
+    for t_idx, t in enumerate(teams):
+        if not hasattr(t, "summon_queue"):
+            continue
+            
+        while len(t.summon_queue) > 0:
+            if len(t.get_empty()) == 0:
+                break # 依然客滿，繼續排隊
+                
+            # 有空位了！把排最前面的動物拿出來
+            spet, te_idx, team_str = t.summon_queue.pop(0)
+            
+            # 精準推擠並讓出空間
+            if team_str == "Friendly":
+                nahead = len(t.get_ahead(te_idx[1], n=5)) if te_idx else 0
+                npets = len(t)
+                t.move_backward()
+                end_idx = (5 - npets) + nahead
+                t.move_forward(start_idx=0, end_idx=end_idx)
+            else:
+                t.move_backward()
+                
+            empty_idx = t.get_empty()
+            if len(empty_idx) > 0:
+                target_slot_idx = np.max(empty_idx)
+                t[target_slot_idx] = spet
+                spet.team = t
+                
+            t.move_forward()
+            for temp_slot in t:
+                temp_slot.pet.team = t
+                
+            # 將排隊上場的動作寫入播報台
+            phase_list.append(
+                ("SummonPet", (t_idx, target_slot_idx), "Queue", [str(spet)])
+            )
+            
+            # 觸發「隊友被召喚」的技能 (例如火雞、狗)
+            for te_pet_idx, temp_slot in enumerate(t):
+                temp_pet = temp_slot.pet
+                if temp_pet.name == "pet-none" or temp_pet.health <= 0:
+                    continue
+                if temp_pet == spet:
+                    continue
+                tempa, tempt, tempp = temp_pet.friend_summoned_trigger(spet)
+                append_phase_list(
+                    phase_list, temp_pet, t_idx, te_pet_idx, tempa, tempt, tempp
+                )
 
 def battle_phase_hurt_and_faint(battle_obj, phase, teams, pet_priority, phase_dict):
     phase_list = phase_dict[phase]
@@ -568,6 +620,10 @@ def battle_phase_hurt_and_faint(battle_obj, phase, teams, pet_priority, phase_di
         for team_idx, pet_idx in fainted_list:
             fteam, oteam = get_teams([team_idx, pet_idx], teams)
             fainted_pet = fteam[pet_idx].pet
+            
+            # 🌟 新增這行：必須放在這裡！要在 fainted_pet 抓出來之後立刻掛上！
+            fainted_pet._faint_idx = [team_idx, pet_idx]
+            
             ### Check for all pets that trigger off this fainted pet (including self)
             for te_team_idx, te_pet_idx in pp:
                 other_pet = teams[te_team_idx][te_pet_idx].pet
@@ -578,7 +634,7 @@ def battle_phase_hurt_and_faint(battle_obj, phase, teams, pet_priority, phase_di
                 if activated:
                     faint_targets_list.append(
                         [
-                            fainted_pet,
+                            other_pet,  # 🌟 修復 1：原本這裡是 fainted_pet，導致引擎查錯技能！
                             te_team_idx,
                             te_pet_idx,
                             activated,
@@ -604,10 +660,12 @@ def battle_phase_hurt_and_faint(battle_obj, phase, teams, pet_priority, phase_di
                 phase_list.append(
                     ("Fainted", (team_idx, pet_idx), (fainted_pet.__repr__()), [""])
                 )
+        # 🌟 NEW: 在所有的屍體被清空後，呼叫佇列清空器！
+        drain_summon_queue(teams, phase_list)
 
         ### If pet was summoned, then need to check for summon triggers
         for (
-            fainted_pet,
+            other_pet,  # 🌟 修復 2：對應上方修改，把 fainted_pet 改成 other_pet
             team_idx,
             pet_idx,
             activated,
@@ -617,7 +675,7 @@ def battle_phase_hurt_and_faint(battle_obj, phase, teams, pet_priority, phase_di
             fteam, _ = get_teams([team_idx, pet_idx], teams)
             check_summon_triggers(
                 phase_list,
-                fainted_pet,
+                other_pet,  # 🌟 修復 3：把真正的發動者傳遞進去給引擎檢查！
                 team_idx,
                 pet_idx,
                 fteam,

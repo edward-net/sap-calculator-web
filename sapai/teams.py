@@ -39,6 +39,9 @@ class Team(SAPList):
         self.player = player
         self.shop = shop
         self.pack = "StandardPack"
+        
+        # 🌟 NEW: 新增召喚等待佇列
+        self.summon_queue = []
 
     def move(self, sidx, tidx):
         """Moves animal from start idx to target idx"""

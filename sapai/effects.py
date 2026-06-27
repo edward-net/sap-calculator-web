@@ -844,18 +844,27 @@ def RespawnPet(apet, apet_idx, teams, te=None, te_idx=None, fixed_targets=None):
 
 
 def SummonPet(apet, apet_idx, teams, te=None, te_idx=None, fixed_targets=None):
-    """ """
-    # print("CALLED SUMMON")
-    # print("----------------")
-    # print(pet_idx)
-    # print(teams)
-    # print(fainted_pet)
-    # print(te)
     te_idx = te_idx or []
     fixed_targets = fixed_targets or []
 
+    # 🌟 核心修復 1：精準抓取真正的觸發者位置 (te_idx)
+    if te is not None:
+        # 優先讀取我們剛在 battle.py 掛上的死亡兵牌！
+        if hasattr(te, "_faint_idx"):
+            te_idx = te._faint_idx
+        else:
+            found_te_idx = None
+            for t_idx, t in enumerate(teams):
+                for p_idx, slot in enumerate(t):
+                    if slot.pet is te:
+                        found_te_idx = [t_idx, p_idx]
+                        break
+                if found_te_idx: break
+            if found_te_idx:
+                te_idx = found_te_idx
+
     if len(te_idx) == 0:
-        raise Exception("Indices of triggering entity must be provided as te_idx")
+        te_idx = apet_idx
 
     fteam, oteam = get_teams(apet_idx, teams)
     spet_name = apet.ability["effect"]["pet"]
@@ -866,19 +875,14 @@ def SummonPet(apet, apet_idx, teams, te=None, te_idx=None, fixed_targets=None):
 
     if team == "Friendly":
         target_team = fteam
-        #### First, determine how many pets should be infront
         nahead = len(fteam.get_ahead(te_idx[1], n=5))
         npets = len(fteam)
-        ### Then move team as far backward as possible
         fteam.move_backward()
-        ### Move nahead pets forward which should be infront of the triggering pet
         end_idx = (5 - npets) + nahead
         fteam.move_forward(start_idx=0, end_idx=end_idx)
     elif team == "Enemy":
         target_team = oteam
         if type(target_team).__name__ != "Team":
-            ### Assume that oteam was not input, for example if Rat was pilled
-            ###   during the shop phase
             return [], []
         target_team.move_backward()
     else:
@@ -889,22 +893,14 @@ def SummonPet(apet, apet_idx, teams, te=None, te_idx=None, fixed_targets=None):
         n = 2
     elif apet.name == "pet-rooster":
         n = apet.level
+        
+    # 支援給老鼠 (Rat) 使用的 amount 參數
+    if "amount" in apet.ability["effect"]:
+        n = apet.ability["effect"]["amount"]
 
     target = []
     for _ in range(n):
-        ### Check for furthest back open position
-        empty_idx = []
-        for iter_idx, temp_slot in enumerate(target_team):
-            if temp_slot.empty:
-                empty_idx.append(iter_idx)
-        if len(empty_idx) == 0:
-            ### Can safely return, cannot summon
-            return target, [target]
-
-        target_slot_idx = np.max(empty_idx)
-        target_team[target_slot_idx] = spet_name
-        spet = target_team[target_slot_idx].pet
-
+        spet = sapai.Pet(spet_name)
         if "withAttack" in apet.ability["effect"]:
             spet._attack = apet.ability["effect"]["withAttack"]
         if "withHealth" in apet.ability["effect"]:
@@ -912,14 +908,30 @@ def SummonPet(apet, apet_idx, teams, te=None, te_idx=None, fixed_targets=None):
         if "withLevel" in apet.ability["effect"]:
             spet.level = apet.ability["effect"]["withLevel"]
         if apet.name == "pet-rooster":
-            spet._attack = int(apet.attack * 0.5)
+            spet._attack = max(int(apet.attack * 0.5), 1)
 
-        target.append(spet)
+        empty_idx = []
+        for iter_idx, temp_slot in enumerate(target_team):
+            if temp_slot.empty:
+                empty_idx.append(iter_idx)
+                
+        if len(empty_idx) == 0:
+            ### 🌟 核心修復 2：客滿時，只有蒼蠅 (Fly) 有資格進入等待佇列！
+            ### 其他動物 (如老鼠、綿羊) 如果沒位子，就只能摸摸鼻子報廢。
+            if apet.name == "pet-fly":
+                if not hasattr(target_team, "summon_queue"):
+                    target_team.summon_queue = []
+                target_team.summon_queue.append((spet, te_idx, team))
+            continue
 
-    ### Move back forward
+        target_slot_idx = np.max(empty_idx)
+        target_team[target_slot_idx] = spet
+        
+        actual_spet = target_team[target_slot_idx].pet
+        target.append(actual_spet)
+
     target_team.move_forward()
     for temp_slot in target_team:
-        ### Make sure team is assigned correctly to all pets
         temp_slot.pet.team = target_team
 
     return target, [target]

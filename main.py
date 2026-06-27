@@ -129,10 +129,10 @@ def simulate_end_of_turn(team):
 # ==========================================
 my_team_setup = [
     # 🌟 測試 6 參數：給水獺吃一塊麵包
+    ('cricket', None, None, 1),
+    ('cricket', None, None, 1),
     ('beaver', None, None, 1),
-    ('beaver', None, None, 1),
-    ('beaver', None, None, 1),
-    ('sheep', None, None, 1),
+    ('turkey', None, None, 1),
     ('fly', 1, 50, 1),
 ]
 

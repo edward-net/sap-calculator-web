@@ -3,3 +3,4 @@
 [mammoth(11/15/L1), turkey(10/10/L1), leopard(18/8/L1), hippo(10/13/L2/meat-bone), gorilla(12/13/L1)]
 [blowfish(24/29/L1/melon), tiger(6/4/L1/mushroom), skunk(3/5/L1/steak), worm(6/9/L1/honey), monkey(1/2/L1)]
 [mammoth(5/13/L1/mushroom), snake(9/4/L1/melon), penguin(8/9/L2/steak), ox(27/30/L1/bread), cricket(18/17/L2/melon)]
+[mammoth(10/16/L1), gorilla(15/16/L1), hippo(17/17/L3/bread), fly(10/8/L1/steak), turkey(4/5/L1)]
