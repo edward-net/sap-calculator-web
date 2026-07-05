@@ -40,7 +40,7 @@ def render_team_images(combo_str):
             img_path = os.path.join("assets", f"pet-{name}.svg")
             
             if os.path.exists(img_path):
-                st.image(img_path, width="stretch") 
+                st.image(img_path, use_container_width=True) 
             else:
                 st.markdown(f"<div style='text-align:center; padding:10px; border:1px dashed #aaa; border-radius:5px;'>無圖片<br>{name}</div>", unsafe_allow_html=True)
             
@@ -210,7 +210,7 @@ with col_left:
             
             cols[0].button(
                 btn_label, key=f"btn_swap_my_{i}", type=btn_type, 
-                on_click=handle_swap, args=(my_id,), width="stretch"
+                on_click=handle_swap, args=(my_id,), use_container_width=True
             )
             
             pet_name = cols[1].selectbox("名稱", ANIMAL_LIST, index=None, placeholder="選擇動物", key=f"my_name_{i}", label_visibility="collapsed", on_change=auto_fill_stats, args=("my", i))
@@ -258,7 +258,7 @@ with col_left:
                     
                     cols[0].button(
                         btn_label, key=f"btn_swap_cand_{i}", type=btn_type, 
-                        on_click=handle_swap, args=(cand_id,), width="stretch"
+                        on_click=handle_swap, args=(cand_id,), use_container_width=True
                     )
                     
                     pet_name = cols[1].selectbox("名稱", ANIMAL_LIST, index=None, placeholder="選擇動物", key=f"cand_name_{i}", label_visibility="collapsed", on_change=auto_fill_stats, args=("cand", i))
@@ -366,11 +366,11 @@ col_btn_start, col_btn_stop = st.columns(2)
 
 with col_btn_start:
     # 執行中時，開始按鈕會被禁用
-    start_btn = st.button("▶️ 開始模擬 (Run Simulation)", width="stretch", type="primary", disabled=st.session_state["task_state"]["is_running"])
+    start_btn = st.button("▶️ 開始模擬 (Run Simulation)", use_container_width=True, type="primary", disabled=st.session_state["task_state"]["is_running"])
 
 with col_btn_stop:
     # 只有執行中時，停止按鈕才能被點擊
-    stop_btn = st.button("🛑 停止模擬", width="stretch", type="secondary", disabled=not st.session_state["task_state"]["is_running"])
+    stop_btn = st.button("🛑 停止模擬", use_container_width=True, type="secondary", disabled=not st.session_state["task_state"]["is_running"])
 
 # 處理按下開始按鈕
 if start_btn:
@@ -439,7 +439,7 @@ if st.session_state["task_state"]["response"] is not None and not st.session_sta
         with col_title:
             st.subheader(f"🏆 Top {len(top_results)} 最佳陣容")
         with col_btn:
-            if st.button("💾 匯出至 setups.txt", width="stretch", type="primary"):
+            if st.button("💾 匯出至 setups.txt", use_container_width=True, type="primary"):
                 try:
                     with open("setups.txt", "w", encoding="utf-8") as f:
                         for res in top_results:
