@@ -177,7 +177,7 @@ with col_left:
     else:
         my_team_config["mode"] = "manual"
         
-        if st.button("🔄 一鍵交換 (固定陣容 ⇄ 動物候選池)", type="secondary", width="stretch"):
+        if st.button("🔄 一鍵交換 (固定陣容 ⇄ 動物候選池)", type="secondary", use_container_width=True):
             keys = ["name", "atk", "hp", "lvl", "eq"]
             for i in range(5):
                 for k in keys:
