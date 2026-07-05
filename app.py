@@ -40,7 +40,7 @@ def render_team_images(combo_str):
             img_path = os.path.join("assets", f"pet-{name}.svg")
             
             if os.path.exists(img_path):
-                st.image(img_path, use_container_width=True) 
+                st.image(img_path, use_column_width=True) 
             else:
                 st.markdown(f"<div style='text-align:center; padding:10px; border:1px dashed #aaa; border-radius:5px;'>無圖片<br>{name}</div>", unsafe_allow_html=True)
             
