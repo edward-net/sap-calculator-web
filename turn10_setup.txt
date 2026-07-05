@@ -17,3 +17,5 @@
 [bison(18/23/L1), rhino(10/11/L2/bread), swan(5/7/L1/meat-bone), cow(7/9/L1), mosquito(7/9/L3/garlic)]
 [mammoth(7/17/L1), snake(9/4/L1), swan(10/10/L2/meat-bone), skunk(8/10/L2/chili), kangaroo(12/11/L2/bread)]
 [hippo(12/12/L2/bread/pear), ox(10/9/L1), turkey(4/5/L1), fly(10/8/L1), gorilla(13/14/L1)]
+[peacock(13/18/L1/garlic), fish(9/10/L1), deer(8/8/L2), mammoth(4/12/L1), whale(3/7/L1/meat-bone)]
+[horse(12/11/L2/bread), crocodile(9/5/L1), penguin(4/5/L1), gorilla(12/13/L1), spider(16/16/L3/none/chili)]

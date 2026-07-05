@@ -15,3 +15,5 @@
 [mosquito(7/9/L3/garlic), bison(12/15/L1), swan(4/6/L1/meat-bone), rhino(8/9/L1), cow(5/7/L1)]
 [fish(8/9/L1/garlic), swan(8/8/L2/meat-bone), kangaroo(9/8/L1/bread), skunk(6/8/L1), giraffe(4/5/L1)]
 [hippo(9/9/L1/bread), dodo(9/5/L1/cupcake), giraffe(5/4/L2/meat-bone), ox(8/8/L1), turkey(4/5/L1)]
+[fish(8/9/L1), peacock(11/16/L1/garlic), deer(4/4/L1), giraffe(5/6/L1), cow(4/6/L1)]
+[spider(12/12/L2), sheep(2/2/L1), horse(10/9/L2/bread), elephant(5/9/L1/meat-bone), penguin(4/5/L1)]

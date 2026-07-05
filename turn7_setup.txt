@@ -18,3 +18,4 @@
 [mosquito(7/9/L3/garlic), bison(10/13/L1), cow(5/7/L1), swan(3/5/L1/meat-bone), ox(3/5/L1)]
 [fish(8/9/L1/garlic), kangaroo(9/8/L1), swan(7/7/L1/meat-bone), giraffe(3/4/L1), skunk(5/7/L1)]
 [spider(3/3/L1/meat-bone), ox(7/7/L2), dodo(8/4/L1), giraffe(5/4/L2/meat-bone), turkey(4/5/L1)]
+[peacock(8/13/L1), deer(3/3/L1), giraffe(4/5/L1), fish(8/9/L1), cow(4/6/L1)]

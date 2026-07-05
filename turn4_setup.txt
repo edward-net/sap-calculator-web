@@ -17,3 +17,5 @@
 [swan(1/2/L1), ox(6/5/L1), kangaroo(2/2/L1), worm(1/4/L1), cricket(6/5/L1)]
 [swan(1/2/L1/meat-bone), ant(2/2/L1), mosquito(6/8/L2), otter(2/5/L1), ox(1/3/L1)]
 [hedgehog(4/2/L1), hedgehog(5/2/L1), snail(2/6/L1), crab(5/2/L1), peacock(5/8/L1)]
+[peacock(6/9/L1), giraffe(1/2/L1), fish(5/6/L1), otter(5/6/L1), dolphin(4/3/L1)]
+[spider(3/2/L1), elephant(3/7/L1/meat-bone), spider(4/4/L1), horse(5/4/L2), fish(4/5/L1)]

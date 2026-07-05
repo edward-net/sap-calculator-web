@@ -7,3 +7,8 @@ __pycache__/
 
 # 忽略 VS Code 設定檔 (如果有用的話)
 .vscode/
+
+歷史資料/
+舊格式/
+main.py
+sapai/
